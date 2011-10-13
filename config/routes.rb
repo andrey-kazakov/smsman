@@ -1,4 +1,6 @@
 Smsgate::Application.routes.draw do
+  resources :orders, :except => [:edit, :create]
+
   devise_for :users
 
   # The priority is based upon order of creation:

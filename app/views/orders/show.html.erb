@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @order.name %>
+</p>
+
+<p>
+  <b>Accepted:</b>
+  <%= @order.accepted %>
+</p>
+
+<p>
+  <b>Sender number:</b>
+  <%= @order.sender_number %>
+</p>
+
+<p>
+  <b>Start at:</b>
+  <%= @order.start_at %>
+</p>
+
+<p>
+  <b>Actual till:</b>
+  <%= @order.actual_till %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%= @order.user %>
+</p>
+
+
+<%= link_to 'Back', orders_path %>
