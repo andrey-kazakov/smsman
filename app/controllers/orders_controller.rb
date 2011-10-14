@@ -1,6 +1,8 @@
 class OrdersController < ApplicationController
   include OrdersHelper
 
+  before_filter :authenticate_user!
+
   # GET /orders
   # GET /orders.json
   def index
@@ -42,9 +44,11 @@ class OrdersController < ApplicationController
   # POST /orders
   # POST /orders.json
   def create
-    classname = params[:order][:_type].presence
-    klass = Object.const_get(classname) if Order.types.values.map(&:name).include?(classname)
-    @order = klass.new(params[:order])
+    # FIXME: быдлокод
+    types = Order.types.invert
+    classname = params[:_type].presence
+    klass = Object.const_get(classname) if types.keys.map(&:name).include?(classname)
+    current_user.orders << (@order = klass.new(params[types[klass]+'_order']))
 
     respond_to do |format|
       if @order.save

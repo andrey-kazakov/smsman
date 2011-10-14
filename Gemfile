@@ -9,6 +9,7 @@ gem 'bson_ext', '~> 1.4'
 gem 'mongoid', '~> 2.3'
 
 gem 'devise'
+gem 'haml'
 
 
 
