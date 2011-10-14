@@ -28,7 +28,11 @@ class OrdersController < ApplicationController
   # GET /orders/new
   # GET /orders/new.json
   def new
-    @order = Order.new
+    # FIXME: быдлокод
+    types = Order.types.invert
+    classname = params[:_type].presence
+    klass = Object.const_get(classname) if types.keys.map(&:name).include?(classname)
+    @order = (klass || Order).new 
 
     respond_to do |format|
       format.html # new.html.erb
