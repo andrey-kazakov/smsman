@@ -1,3 +1,4 @@
 class BulkTarget < Target
-  belongs_to :bulk_order, :inverse_of => :targets
+  referenced_in :order, :inverse_of => :targets, :class_name => 'BulkOrder'
+  validates_presence_of :bulk_order
 end

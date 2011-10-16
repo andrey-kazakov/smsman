@@ -1,0 +1,21 @@
+%p#notice= notice
+= form_for @user do |f|
+  %p
+    %b= f.label :first_name
+    = f.text_field :first_name
+  %p
+    %b= f.label :last_name
+    = f.text_field :last_name
+  %p
+    %b= f.label :company_name
+    = f.text_field :company_name
+  %p
+    %b= f.label :phone_number
+    = f.text_field :phone_number
+  %p
+    %b= f.label :referral
+    = f.text_field :referral
+  %p
+    = f.submit
+- if current_user.admin
+  = render :file => Rails.root+'app/views/orders/index.html.haml'

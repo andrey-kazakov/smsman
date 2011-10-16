@@ -2,11 +2,15 @@ class OrdersController < ApplicationController
   include OrdersHelper
 
   before_filter :authenticate_user!
+  before_filter :verify_admin, :only => :accept
 
   # GET /orders
   # GET /orders.json
   def index
-    @orders = Order.all
+    @orders = orders.order_by case params[:order]
+                              when 'accepted' then :accepted
+                              else :created_at
+                              end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -17,7 +21,7 @@ class OrdersController < ApplicationController
   # GET /orders/1
   # GET /orders/1.json
   def show
-    @order = Order.find(params[:id])
+    @order = orders.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -42,7 +46,7 @@ class OrdersController < ApplicationController
 
   # GET /orders/1/edit
   #def edit
-  #  @order = Order.find(params[:id])
+  #  @order = orders.find(params[:id])
   #end
 
   # POST /orders
@@ -68,7 +72,7 @@ class OrdersController < ApplicationController
   # PUT /orders/1
   # PUT /orders/1.json
   #def update
-  #  @order = Order.find(params[:id])
+  #  @order = orders.find(params[:id])
 
   #  respond_to do |format|
   #    if @order.update_attributes(params[:order])
@@ -84,12 +88,22 @@ class OrdersController < ApplicationController
   # DELETE /orders/1
   # DELETE /orders/1.json
   def destroy
-    @order = Order.find(params[:id])
+    @order = orders.find(params[:id])
     @order.destroy
 
     respond_to do |format|
       format.html { redirect_to orders_url }
-      format.json { head :ok }
+      format.js { render :js => %<$('#order_#{@order.id}').remove()> }
+    end
+  end
+
+  def accept
+    @order = orders.find(params[:id])
+    request.delete? ? @order.decline! : @order.accept!
+
+    respond_to do |format|
+      format.html { redirect_to orders_url }
+      format.js { render :js => %<$('#order_#{@order.id} .accepted').text('#{request.delete? ? 'no' : 'yes'}')> }
     end
   end
 end

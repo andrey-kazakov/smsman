@@ -1,7 +1,19 @@
 Smsgate::Application.routes.draw do
-  resources :orders, :only => [:index, :show, :new, :create, :destroy]
+  resources :orders, :except => [:edit, :update] do
+    member do
+      get 'accept'
+      delete 'accept'
+    end
+  end
 
   devise_for :users
+
+  resources :users, :only => [:index, :show, :update] do
+    member do
+      get 'admin'
+      delete 'admin'
+    end
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

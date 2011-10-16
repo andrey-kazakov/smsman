@@ -1,5 +1,6 @@
 class IndividualTarget < Target
   field :text, type: String
 
-  belongs_to :individual_order, :inverse_of => :targets
+  referenced_in :order, :inverse_of => :targets, :class_name => 'IndividualOrder'
+  validates_presence_of :order
 end

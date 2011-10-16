@@ -1,15 +1,14 @@
 class IndividualOrder < Order
-  has_many :targets, :class_name => 'IndividualTarget'
-  validates_presence_of :targets
+  references_many :targets, :class_name => 'IndividualTarget', :autosave => true
 
   def recipient_numbers_with_texts
-    targets.map{ |target| "#{target.recipient_number},#{target.text}" }.join("\n")
+    (@_targets || targets).map{ |target| "#{target[:recipient_number]},#{target[:text]}" }.join("\n")
   end
 
   def recipient_numbers_with_texts= input
-    self.targets = []
+    @_targets = []
     InputTokenizer.parse_numbers_with_messages(input).each_pair do |number, text| 
-      targets << IndividualTarget.new(:recipient_number => number, :text => text)
+      @_targets << { :_type => IndividualTarget, :recipient_number => number, :text => text }
     end
   end
 end
