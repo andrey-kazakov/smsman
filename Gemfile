@@ -32,6 +32,9 @@ gem 'jquery-rails'
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
 group :test do
+  gem 'autotest'
+  gem 'autotest-rails'
+  gem 'faker'
   # Pretty printed test output
   gem 'turn', :require => false
 end
