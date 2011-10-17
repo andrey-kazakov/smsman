@@ -37,9 +37,12 @@ private
     if @_targets
       targets.destroy_all
 
-      @_targets.each do |t|
-        targets.create(t)
+      @_targets.each do |target|
+        targets << target[:_type].new(target)
       end
+      @_targets = nil
+
+      save!
     end
   end
 

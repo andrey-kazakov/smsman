@@ -1,5 +1,5 @@
 class IndividualOrder < Order
-  references_many :targets, :class_name => 'IndividualTarget', :autosave => true
+  has_many :targets, :as => :targetable
 
   def recipient_numbers_with_texts
     (@_targets || targets).map{ |target| "#{target[:recipient_number]},#{target[:text]}" }.join("\n")
