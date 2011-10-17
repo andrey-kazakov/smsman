@@ -3,6 +3,7 @@ class BulkOrder < Order
   validates_presence_of :text
 
   has_many :targets, :as => :targetable
+  validates_presence_of :recipient_numbers
 
   def recipient_numbers
     (@_targets || targets).map{ |t| t[:recipient_number] }.join("\n")

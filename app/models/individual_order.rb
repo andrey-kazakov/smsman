@@ -1,5 +1,6 @@
 class IndividualOrder < Order
   has_many :targets, :as => :targetable
+  validates_presence_of :recipient_numbers_with_texts
 
   def recipient_numbers_with_texts
     (@_targets || targets).map{ |target| "#{target[:recipient_number]},#{target[:text]}" }.join("\n")
