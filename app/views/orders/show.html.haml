@@ -11,6 +11,12 @@
 %p
   %b User:
   = link_to @order.user
+%p
+  %b State:
+  = @order.api_state
+%p
+  %b ID:
+  = @order.api_id
 - case @order
   - when SingleOrder
     %p
@@ -26,16 +32,24 @@
     %table
       %tr
         %th Number
+        %th State
+        %th ID
       - @order.targets.each do |target|
         %tr
           %td= target.recipient_number
+          %td= target.api_state
+          %td= target.api_id
   - when IndividualOrder
     %table
       %tr
         %th Number
         %th Text
+        %th State
+        %th ID
       - @order.targets.each do |target|
         %tr
           %td= target.recipient_number
           %td= target.text
+          %td= target.api_state
+          %td= target.api_id
 = link_to 'Back', orders_path

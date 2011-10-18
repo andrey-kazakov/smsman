@@ -99,7 +99,7 @@ class OrdersController < ApplicationController
 
   def accept
     @order = orders.find(params[:id])
-    request.delete? ? @order.decline! : @order.accept!
+    warn 'orders#accept called, model response: ' + (request.delete? ? @order.decline! : @order.accept!).to_s
 
     respond_to do |format|
       format.html { redirect_to orders_url }

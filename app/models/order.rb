@@ -11,6 +11,9 @@ class Order
   field :accepted, :type => Boolean
   field :sender_number, :type => String
 
+  field :api_id, type: String
+  field :api_state, type: String
+
   belongs_to :user, :inverse_of => :orders
   validates_presence_of :user
 
@@ -19,8 +22,13 @@ class Order
   end
 
   def accept!
-    write_attribute(:accepted, true)
-    save :validate => false
+    unless accepted
+      write_attribute(:accepted, true)
+      save :validate => false
+
+      reload
+      Ip2Sms.perform self
+    end
   end
 
   def decline!
@@ -36,11 +44,10 @@ private
       targets.destroy_all
 
       @_targets.each do |target|
-        targets << target[:_type].new(target)
+        klass = target.delete(:_type)
+        klass.create(target.merge(:targetable => self))
       end
       @_targets = nil
-
-      save!
     end
   end
 

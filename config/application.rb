@@ -16,6 +16,7 @@ if defined?(Bundler)
 end
 
 load 'lib/input_tokenizer.rb'
+load 'lib/ip2sms.rb'
 
 module Smsgate
   class Application < Rails::Application

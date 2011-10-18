@@ -12,7 +12,13 @@ class OrderTest < ActiveSupport::TestCase
     end
   end
 
-  test 'bulk order should create targets' do
+  def teardown
+    User.delete_all
+    Order.delete_all
+    Target.delete_all
+  end
+
+  test 'bulk order should create targets and gen valid xml' do
     recipient_numbers = (1..40).to_a.map{ Faker::PhoneNumber.phone_number  }.join(' ')
     @order = BulkOrder.new(:name => Faker::Company.catch_phrase, :sender_number => Faker::PhoneNumber.phone_number, :text => Faker::Lorem.paragraph, :recipient_numbers => recipient_numbers)
     @user.orders << @order
@@ -20,9 +26,14 @@ class OrderTest < ActiveSupport::TestCase
     @order.save!
     @order.reload
     assert_equal 40, @order.targets.count
+
+    @tree = Ip2Sms.xml_for(@order)
+    assert_equal 40, @tree.search('to').count
+    assert_equal 1, @tree.search('body').count
+    assert_equal 'bulk', @tree.at('service')['id']
   end
 
-  test 'individual order should create targets' do
+  test 'individual order should create targets and gen valid xml' do
     recipient_numbers_with_texts = ''
     40.times do
       recipient_numbers_with_texts += "#{Faker::PhoneNumber.phone_number} #{Faker::Lorem.paragraph}\n"
@@ -33,5 +44,24 @@ class OrderTest < ActiveSupport::TestCase
     @order.save!
     @order.reload
     assert_equal 40, @order.targets.count
+
+    @tree = Ip2Sms.xml_for(@order)
+    assert_equal 40, @tree.search('to').count
+    assert_equal 40, @tree.search('body').count
+    assert_equal 'individual', @tree.at('service')['id']
   end
+
+  test 'targets must not touch orders table' do
+    recipient_numbers = (1..40).to_a.map{ Faker::PhoneNumber.phone_number  }.join(' ')
+    @user.orders.create(:name => Faker::Company.catch_phrase, :sender_number => Faker::PhoneNumber.phone_number, :text => Faker::Lorem.paragraph, :recipient_numbers => recipient_numbers)
+    recipient_numbers_with_texts = ''
+    40.times do
+      recipient_numbers_with_texts += "#{Faker::PhoneNumber.phone_number} #{Faker::Lorem.paragraph}\n"
+    end
+    @user.orders.create(:name => Faker::Company.catch_phrase, :sender_number => Faker::PhoneNumber.phone_number, :recipient_numbers_with_texts => recipient_numbers_with_texts)
+
+    assert_equal @user.orders.count, Order.all.count
+    assert_equal @user.orders.all.to_a, Order.all.to_a
+  end
+
 end
