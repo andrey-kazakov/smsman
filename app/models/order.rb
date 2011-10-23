@@ -72,10 +72,13 @@ private
     if @_targets
       targets.destroy_all
 
+      cost = 0
       @_targets.each do |target|
         klass = target.delete(:_type)
-        klass.create(target.merge(:targetable => self))
+        cost += klass.create(target.merge(:targetable => self)).cost
       end
+      set :cost, cost
+
       @_targets = nil
     end
   end

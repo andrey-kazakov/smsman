@@ -6,5 +6,7 @@ class Target
   field :api_id, type: String
   field :api_state, type: String
 
+  field :cost, type: Integer
+
   belongs_to :targetable, :polymorphic => true
 end
