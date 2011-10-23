@@ -17,9 +17,12 @@ end
 
 load 'lib/input_tokenizer.rb'
 load 'lib/ip2sms.rb'
+load 'lib/robokassa_merchant.rb'
 
 module Smsgate
   class Application < Rails::Application
+    config.middleware.use RobokassaMerchant, YAML.load(File.open('config/robokassa_merchant.yml'))
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.

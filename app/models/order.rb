@@ -17,6 +17,11 @@ class Order
   belongs_to :user, :inverse_of => :orders
   validates_presence_of :user
 
+  attr_protected :paid
+  attr_protected :cost
+  field :paid, type: Boolean
+  field :cost, type: Integer
+
   def self.types
     { 'single' => SingleOrder, 'bulk' => BulkOrder, 'individual' => IndividualOrder }
   end
