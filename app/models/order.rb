@@ -33,6 +33,8 @@ class Order
   end
 
   def accept!
+    raise "order #{id} is not paid" unless paid
+
     unless accepted
       write_attribute(:accepted, true)
       save :validate => false
