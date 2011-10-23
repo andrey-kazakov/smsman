@@ -7,7 +7,7 @@ load 'deploy/assets'
 set :stages, %w(production)
 set :default_stage, "staging"
 
-set :rvm_ruby_string, '1.9.3-rc1'
+set :rvm_ruby_string, '1.9.2-p290'
 set :rvm_type, :user
 
 set :application, "smsman"
