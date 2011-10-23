@@ -1,24 +1,24 @@
-%h1 Listing users
-%table
-  %tr
-    %th= link_to 'Created at', orders_path(:order => 'created_at')
-    %th Full name
-    %th E-mail
-    %th Admin
-    %th
-    %th
-    %th
-    %th
+.page-header
+  %h1 Orders list
+%table.zebra-striped
+  %thead
+    %tr
+      %th= link_to 'Created at', orders_path(:order => 'created_at')
+      %th Full name
+      %th E-mail
+      %th Admin
+      %th
   - @users.each do |user|
     %tr{ :id => %<user_#{user.id}> }
       %td= user.created_at
       %td= user.full_name
       %td= user.email
       %td.admin= user.admin ? 'yes' : 'no'
-      %td= link_to 'Make admin', admin_user_path(user), remote: true
-      %td= link_to 'Make not admin', admin_user_path(user), remote: true, method: :delete
-      %td= link_to 'Destroy', user, confirm: 'Are you sure?', method: :delete
-      %td= link_to 'Show', user
+      %td{ :style => 'text-align: center' }
+        = link_to 'Make not admin', admin_user_path(user), remote: true, method: :delete, class: 'btn default'
+        = link_to 'Make admin', admin_user_path(user), remote: true, class: 'btn danger'
+        = link_to 'Destroy', user, confirm: 'Are you sure?', method: :delete, class: 'btn danger'
+        = link_to 'Show', user, class: 'btn info'
 %br/
-Register a user: 
-= new_user_registration_url
+You can register a new user at URL
+=link_to new_user_registration_url

@@ -5,14 +5,25 @@
     = stylesheet_link_tag    "application"
     = javascript_include_tag "application"
     = csrf_meta_tags
+    %style{:type => 'text/css'}
+      body { padding-top: 40px  }
   %body
-    %div{ :style => 'float: right'}
-      - if current_user
-        = link_to 'Orders', orders_path
-        = link_to 'Profile', current_user
-        - if current_user.admin
-          = link_to 'Users', users_path
-        = link_to 'Sign out', destroy_user_session_path
-      - else
-        = link_to 'Sign in', new_user_session_path
-    %div= yield
+    .topbar
+      .fill
+        .container
+          = link_to 'SMS manager', root_path, :class => 'brand'
+          %ul.nav
+            - if current_user
+              %li= link_to 'Orders', orders_path
+              %li= link_to 'Profile', current_user
+              - if current_user.admin
+                %li= link_to 'Users', users_path
+              %li= link_to 'Sign out', destroy_user_session_path
+            - else
+              %li= link_to 'Sign in', new_user_session_path
+    .container
+      .content
+        - if notice.present?
+          .alert-message.info
+            %p= notice
+        = yield

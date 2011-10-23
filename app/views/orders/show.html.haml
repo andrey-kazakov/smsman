@@ -29,23 +29,25 @@
     %p
       %b Text:
       = @order.text
-    %table
-      %tr
-        %th Number
-        %th State
-        %th ID
+    %table.zebra-striped
+      %thead
+        %tr
+          %th Number
+          %th State
+          %th ID
       - @order.targets.each do |target|
         %tr
           %td= target.recipient_number
           %td= target.api_state
           %td= target.api_id
   - when IndividualOrder
-    %table
-      %tr
-        %th Number
-        %th Text
-        %th State
-        %th ID
+    %table.zebra-striped
+      %thead
+        %tr
+          %th Number
+          %th Text
+          %th State
+          %th ID
       - @order.targets.each do |target|
         %tr
           %td= target.recipient_number
