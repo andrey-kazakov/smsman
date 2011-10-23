@@ -16,17 +16,6 @@ GEM
       rack-mount (~> 0.8.2)
       rack-test (~> 0.6.1)
       sprockets (~> 2.0.0)
-    active_utils (1.0.1)
-      activesupport (>= 2.3.11)
-      i18n
-    activemerchant (1.18.1)
-      active_utils (>= 1.0.1)
-      activesupport (>= 2.3.11)
-      braintree (>= 2.0.0)
-      builder (>= 2.0.0)
-      i18n
-      json (>= 1.5.1)
-      money
     activemodel (3.1.0)
       activesupport (= 3.1.0)
       bcrypt-ruby (~> 3.0.0)
@@ -49,8 +38,6 @@ GEM
     autotest-rails (4.1.0)
       ZenTest
     bcrypt-ruby (3.0.1)
-    braintree (2.12.0)
-      builder (>= 2.0.0)
     bson (1.4.0)
     bson_ext (1.4.0)
     builder (3.0.0)
@@ -92,8 +79,6 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.16)
-    money (3.7.1)
-      i18n (~> 0.4)
     mongo (1.4.0)
       bson (= 1.4.0)
     mongoid (2.3.1)
@@ -174,7 +159,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activemerchant
   autotest
   autotest-rails
   bson_ext (~> 1.4)

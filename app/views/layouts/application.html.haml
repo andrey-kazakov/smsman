@@ -23,7 +23,10 @@
               %li= link_to 'Sign in', new_user_session_path
     .container
       .content
-        - if notice.present?
+        - if flash[:notice].present?
           .alert-message.info
-            %p= notice
+            %p= flash[:notice]
+        - elsif flash[:error].present?
+          .alert-message.error
+            %p= flash[:error]
         = yield

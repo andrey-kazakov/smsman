@@ -11,8 +11,12 @@ class Order
   field :accepted, :type => Boolean
   field :sender_number, :type => String
 
+  index :accepted
+
   field :api_id, type: String
   field :api_state, type: String
+
+  index :api_id
 
   belongs_to :user, :inverse_of => :orders
   validates_presence_of :user
@@ -21,6 +25,8 @@ class Order
   attr_protected :cost
   field :paid, type: Boolean
   field :cost, type: Integer
+
+  index :paid
 
   def self.types
     { 'single' => SingleOrder, 'bulk' => BulkOrder, 'individual' => IndividualOrder }
@@ -39,6 +45,22 @@ class Order
   def decline!
     write_attribute(:accepted, false)
     save :validate => false
+  end
+
+  def normalize_cost value
+    "%01.02f" % value
+  end
+
+  def cost? value
+    cost_string == normalize_cost(value)
+  end
+
+  def cost_string
+    normalize_cost(cost / 100.0)
+  end
+
+  def cost
+    read_attribute(:cost).to_i
   end
 
 private
