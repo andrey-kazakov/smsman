@@ -7,7 +7,7 @@ load 'deploy/assets'
 set :stages, %w(production)
 set :default_stage, "staging"
 
-set :rvm_ruby_string, '1.9.2-p290'
+set :rvm_ruby_string, '1.9.3-rc1'
 set :rvm_type, :user
 
 set :application, "smsman"
@@ -34,7 +34,7 @@ ssh_options[:forward_agent] = true
 
 namespace :deploy do  
   task :bundle do
-    run "cd #{deploy_to}/current/ && bundle install"
+    run "cd #{current_release} && bundle install"
   end
 
 
@@ -45,5 +45,5 @@ namespace :deploy do
 
 end
 
-  before :deploy, "deploy:bundle"
+  before "deploy:assets:precompile", "deploy:bundle"
   after :deploy, "deploy:restart"
