@@ -16,6 +16,17 @@ GEM
       rack-mount (~> 0.8.2)
       rack-test (~> 0.6.1)
       sprockets (~> 2.0.0)
+    active_utils (1.0.1)
+      activesupport (>= 2.3.11)
+      i18n
+    activemerchant (1.18.1)
+      active_utils (>= 1.0.1)
+      activesupport (>= 2.3.11)
+      braintree (>= 2.0.0)
+      builder (>= 2.0.0)
+      i18n
+      json (>= 1.5.1)
+      money
     activemodel (3.1.0)
       activesupport (= 3.1.0)
       bcrypt-ruby (~> 3.0.0)
@@ -38,9 +49,17 @@ GEM
     autotest-rails (4.1.0)
       ZenTest
     bcrypt-ruby (3.0.1)
+    braintree (2.12.0)
+      builder (>= 2.0.0)
     bson (1.4.0)
     bson_ext (1.4.0)
     builder (3.0.0)
+    capistrano (2.9.0)
+      highline
+      net-scp (>= 1.0.0)
+      net-sftp (>= 2.0.0)
+      net-ssh (>= 2.0.14)
+      net-ssh-gateway (>= 1.1.0)
     devise (1.4.7)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.0.3)
@@ -49,17 +68,21 @@ GEM
     faker (1.0.1)
       i18n (~> 0.4)
     haml (3.1.3)
+    highline (1.6.2)
     hike (1.2.1)
     i18n (0.6.0)
     jquery-rails (1.0.16)
       railties (~> 3.0)
       thor (~> 0.14)
     json (1.6.1)
+    kgio (2.6.0)
     mail (2.3.0)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.16)
+    money (3.7.1)
+      i18n (~> 0.4)
     mongo (1.4.0)
       bson (= 1.4.0)
     mongoid (2.3.1)
@@ -67,6 +90,13 @@ GEM
       mongo (~> 1.4)
       tzinfo (~> 0.3.22)
     multi_json (1.0.3)
+    net-scp (1.0.4)
+      net-ssh (>= 1.99.1)
+    net-sftp (2.0.5)
+      net-ssh (>= 2.0.9)
+    net-ssh (2.2.1)
+    net-ssh-gateway (1.1.0)
+      net-ssh (>= 1.99.1)
     nokogiri (1.5.0)
     orm_adapter (0.0.5)
     polyglot (0.3.2)
@@ -94,6 +124,7 @@ GEM
       rake (>= 0.8.7)
       rdoc (~> 3.4)
       thor (~> 0.14.6)
+    raindrops (0.7.0)
     rake (0.9.2)
     rdoc (3.10)
       json (~> 1.4)
@@ -116,6 +147,10 @@ GEM
     turn (0.8.3)
       ansi
     tzinfo (0.3.30)
+    unicorn (4.1.1)
+      kgio (~> 2.4)
+      rack
+      raindrops (~> 0.6)
     warden (1.0.5)
       rack (>= 1.0)
 
@@ -123,9 +158,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activemerchant
   autotest
   autotest-rails
   bson_ext (~> 1.4)
+  capistrano
   devise
   faker
   haml
@@ -135,3 +172,4 @@ DEPENDENCIES
   rails (= 3.1.0)
   sass-rails (~> 3.1.0)
   turn
+  unicorn
