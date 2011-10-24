@@ -5,7 +5,7 @@ require 'rvm/capistrano' # Для работы rvm
 load 'deploy/assets'
 
 set :stages, %w(production)
-set :default_stage, "staging"
+set :default_stage, "production"
 
 set :rvm_ruby_string, '1.9.3-rc1'
 set :rvm_type, :user
@@ -37,6 +37,9 @@ namespace :deploy do
     run "cd #{current_release} && bundle install"
   end
 
+  task :copy_configs do
+    run "cp #{shared_path}/config/* #{release_path}/config"
+  end
 
  task :restart do
   run "/etc/init.d/smsman restart"
@@ -45,5 +48,6 @@ namespace :deploy do
 
 end
 
+  after 'deploy:finalize_update', 'deploy:copy_configs'
   before "deploy:assets:precompile", "deploy:bundle"
   after :deploy, "deploy:restart"
