@@ -167,6 +167,8 @@ DEPENDENCIES
   faker
   haml
   jquery-rails
+  less (= 2.0.7)
+  less-rails (= 2.0.1)
   less-rails-bootstrap
   mongoid (~> 2.3)
   nokogiri

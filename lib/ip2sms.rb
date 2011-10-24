@@ -23,8 +23,10 @@ module Ip2Sms
 
       case order
       when SingleOrder
-        order.api_id = status['id'] || status.at('id').text
-        order.api_state = status.at('state').text
+        order.api_id = status['id'] || status.at('id').text rescue nil
+        state = status.at('state')
+        order.api_state = state.text
+        order.api_state += (": #{state['error']}" if state['error']) rescue ''
 
         order.save :validate => false
 

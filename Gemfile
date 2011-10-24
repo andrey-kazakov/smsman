@@ -17,7 +17,8 @@ gem 'nokogiri'
 # in production environments by default.
 group :assets do
   gem 'therubyracer'
-  gem 'less'
+  gem 'less', '2.0.7'
+  gem 'less-rails', '2.0.1'
   gem 'less-rails-bootstrap' #, '~> 1.3.0'
   gem 'sass-rails', "  ~> 3.1.0"
   #gem 'coffee-rails', "~> 3.1.0"
