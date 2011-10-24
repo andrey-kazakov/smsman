@@ -8,6 +8,7 @@
       %th Name
       %th= link_to 'Accepted', orders_path(:order => 'accepted')
       %th= link_to 'Paid', orders_path(:order => 'paid')
+      %th Cost
       %th Sender number
       %th User
       - if current_user.admin?
@@ -22,6 +23,7 @@
       %td= link_to order.name, order
       %td.accepted= order.accepted ? 'yes' : 'no'
       %td= order.paid ? 'yes' : 'no'
+      %th= order.cost_string
       %td= order.sender_number
       %td= link_to order.user.full_name, user_path(order.user)
       - if current_user.admin?
