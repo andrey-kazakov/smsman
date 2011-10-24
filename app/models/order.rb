@@ -36,8 +36,7 @@ class Order
     raise "order #{id} is not paid" unless paid
 
     unless accepted
-      write_attribute(:accepted, true)
-      save :validate => false
+      set :accepted, true
 
       reload
       Ip2Sms.perform self
@@ -45,8 +44,7 @@ class Order
   end
 
   def decline!
-    write_attribute(:accepted, false)
-    save :validate => false
+    set :accepted, false
   end
 
   def normalize_cost value
@@ -75,7 +73,7 @@ private
       cost = 0
       @_targets.each do |target|
         klass = target.delete(:_type)
-        cost += klass.create(target.merge(:targetable => self)).cost
+        cost += klass.create(target.merge(:targetable => self)).cost.to_i
       end
       set :cost, cost
 

@@ -28,12 +28,10 @@ class User
   end
 
   def admin!
-    write_attribute :admin, true
-    save :validate => false
+    set :admin, true
   end
 
   def not_admin!
-    write_attribute :admin, false
-    save :validate => false
+    set :admin, false
   end
 end
