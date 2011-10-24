@@ -33,8 +33,7 @@ class Order
   end
 
   def accept!
-    raise "order #{id} is not paid" unless paid
-
+    #raise "order #{id} is not paid" unless paid
     unless accepted
       set :accepted, true
 

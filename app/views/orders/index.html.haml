@@ -7,6 +7,7 @@
       %th Type
       %th Name
       %th= link_to 'Accepted', orders_path(:order => 'accepted')
+      %th= link_to 'Paid', orders_path(:order => 'paid')
       %th Sender number
       %th User
       - if current_user.admin?
@@ -20,13 +21,11 @@
       %td= order._type
       %td= link_to order.name, order
       %td.accepted= order.accepted ? 'yes' : 'no'
+      %td= order.paid ? 'yes' : 'no'
       %td= order.sender_number
       %td= link_to order.user.full_name, user_path(order.user)
       - if current_user.admin?
-        - if order.paid?
-          %td= link_to 'Accept', accept_order_path(order), remote: true, class: 'btn success'
-        - else
-          %td{ :style => 'text-align: center' }= link_to 'Pay', "/robokassa/start?order_id=#{order.id}", class: 'btn primary'
+        %td= link_to 'Accept', accept_order_path(order), remote: true, class: (order.paid ? 'btn success' : 'btn danger')
         %td= link_to 'Decline', accept_order_path(order), remote: true, method: :delete, class: 'btn danger'
       %td= link_to 'Destroy', order, confirm: 'Are you sure?', method: :delete, class: 'btn danger'
       %td= link_to 'Show', order, class: 'btn info'

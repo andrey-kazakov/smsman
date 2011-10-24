@@ -9,6 +9,7 @@ class OrdersController < ApplicationController
   def index
     @orders = orders.order_by case params[:order]
                               when 'accepted' then :accepted
+                              when 'paid' then :paid
                               else :created_at
                               end
 
