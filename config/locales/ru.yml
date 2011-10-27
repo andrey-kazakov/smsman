@@ -1,0 +1,12 @@
+ru:
+  mongoid:
+    models:
+      user:
+        one: пользователь
+        few: пользователя
+        many: пользователей
+        other: пользователя
+      order: заказ
+      single_order: заказ одиночного сообщения
+      bulk_order: заказ множественной рассылки
+      individual_order: заказ индивидуальной расылки

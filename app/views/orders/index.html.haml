@@ -18,7 +18,7 @@
       %th
   - @orders.each do |order|
     %tr{ :id => %<order_#{order.id}> }
-      %td= order.created_at
+      %td= l order.created_at
       %td= order._type
       %td= link_to order.name, order
       %td.accepted= order.accepted ? 'yes' : 'no'
