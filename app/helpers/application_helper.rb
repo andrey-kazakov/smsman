@@ -32,4 +32,20 @@ module ApplicationHelper
   def set_title str
     @@title = str if str.present?
   end
+  
+  def language_toggle
+    content_tag :li do
+      if I18n.locale == :ru
+        %Q{
+          #{image_tag '/assets/ukraine.png'}
+          #{link_to t('language_toggle'), toggle_language_path}
+        }
+      else
+        %Q{
+          #{image_tag '/assets/russia.png'}
+          #{link_to t('language_toggle'), toggle_language_path}
+        }
+      end.html_safe
+    end
+  end
 end

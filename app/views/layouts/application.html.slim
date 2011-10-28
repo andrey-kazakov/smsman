@@ -8,17 +8,28 @@ html
     = csrf_meta_tags
 
   body
-    .topbar.unselectable data-dropdown='dropdown'
+    .topbar.unselectable
       .fill
         .container
           h3
             = link_to t('title'), root_path
-          ul.nav
+
+          ul.nav data-dropdown='dropdown'
             - if current_user
-              = link_highlight t('orders'), orders_path
+              li.dropdown
+                a.dropdown-toggle href='#' #{t('new_order')}
+                
+                ul.dropdown-menu
+                  = link_to t('new_single_order'), new_order_path(_type: 'SingleOrder')
+                  = link_to t('new_bulk_order'), new_order_path(_type: 'BulkOrder')
+                  = link_to t('new_individual_order'), new_order_path(_type: 'IndividualOrder')
+              
+              li
+                = link_highlight t('orders'), orders_path
 
               - if current_user.admin
-                = link_highlight t('users'), users_path
+                li
+                  = link_highlight t('users'), users_path
 
             - else
               = link_highlight t('explore'), '#'
@@ -27,7 +38,7 @@ html
               = link_highlight t('ask_question'), '#'
               = link_highlight t('faq'), '#'
 
-          ul.nav.secondary-nav
+          ul.nav.secondary-nav data-dropdown='dropdown'
             - if current_user
               li.dropdown
                 a.dropdown-toggle href='#' #{t('profile')}
@@ -46,7 +57,7 @@ html
         = content_tag :div, class: "alert-message #{type}" do
           = link_to 'x', '#', class: 'close'
           p
-            strong #{t(type)}!
+            strong= t(type)
             = msg
 
     .container
@@ -56,7 +67,10 @@ html
 
     footer.footer
       .container
-        p
-          |&copy;&nbsp;
-          = link_to 'Hot Spot', 'http://myhotspot.ru', target: '_blank'
-          |&nbsp;#{Time.now.year}.
+        ul
+          li
+            |&copy;&nbsp;
+            = link_to 'Hot Spot', 'http://myhotspot.ru', target: '_blank'
+            |&nbsp;#{Time.now.year}.
+          li
+            = link_to t('write_email'), 'mailto:info@myhotspot.ru'

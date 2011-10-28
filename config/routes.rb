@@ -15,5 +15,7 @@ Smsgate::Application.routes.draw do
     end
   end
 
+  # get '/toggle_language' => 'application#toggle_language'
+
   root :to => 'pages#index'
 end

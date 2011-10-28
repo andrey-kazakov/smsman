@@ -13,15 +13,22 @@ ru:
   sign_up: 'Регистрация'
   sign_in_panel: 'Вход в учетную запиcь'
   sign_up_panel: 'Регистрация учетной записи'
+  new_single_order: 'Одиночная'
+  new_bulk_order: 'Массовая'
+  new_individual_order: 'Индивидуальная'
   forgot_password: 'Забыли пароль?'
   first_name_hint: 'Иван'
   ask_question: 'Задать вопрос'
+  language_toggle: 'Переключиться на Украинский'
+  new_order: 'Создать рассылку'
+  write_email: 'Связаться с нами'
   last_name_hint: 'Иванов'
   manager_hint: 'Петр Петров'
   sign_up_manager_header: 'Персональный менеджер'
   manager_description_hint: 'Если у вас есть персональный менеджер, то введите его имя или электронный почтовый адрес. При отсутствии менеджера, оставьте поле пустым.'
 
-  alert: 'Внимание'
+  alert: 'Внимание!'
+  notice: ''
 
   formtastic:
     labels:

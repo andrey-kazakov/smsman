@@ -11,13 +11,17 @@ body {
 	padding-top: 40px;
 }
 
-body .content {
+body .container .content {
     background-color: white;
     padding: 10px;
     padding-top: 5px;
     padding-bottom: 10px;
     border-radius: 4px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+		-o-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+		-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+		-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+		-ms-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 footer, .footer {
@@ -93,4 +97,44 @@ p.inline-errors {
 
 .formtastic .manager_panel {
 	margin-bottom: 8px;
+}
+
+footer ul, footer li {
+	list-style: none;
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+}
+
+footer li {
+	margin-right: 10px;
+	border-left: 1px solid rgba(0, 0, 0, 0.25);
+	padding-left: 10px;
+}
+
+footer li:first-child {
+	padding-left: 0;
+	border-left: none;
+}
+
+footer img {
+	vertical-align: middle;
+}
+
+footer {
+	-webkit-transition: all 0.2s;
+	opacity: 0.7;
+}
+
+footer:hover {
+	opacity: 1;
+}
+
+footer {
+	padding-bottom: 10px;
+}
+
+.topbar ul.dropdown-menu a {
+	text-shadow: none;
+	color: #ccc;
 }

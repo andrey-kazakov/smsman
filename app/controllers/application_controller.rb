@@ -2,12 +2,26 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_filter do
-    if current_user.present?
+    # if current_user.present?
+    # 
+    # else
+    #   #I18n.locale = extract_locale_from_accept_language_header
+    #   # I18n.locale = :ru
+    # end
+  end
 
-    else
-      #I18n.locale = extract_locale_from_accept_language_header
-      I18n.locale = :ru
+  def toggle_language
+    unless current_user.present?
+      if I18n.locale == :ru
+        I18n.locale = :uk
+      else
+        I18n.locale = :ru
+      end
+
+      session[:locale] = I18n.locale
     end
+
+    redirect_to :back
   end
 
 protected

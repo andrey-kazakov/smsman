@@ -14,6 +14,7 @@ class User
   field :manager, type: Boolean, default: false
   field :referral, type: String
   field :admin, type: Boolean, default: false
+  # field :locale, type: String, length: 2
 
   attr_protected :admin
   attr_reader :manager_id
