@@ -28,17 +28,20 @@
                 %ul.dropdown-menu
                   %li= link_to 'Settings', current_user
                   %li.divider
-                  %li= link_to 'Sign out', destroy_user_session_path
+                  %li= link_to 'Sign out', destroy_user_session_path, method: 'delete'
 
 
             - else
               %li= link_to 'Sign in', new_user_session_path
               %li= link_to 'Sign up', new_user_registration_path
 
-    - flash.each do |type, msg|
-      = content_tag :div, class: "alert-message #{type}" do
-        = link_to 'x', '#', class: 'close'
-        p= msg
+    .messages
+      - flash.each do |type, msg|
+        = content_tag :div, class: "alert-message #{type}" do
+          = link_to 'x', '#', class: 'close'
+          %p
+            %strong #{type.capitalize}!
+            = msg
 
     .container
       .toolbar-free-space

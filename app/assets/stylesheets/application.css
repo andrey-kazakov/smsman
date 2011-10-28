@@ -33,3 +33,16 @@ footer, .footer {
 	-o-user-select: none;
 	user-select: none;
 }
+
+.messages {
+    margin-top: 5px;
+    width: 940px;
+    zoom: 1;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 0;
+}
+
+.messages .alert-message {
+    margin-bottom: 0;
+}
