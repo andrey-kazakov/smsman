@@ -35,14 +35,14 @@
         %td= link_to 'Show', order, class: 'btn info'
   %br/
 
-  = link_to 'New single order', new_order_path(:_type => 'SingleOrder'), :class => 'btn primary'
-  = link_to 'New bulk order', new_order_path(:_type => 'BulkOrder'), :class => 'btn primary'
-  = link_to 'New individual order', new_order_path(:_type => 'IndividualOrder'), :class => 'btn primary'
+  = link_to 'New single order', new_order_path(:_type => 'SingleOrder'), :class => 'btn'
+  = link_to 'New bulk order', new_order_path(:_type => 'BulkOrder'), :class => 'btn'
+  = link_to 'New individual order', new_order_path(:_type => 'IndividualOrder'), :class => 'btn'
 
 - else
   %p
     Create your first order!
 
-  = link_to 'New single order', new_order_path(:_type => 'SingleOrder'), :class => 'btn primary'
-  = link_to 'New bulk order', new_order_path(:_type => 'BulkOrder'), :class => 'btn primary'
-  = link_to 'New individual order', new_order_path(:_type => 'IndividualOrder'), :class => 'btn primary'
+  = link_to 'New single order', new_order_path(:_type => 'SingleOrder'), :class => 'btn'
+  = link_to 'New bulk order', new_order_path(:_type => 'BulkOrder'), :class => 'btn'
+  = link_to 'New individual order', new_order_path(:_type => 'IndividualOrder'), :class => 'btn'
