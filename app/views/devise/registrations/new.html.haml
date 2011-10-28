@@ -5,18 +5,20 @@
     .clearfix
       = f.label :email
       .input= f.email_field :email
+
     .clearfix
       = f.label :password
       .input= f.password_field :password
-    .clearfix
-      = f.label :password_confirmation
-      .input= f.password_field :password_confirmation
+
     .clearfix
       = f.label :first_name
       .input= f.text_field :first_name
+
     .clearfix
       = f.label :last_name
       .input= f.text_field :last_name
+
     .actions
       = f.submit "Sign up", :class => 'btn primary'
+
 = render :partial => "devise/shared/links"

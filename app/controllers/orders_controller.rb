@@ -4,8 +4,6 @@ class OrdersController < ApplicationController
   before_filter :authenticate_user!
   before_filter :verify_admin, :only => :accept
 
-  # GET /orders
-  # GET /orders.json
   def index
     @orders = orders.order_by case params[:order]
                               when 'accepted' then :accepted
@@ -14,7 +12,7 @@ class OrdersController < ApplicationController
                               end
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html
       format.json { render json: @orders }
     end
   end

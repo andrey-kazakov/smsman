@@ -1,8 +1,7 @@
 class User
   include Mongoid::Document
   include Mongoid::Timestamps
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
@@ -18,6 +17,12 @@ class User
 
   field :admin, type: Boolean, default: false
   attr_protected :admin
+
+  before_save do
+    if password.present?
+      password_confirmation = password
+    end
+  end
 
   def full_name
     [first_name, last_name].join " "

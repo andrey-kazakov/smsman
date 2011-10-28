@@ -1,10 +1,4 @@
 .page-header
   %h1 New order
-- if params[:_type].present?
+
   = render 'form'
-- else
-  .actions
-    = link_to 'New single order', new_order_path(:_type => 'SingleOrder'), :class => 'btn primary'
-    = link_to 'New bulk order', new_order_path(:_type => 'BulkOrder'), :class => 'btn primary'
-    = link_to 'New individual order', new_order_path(:_type => 'IndividualOrder'), :class => 'btn primary'
-= link_to 'Back', orders_path

@@ -1,8 +1,35 @@
 /*
- * This is a manifest file that'll automatically include all the stylesheets available in this directory
- * and any sub-directories. You're free to add application-wide styles to this file and they'll appear at
- * the top of the compiled file, but it's generally better to create a new file per style scope.
  *= require_self
  *= require_tree . 
  *= require twitter/bootstrap
 */
+
+.toolbar-free-space {
+	height: 15px;
+}
+
+html, body {
+    background-image: url('/assets/bg_noise_lg.png');
+}
+
+body .content {
+    background-color: white;
+    padding: 10px;
+    padding-top: 5px;
+    padding-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+footer, .footer {
+    border-top: none;
+}
+
+.unselectable {
+	user-select: none;
+	-moz-user-select: -moz-none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}

@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.0'
+gem 'rails', '~> 3.1.1'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -10,6 +10,7 @@ gem 'mongoid', '~> 2.3'
 
 gem 'devise'
 gem 'haml'
+gem 'slim'
 
 gem 'nokogiri'
 
@@ -20,20 +21,16 @@ gem 'devise-russian'
 # in production environments by default.
 group :assets do
   gem 'therubyracer'
-  gem 'less', '2.0.7'
-  gem 'less-rails', '2.0.1'
-  gem 'less-rails-bootstrap' #, '~> 1.3.0'
   gem 'sass-rails', "  ~> 3.1.0"
-  #gem 'coffee-rails', "~> 3.1.0"
+  gem 'coffee-rails', "~> 3.1.0"
   gem 'uglifier'
 end
 
 gem 'jquery-rails'
 
-# Use unicorn as the web server
-gem 'unicorn'
+gem 'twitter-bootstrap-rails'
 
-# Deploy with Capistrano
+gem 'unicorn'
 gem 'capistrano'
 
 # To use debugger
