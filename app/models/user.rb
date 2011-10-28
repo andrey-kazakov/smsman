@@ -9,21 +9,24 @@ class User
 
   field :first_name, type: String
   field :last_name, type: String
-  validates_presence_of :first_name, :last_name
-
   field :company_name, type: String
   field :phone_number, type: String
-
   field :manager, type: Boolean, default: false
   field :referral, type: String
-
   field :admin, type: Boolean, default: false
+
   attr_protected :admin
+  attr_reader :manager_id
+  
+  validates_presence_of :first_name, :last_name
 
   before_save do
     if password.present?
       password_confirmation = password
     end
+  end
+
+  def manager_id= id
   end
 
   def full_name

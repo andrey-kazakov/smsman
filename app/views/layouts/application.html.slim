@@ -1,0 +1,62 @@
+doctype html
+html
+  head
+    title= title
+
+    = stylesheet_link_tag    "application"
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+
+  body
+    .topbar.unselectable data-dropdown='dropdown'
+      .fill
+        .container
+          h3
+            = link_to t('title'), root_path
+          ul.nav
+            - if current_user
+              = link_highlight t('orders'), orders_path
+
+              - if current_user.admin
+                = link_highlight t('users'), users_path
+
+            - else
+              = link_highlight t('explore'), '#'
+              = link_highlight t('prices'), '#'
+              = link_highlight t('contacts'), '#'
+              = link_highlight t('ask_question'), '#'
+              = link_highlight t('faq'), '#'
+
+          ul.nav.secondary-nav
+            - if current_user
+              li.dropdown
+                a.dropdown-toggle href='#' #{t('profile')}
+
+                ul.dropdown-menu
+                  = link_to t('settings'), current_user
+                  li.divider
+                  = link_to t('sign_out'), destroy_user_session_path, method: 'delete'
+
+            - else
+              = link_highlight t('sign_in'), new_user_session_path
+              = link_highlight t('sign_up'), new_user_registration_path
+
+    .messages
+      - flash.each do |type, msg|
+        = content_tag :div, class: "alert-message #{type}" do
+          = link_to 'x', '#', class: 'close'
+          p
+            strong #{t(type)}!
+            = msg
+
+    .container
+      .toolbar-free-space
+      .content
+        = yield
+
+    footer.footer
+      .container
+        p
+          |&copy;&nbsp;
+          = link_to 'Hot Spot', 'http://myhotspot.ru', target: '_blank'
+          |&nbsp;#{Time.now.year}.

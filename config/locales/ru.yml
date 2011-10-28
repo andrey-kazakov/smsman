@@ -12,7 +12,14 @@ ru:
   sign_in: 'Вход'
   sign_up: 'Регистрация'
   sign_in_panel: 'Вход в учетную запиcь'
+  sign_up_panel: 'Регистрация учетной записи'
   forgot_password: 'Забыли пароль?'
+  first_name_hint: 'Иван'
+  ask_question: 'Задать вопрос'
+  last_name_hint: 'Иванов'
+  manager_hint: 'Петр Петров'
+  sign_up_manager_header: 'Персональный менеджер'
+  manager_description_hint: 'Если у вас есть персональный менеджер, то введите его имя или электронный почтовый адрес. При отсутствии менеджера, оставьте поле пустым.'
 
   alert: 'Внимание'
 
@@ -22,3 +29,6 @@ ru:
         email: 'Email'
         password: 'Пароль'
         remember_me: 'Запомнить меня'
+        first_name: 'Имя'
+        last_name: 'Фамилия'
+        manager_id: 'Ваш менеджер'

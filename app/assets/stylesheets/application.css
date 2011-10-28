@@ -1,15 +1,14 @@
 /*
  *= require twitter/bootstrap
-
  *= require_self
 */
 
-.toolbar-free-space {
-	height: 15px;
-}
-
 html, body {
     background-image: url('/assets/bg_noise_lg.png');
+}
+
+body {
+	padding-top: 40px;
 }
 
 body .content {
@@ -25,7 +24,11 @@ footer, .footer {
     border-top: none;
 }
 
-.unselectable {
+.toolbar-free-space {
+	height: 15px;
+}
+
+.unselectable, label {
 	user-select: none;
 	-moz-user-select: -moz-none;
 	-khtml-user-select: none;
@@ -61,6 +64,15 @@ footer, .footer {
 	margin-bottom: 8px;
 }
 
+p.inline-errors {
+	margin-top: 0;
+	margin-left: 151px;
+}
+
+.formtastic li.error input {
+	margin-bottom: 0;
+}
+
 .formtastic input[type=checkbox] {
 	margin-right: 8px;
 	margin-left: 151px;
@@ -77,4 +89,8 @@ footer, .footer {
 	font-size: 11px;
 	padding-top: 5px;
 	text-align: left;
+}
+
+.formtastic .manager_panel {
+	margin-bottom: 8px;
 }
