@@ -41,8 +41,8 @@
 p
   h5= t('create_order_header')
 
-  = link_to t('new_single_order'), new_order_path(_type: 'SingleOrder'), class: 'btn'
+  = link_to t('new_single_order'), new_with_type_orders_path('SingleOrder'), class: 'btn'
   |&nbsp;
-  = link_to t('new_bulk_order'), new_order_path(_type: 'BulkOrder'), class: 'btn'
+  = link_to t('new_bulk_order'), new_with_type_orders_path('BulkOrder'), class: 'btn'
   |&nbsp;
-  = link_to t('new_individual_order'), new_order_path(_type: 'IndividualOrder'), class: 'btn'
+  = link_to t('new_individual_order'), new_with_type_orders_path('IndividualOrder'), class: 'btn'

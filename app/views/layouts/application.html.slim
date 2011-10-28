@@ -20,9 +20,9 @@ html
                 a.dropdown-toggle href='#' #{t('new_order')}
                 
                 ul.dropdown-menu
-                  = link_to t('new_single_order'), new_order_path(_type: 'SingleOrder')
-                  = link_to t('new_bulk_order'), new_order_path(_type: 'BulkOrder')
-                  = link_to t('new_individual_order'), new_order_path(_type: 'IndividualOrder')
+                  = link_to t('new_single_order'), new_with_type_orders_path('SingleOrder')
+                  = link_to t('new_bulk_order'), new_with_type_orders_path('BulkOrder')
+                  = link_to t('new_individual_order'), new_with_type_orders_path('IndividualOrder')
               
               li
                 = link_highlight t('orders'), orders_path

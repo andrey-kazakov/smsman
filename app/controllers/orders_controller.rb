@@ -33,7 +33,7 @@ class OrdersController < ApplicationController
   def new
     # FIXME: быдлокод
     types = Order.types.invert
-    classname = params[:_type].presence
+    classname = params[:type].presence
     klass = Object.const_get(classname) if types.keys.map(&:name).include?(classname)
     @order = (klass || Order).new 
 
