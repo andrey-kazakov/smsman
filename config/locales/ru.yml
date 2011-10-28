@@ -10,3 +10,16 @@ ru:
       single_order: заказ одиночного сообщения
       bulk_order: заказ множественной рассылки
       individual_order: заказ индивидуальной расылки
+
+  title: "SMS Gate"
+  orders: "Заказы"
+  users: "Пользователи"
+  explore: "Обзор возможностей"
+  prices: "Цены"
+  contacts: "Контакты"
+  faq: "FAQ"
+  profile: 'Профиль'
+  settings: 'Настройки'
+  sign_out: 'Выход'
+  sign_in: 'Вход'
+  sign_up: 'Регистрация'

@@ -13,6 +13,8 @@ class User
 
   field :company_name, type: String
   field :phone_number, type: String
+
+  field :manager, type: Boolean, default: false
   field :referral, type: String
 
   field :admin, type: Boolean, default: false

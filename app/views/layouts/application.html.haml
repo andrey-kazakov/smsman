@@ -1,7 +1,7 @@
 !!!
 %html
   %head
-    %title SMS Gate
+    %title= t('title')
 
     = stylesheet_link_tag    "application"
     = javascript_include_tag "application"
@@ -15,28 +15,34 @@
       .fill
         .container
           %h3
-            = link_to 'SMS Gate', root_path
+            = link_to t('title'), root_path
           %ul.nav
             - if current_user
-              %li= link_to 'Orders', orders_path
+              %li= link_to t('orders'), orders_path
 
               - if current_user.admin
-                %li= link_to 'Users', users_path
+                %li= link_to t('users'), users_path
+
+            - else
+              %li= link_to t('explore'), '#'
+              %li= link_to t('prices'), '#'
+              %li= link_to t('contacts'), '#'
+              %li= link_to t('faq'), '#'
 
           %ul.nav.secondary-nav
             - if current_user
               %li.dropdown
-                %a.dropdown-toggle{href: '#'} Profile
+                %a.dropdown-toggle{href: '#'}= t('profile')
 
                 %ul.dropdown-menu
-                  %li= link_to 'Settings', current_user
+                  %li= link_to t('settings'), current_user
                   %li.divider
-                  %li= link_to 'Sign out', destroy_user_session_path, method: 'delete'
+                  %li= link_to t('sign_out'), destroy_user_session_path, method: 'delete'
 
 
             - else
-              %li= link_to 'Sign In', new_user_session_path
-              %li= link_to 'Sign Up', new_user_registration_path
+              %li= link_to t('sign_in'), new_user_session_path
+              %li= link_to t('sign_up'), new_user_registration_path
 
     .messages
       - flash.each do |type, msg|
