@@ -1,5 +1,5 @@
 .page-header
-  h1 Orders list
+  h1= t('orders')
 
 - if @orders.present?
   table.zebra-striped
@@ -33,18 +33,16 @@
           td= link_to 'Decline', accept_order_path(order), remote: true, method: :delete, class: 'btn danger'
         td= link_to 'Destroy', order, confirm: 'Are you sure?', method: :delete, class: 'btn danger'
         td= link_to 'Show', order, class: 'btn info'
-  br
-
-  = link_to 'New single order', new_order_path(:_type => 'SingleOrder'), :class => 'btn'
-  = link_to 'New bulk order', new_order_path(:_type => 'BulkOrder'), :class => 'btn'
-  = link_to 'New individual order', new_order_path(:_type => 'IndividualOrder'), :class => 'btn'
 
 - else
-  p
-    |Create your first order!
+  .alert-message.block-message.info
+    p= t('first_order')
 
-  = link_to 'New single order', new_order_path(:_type => 'SingleOrder'), :class => 'btn'
+p
+  h5= t('create_order_header')
+
+  = link_to t('new_single_order'), new_order_path(_type: 'SingleOrder'), class: 'btn'
   |&nbsp;
-  = link_to 'New bulk order', new_order_path(:_type => 'BulkOrder'), :class => 'btn'
+  = link_to t('new_bulk_order'), new_order_path(_type: 'BulkOrder'), class: 'btn'
   |&nbsp;
-  = link_to 'New individual order', new_order_path(:_type => 'IndividualOrder'), :class => 'btn'
+  = link_to t('new_individual_order'), new_order_path(_type: 'IndividualOrder'), class: 'btn'

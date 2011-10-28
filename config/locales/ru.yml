@@ -21,6 +21,8 @@ ru:
   ask_question: 'Задать вопрос'
   language_toggle: 'Переключиться на Украинский'
   new_order: 'Создать рассылку'
+  create_order_header: 'Создать рассылку'
+  first_order: 'У вас еще не было рассылок! Создайте же ее сейчас!'
   write_email: 'Связаться с нами'
   last_name_hint: 'Иванов'
   manager_hint: 'Петр Петров'
