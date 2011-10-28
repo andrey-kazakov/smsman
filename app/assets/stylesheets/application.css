@@ -1,7 +1,7 @@
 /*
- *= require_self
- *= require_tree . 
  *= require twitter/bootstrap
+
+ *= require_self
 */
 
 .toolbar-free-space {
@@ -45,4 +45,36 @@ footer, .footer {
 
 .messages .alert-message {
     margin-bottom: 0;
+}
+
+.formtastic li {
+	display: block;
+	list-style: none;
+	margin-left: 0;
+}
+
+.formtastic label {
+	margin-right: 15px;
+}
+
+.formtastic input {
+	margin-bottom: 8px;
+}
+
+.formtastic input[type=checkbox] {
+	margin-right: 8px;
+	margin-left: 151px;
+}
+
+.formtastic .boolean label {
+	width: 290px;
+	font-size: 12px;
+}
+
+.formtastic label {
+	background: none;
+	color: #404040;
+	font-size: 11px;
+	padding-top: 5px;
+	text-align: left;
 }

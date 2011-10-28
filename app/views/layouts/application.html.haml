@@ -49,7 +49,7 @@
         = content_tag :div, class: "alert-message #{type}" do
           = link_to 'x', '#', class: 'close'
           %p
-            %strong #{type.capitalize}!
+            %strong #{t(type)}!
             = msg
 
     .container

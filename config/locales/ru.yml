@@ -1,16 +1,4 @@
 ru:
-  mongoid:
-    models:
-      user:
-        one: пользователь
-        few: пользователя
-        many: пользователей
-        other: пользователя
-      order: заказ
-      single_order: заказ одиночного сообщения
-      bulk_order: заказ множественной рассылки
-      individual_order: заказ индивидуальной расылки
-
   title: "SMS Gate"
   orders: "Заказы"
   users: "Пользователи"
@@ -23,3 +11,14 @@ ru:
   sign_out: 'Выход'
   sign_in: 'Вход'
   sign_up: 'Регистрация'
+  sign_in_panel: 'Вход в учетную запиcь'
+  forgot_password: 'Забыли пароль?'
+
+  alert: 'Внимание'
+
+  formtastic:
+    labels:
+      user:
+        email: 'Email'
+        password: 'Пароль'
+        remember_me: 'Запомнить меня'

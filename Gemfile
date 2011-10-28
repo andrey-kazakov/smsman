@@ -14,6 +14,8 @@ gem 'slim'
 
 gem 'nokogiri'
 
+gem 'formtastic'
+
 gem 'russian'
 gem 'devise-russian'
 
