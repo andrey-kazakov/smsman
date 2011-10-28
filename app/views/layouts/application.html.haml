@@ -1,18 +1,21 @@
 !!!
 %html
   %head
-    %title Smsgate
+    %title SMS Gate
+
     = stylesheet_link_tag    "application"
     = javascript_include_tag "application"
     = csrf_meta_tags
+
     %style{:type => 'text/css'}
       body { padding-top: 40px  }
+
   %body
     .topbar.unselectable{"data-dropdown" => "dropdown"}
       .fill
         .container
           %h3
-            = link_to 'SMS manager', root_path
+            = link_to 'SMS Gate', root_path
           %ul.nav
             - if current_user
               %li= link_to 'Orders', orders_path
@@ -32,8 +35,8 @@
 
 
             - else
-              %li= link_to 'Sign in', new_user_session_path
-              %li= link_to 'Sign up', new_user_registration_path
+              %li= link_to 'Sign In', new_user_session_path
+              %li= link_to 'Sign Up', new_user_registration_path
 
     .messages
       - flash.each do |type, msg|
