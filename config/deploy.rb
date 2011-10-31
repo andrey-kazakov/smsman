@@ -36,7 +36,9 @@ namespace :deploy do
   end
 
   task :copy_configs do
-    run "cp #{shared_path}/config/* #{release_path}/config"
+    run "ln -nfs #{shared_path}/config/robokassa_merchant.yml #{release_path}/config/robokassa_merchant.yml"
+    run "ln -nfs #{shared_path}/config/mongoid.yml #{release_path}/config/mongoid.yml"
+    run "ln -nfs #{shared_path}/config/unicorn.rb #{release_path}/config/unicorn.rb"
   end
 
   task :restart do
