@@ -28,20 +28,20 @@ set :default_environment, {
   'GEM_PATH' => '/home/deploy/.rvm/gems/ruby-1.9.2-p290/' 
 }
 
-namespace :deploy do  
-  task :bundle do
-    run "cd #{current_release} && bundle install"
-  end
-
+namespace :deploy do
   task :copy_configs do
     run "cp #{shared_path}/config/* #{release_path}/config"
   end
 
   task :restart do
-    run "/etc/init.d/smsman restart"
+    run "/etc/init.d/smsman stop;/etc/init.d/smsman start"
   end
 end
 
+after 'deploy:update_code', 'deploy:copy_configs'
 after "deploy:update_code", "deploy:migrate"
-after 'deploy:finalize_update', 'deploy:copy_configs'
+
+after "deploy:setup", "deploy:assets:clean"
+after "deploy:setup", "deploy:assets:precompile"
+
 after :deploy, "deploy:restart"
