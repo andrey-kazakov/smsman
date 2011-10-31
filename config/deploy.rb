@@ -1,4 +1,4 @@
-load 'deploy/assets'
+#load 'deploy/assets'
 
 set :stages, %w(production)
 set :default_stage, "production"
@@ -49,4 +49,5 @@ end
 after 'deploy:finalize_update', 'deploy:copy_configs'
 # after "deploy:setup", "deploy:assets:clean"
 # after "deploy:setup", "deploy:assets:precompile"
+# bundle exec rake RAILS_ENV=production RAILS_GROUPS=assets assets:precompile
 after :deploy, "deploy:restart"
