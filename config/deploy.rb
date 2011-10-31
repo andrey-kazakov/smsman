@@ -51,6 +51,6 @@ after 'deploy:finalize_update', 'deploy:copy_configs'
 before "deploy:assets:precompile", "deploy:bundle"
 
 after "deploy:setup", "deploy:assets:clean"
-after "deploy:setup", "deploy:assets:precompile"
+# after "deploy:setup", "deploy:assets:precompile"
 
 after :deploy, "deploy:restart"
