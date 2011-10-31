@@ -50,4 +50,4 @@ after 'deploy:finalize_update', 'deploy:copy_configs'
 # after "deploy:setup", "deploy:assets:clean"
 # after "deploy:setup", "deploy:assets:precompile"
 # bundle exec rake RAILS_ENV=production RAILS_GROUPS=assets assets:precompile
-after :deploy, "deploy:restart"
+# after :deploy, "deploy:restart"

@@ -10,7 +10,7 @@ class OrdersController < ApplicationController
     @orders = orders.order_by case params[:order]
                               when 'accepted' then :accepted
                               when 'paid' then :paid
-                              else :created_at
+                              else [:created_at, :desc]
                               end
 
     respond_to do |format|
@@ -49,7 +49,6 @@ class OrdersController < ApplicationController
   #end
 
   def create
-    # FIXME: быдлокод
     types = Order.types.invert
     classname = params[:_type].presence
 

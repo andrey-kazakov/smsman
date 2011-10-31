@@ -9,10 +9,13 @@
     - when SingleOrder
       = f.input :recipient_number, required: false, input_html: { tabindex: 3, placeholder: 'Numbers' }
       = f.input :text, as: :text, required: false, input_html: { tabindex: 4, class: 'span5', rows: 4, placeholder: '+7 (956) 123 43 21' }
+
     - when BulkOrder
       = f.input :text, as: :text, required: false, input_html: { tabindex: 3, placeholder: 'Numbers', class: 'span5', rows: 4 }
       br
+      / Doesn't work
       = f.input :recipient_numbers, as: :text, required: false, input_html: { tabindex: 4, placeholder: '+7 (956) 123 43 21', class: 'span4' }
+
     - when IndividualOrder
       = f.input :recipient_numbers_with_texts, as: :text, required: false, input_html: { tabindex: 3, class: 'span12' }
 
