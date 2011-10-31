@@ -42,6 +42,6 @@ namespace :deploy do
   end
 end
 
+after "deploy:update_code", "deploy:migrate"
 after 'deploy:finalize_update', 'deploy:copy_configs'
-before "deploy:assets:precompile", "deploy:bundle"
 after :deploy, "deploy:restart"
