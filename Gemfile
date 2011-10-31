@@ -31,9 +31,9 @@ gem 'twitter-bootstrap-rails'
 gem 'unicorn'
 gem 'capistrano'
 
-group :test do
-  gem 'autotest'
-  gem 'autotest-rails'
-  gem 'faker'
-  gem 'turn', :require => false
-end
+# group :test do
+#   gem 'autotest'
+#   gem 'autotest-rails'
+#   gem 'faker'
+#   gem 'turn', :require => false
+# end
