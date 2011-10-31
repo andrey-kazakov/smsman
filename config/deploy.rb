@@ -15,6 +15,7 @@ set :scm, :git
 set :scm_verbose, true
 set :use_sudo, false
 set :unicorn_script, "/etc/init.d/smsman"
+set :bundle_flags, "--deployment --quiet --binstubs --shebang ruby-local-exec"
 
 default_run_options[:pty] = true
 ssh_options[:user] = "deploy"
