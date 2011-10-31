@@ -2,8 +2,9 @@ source 'http://rubygems.org'
 
 gem 'rails', '~> 3.1.1'
 
-gem 'bson_ext'
 gem 'mongoid'
+gem 'bson', '1.3.1'
+gem 'bson_ext', '1.3.1'
 
 gem 'devise'
 gem 'haml'
