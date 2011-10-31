@@ -31,6 +31,10 @@ set :default_environment, {
 }
 
 namespace :deploy do
+  task :bundle do
+    run "cd #{current_release} && bundle install"
+  end
+
   task :copy_configs do
     run "cp #{shared_path}/config/* #{release_path}/config"
   end
@@ -43,6 +47,7 @@ end
 after 'deploy:update_code', 'deploy:copy_configs'
 after "deploy:update_code", "deploy:migrate"
 
+before "deploy:assets:precompile", "deploy:bundle"
 after "deploy:setup", "deploy:assets:clean"
 after "deploy:setup", "deploy:assets:precompile"
 
