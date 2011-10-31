@@ -66,4 +66,4 @@ ru:
       individual_order:
         name: 'Название рассылки'
         sender_number: 'Отправитель'
-        recipient_numbers_with_texts: 'Номера аобонентов и сообщение которое нужно отправить'
+        recipient_numbers_with_texts: 'Номера аобонентов и сообщения которые нужно отправить'

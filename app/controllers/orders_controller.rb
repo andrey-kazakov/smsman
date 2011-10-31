@@ -55,7 +55,7 @@ class OrdersController < ApplicationController
 
     respond_to do |format|
       if types.keys.map(&:name).include?(classname)
-        klass = classname.constantize.new
+        klass = classname.constantize
         current_user.orders << (@order = klass.new(params[types[klass]+'_order']))
 
         if @order.save
