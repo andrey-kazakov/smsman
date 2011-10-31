@@ -1,6 +1,8 @@
 Smsgate::Application.routes.draw do
   devise_for :users
 
+  get '/faq' => 'pages#faq', as: :faq
+
   resources :orders, except: [:edit, :update] do
     member do
       get 'accept'

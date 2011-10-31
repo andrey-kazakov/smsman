@@ -138,3 +138,13 @@ footer {
 	text-shadow: none;
 	color: #ccc;
 }
+
+ol.questions {
+	padding-top: 5px;
+	padding-left: 10px;
+	padding-bottom: 10px;
+}
+
+dl dd {
+	padding-top: 5px;
+}
