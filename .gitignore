@@ -8,3 +8,4 @@ config/robokassa_merchant.yml
 .idea
 .DS_Store
 bin
+vendor

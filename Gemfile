@@ -16,6 +16,7 @@ gem 'formtastic'
 
 gem 'russian'
 gem 'devise-russian'
+gem 'activeadmin'
 
 group :assets do
   gem 'therubyracer'
