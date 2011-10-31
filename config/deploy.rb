@@ -22,10 +22,10 @@ ssh_options[:forward_agent] = true
 
 # For rbenv
 set :default_environment, { 
-  'PATH' => "/home/deploy/.rvm/rubies/ruby-1.9.3-rc1/bin/:/home/deploy/.rvm/gems/ruby-1.9.3-rc1/bin:/home/deploy/.rvm/bin:$PATH",
-  'RUBY_VERSION' => 'ruby 1.9.3-rc1',
-  'GEM_HOME' => '/home/deploy/.rvm/gems/ruby-1.9.3-rc1/',
-  'GEM_PATH' => '/home/deploy/.rvm/gems/ruby-1.9.3-rc1/' 
+  'PATH' => "/home/deploy/.rvm/rubies/ruby-1.9.2-p290/bin/:/home/deploy/.rvm/gems/ruby-1.9.2-p290/bin:/home/deploy/.rvm/bin:$PATH",
+  'RUBY_VERSION' => 'ruby 1.9.2-p290',
+  'GEM_HOME' => '/home/deploy/.rvm/gems/ruby-1.9.2-p290/',
+  'GEM_PATH' => '/home/deploy/.rvm/gems/ruby-1.9.2-p290/' 
 }
 
 namespace :deploy do  
