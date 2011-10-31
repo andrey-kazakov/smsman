@@ -36,6 +36,9 @@ ru:
   alert: 'Внимание!'
   notice: ''
 
+  order_created_notice: 'Заказ успешно создан!'
+  order_updated_notice: 'Заказ успешно обновлен!'
+
   formtastic:
     labels:
       user:
@@ -55,3 +58,7 @@ ru:
         sender_number: 'Отправитель'
         recipient_numbers: 'Номера абонентов'
         text: 'Сообщение'
+      individual_order:
+        name: 'Название рассылки'
+        sender_number: 'Отправитель'
+        recipient_numbers_with_texts: 'Номера аобонентов и сообщение которое нужно отправить'

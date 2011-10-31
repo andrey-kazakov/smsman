@@ -4,6 +4,8 @@ class OrdersController < ApplicationController
   before_filter :authenticate_user!
   before_filter :verify_admin, :only => :accept
 
+  respond_to :html, :json
+
   def index
     @orders = orders.order_by case params[:order]
                               when 'accepted' then :accepted
@@ -17,50 +19,52 @@ class OrdersController < ApplicationController
     end
   end
 
-  # GET /orders/1
-  # GET /orders/1.json
   def show
     @order = orders.find(params[:id])
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html
       format.json { render json: @order }
     end
   end
 
-  # GET /orders/new
-  # GET /orders/new.json
   def new
-    # FIXME: быдлокод
     types = Order.types.invert
     classname = params[:type].presence
-    klass = Object.const_get(classname) if types.keys.map(&:name).include?(classname)
-    @order = (klass || Order).new 
+
+    if types.keys.map(&:name).include?(classname)
+      @order = classname.constantize.new
+    else
+      @order = Order.new
+    end
 
     respond_to do |format|
-      format.html # new.html.erb
+      format.html
       format.json { render json: @order }
     end
   end
 
-  # GET /orders/1/edit
   #def edit
   #  @order = orders.find(params[:id])
   #end
 
-  # POST /orders
-  # POST /orders.json
   def create
     # FIXME: быдлокод
     types = Order.types.invert
     classname = params[:_type].presence
-    klass = Object.const_get(classname) if types.keys.map(&:name).include?(classname)
-    current_user.orders << (@order = klass.new(params[types[klass]+'_order']))
 
     respond_to do |format|
-      if @order.save
-        format.html { redirect_to @order, notice: 'Order was successfully created.' }
-        format.json { render json: @order, status: :created, location: @order }
+      if types.keys.map(&:name).include?(classname)
+        klass = classname.constantize.new
+        current_user.orders << (@order = klass.new(params[types[klass]+'_order']))
+
+        if @order.save
+          format.html { redirect_to @order, notice: t('order_created_notice') }
+          format.json { render json: @order, status: :created, location: @order }
+        else
+          format.html { render action: "new" }
+          format.json { render json: @order.errors, status: :unprocessable_entity }
+        end
       else
         format.html { render action: "new" }
         format.json { render json: @order.errors, status: :unprocessable_entity }
@@ -68,8 +72,6 @@ class OrdersController < ApplicationController
     end
   end
 
-  # PUT /orders/1
-  # PUT /orders/1.json
   #def update
   #  @order = orders.find(params[:id])
 
@@ -84,8 +86,6 @@ class OrdersController < ApplicationController
   #  end
   #end
 
-  # DELETE /orders/1
-  # DELETE /orders/1.json
   def destroy
     @order = orders.find(params[:id])
     @order.destroy

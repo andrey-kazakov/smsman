@@ -16,7 +16,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        format.html { redirect_to @user, notice: 'Order was successfully updated.' }
+        format.html { redirect_to @user, notice: t('order_updated_notice') }
         format.json { head :ok }
       else
         @orders = @user.orders
@@ -33,6 +33,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.html{ redirect_to users_path }
+      #FIXME: Что это за php-style код в рельсах?
       format.js{ render :js => %<$('#user_#{@user.id} .admin').text('#{request.delete? ? (@user == current_user ? 'you!' : 'no') : 'yes'}')> }
     end
   end
