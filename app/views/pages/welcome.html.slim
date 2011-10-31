@@ -1,12 +1,13 @@
 - set_title t('welcome')
 
-p
+.page-header
     h1= t('welcome')
 
-p= t('welcome_text')
+p= t('welcome_text').html_safe
 
-= link_to t('sign_up'), new_user_registration_path, class: 'btn primary'
-|&nbsp;
-|or
-|&nbsp;
-= link_to t('sign_in'), new_user_session_path, class: 'btn'
+.actions
+  = link_to t('sign_up_button'), new_user_registration_path, class: 'btn primary'
+  |&nbsp;
+  = t('or')
+  |&nbsp;
+  = link_to t('sign_in_button'), new_user_session_path, class: 'btn'
