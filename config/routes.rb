@@ -12,6 +12,7 @@ Smsgate::Application.routes.draw do
     get '/new/:type' => 'orders#new', on: :collection, as: 'new_with_type'
   end
 
+  match '/profile' => 'users#profile', as: :profile
   resources :users, only: [:index, :show, :update] do
     member do
       get 'admin'

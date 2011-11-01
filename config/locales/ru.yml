@@ -3,6 +3,8 @@ ru:
   ago: 'назад'
   created_at: 'Дата создания'
   order_type: 'Тип рассылки'
+  update_profile: 'Обновить профиль'
+  user_profile: 'Профиль'
   order_name: 'Название рассылки'
   welcome: 'Мобильный маркетинг'
   order_accepted: 'Статус отправки'
@@ -67,6 +69,8 @@ ru:
         first_name: 'Имя'
         last_name: 'Фамилия'
         manager_id: 'Ваш менеджер'
+        company_name: 'Компания'
+        phone_number: 'Телефонный номер'
       single_order:
         name: 'Название рассылки'
         sender_number: 'Отправитель'

@@ -44,7 +44,7 @@ html
                 a.dropdown-toggle href='#' #{t('profile')}
 
                 ul.dropdown-menu
-                  = link_to t('settings'), current_user
+                  = link_to t('settings'), profile_path
                   li.divider
                   = link_to t('sign_out'), destroy_user_session_path, method: 'delete'
 

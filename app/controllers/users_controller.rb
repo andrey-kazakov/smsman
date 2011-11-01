@@ -1,14 +1,25 @@
 class UsersController < ApplicationController
   before_filter :authenticate_user!
-  before_filter :verify_admin, :except => [:show, :update]
+  before_filter :verify_admin, :except => [:update, :profile]
 
   def index
     @users = User.all
   end
+  
+  def profile
+    @user = current_user
+    @orders = @user.orders
+    
+    render 'show'
+  end
 
   def show
-    @user = current_user.admin ? User.find(params[:id]) : current_user
-    @orders = @user.orders
+    if current_user.admin
+      @user = User.find(params[:id])
+      @orders = @user.orders
+    else
+      redirect_to root_path
+    end
   end
 
   def update
