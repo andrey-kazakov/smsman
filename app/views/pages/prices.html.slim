@@ -5,3 +5,11 @@
 
 p
   = render "prices_#{I18n.locale}"
+
+.actions
+  = link_to t('sign_up_button'), new_user_registration_path, class: 'btn primary'
+  |&nbsp;
+  = t('or')
+  |&nbsp;
+  = link_to t('sign_in_button'), new_user_session_path, class: 'btn'
+  |&nbsp; чтобы купить пакет смс.
