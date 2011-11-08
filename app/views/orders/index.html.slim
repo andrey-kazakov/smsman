@@ -21,25 +21,26 @@
 
         th
 
-    - @orders.each do |order|
-      tr id="order_#{order.id}"
-        td title="#{order.created_at}"= "#{distance_of_time_in_words(Time.now - order.created_at)} #{t('ago')}"
-        td= t("#{order._type}_type")
-        td= link_to order.name, order
-        td.accepted= order.accepted ? 'yes' : 'no'
-        td= order.paid ? 'yes' : 'no'
-        td= order.cost_string
-        td= order.sender_number
+    tbody
+      - @orders.each do |order|
+        tr id="order_#{order.id}"
+          td title="#{order.created_at}"= "#{distance_of_time_in_words(Time.now - order.created_at)} #{t('ago')}"
+          td= t("#{order._type}_type")
+          td= link_to order.name, order
+          td.accepted= order.accepted ? 'yes' : 'no'
+          td= order.paid ? 'yes' : 'no'
+          td= order.cost_string
+          td= order.sender_number
 
-        - if current_user.admin?
-          td= link_to order.user.full_name, user_path(order.user)
-          td= link_to 'Accept', accept_order_path(order), remote: true, class: (order.paid ? 'btn success' : 'btn danger')
-          td= link_to 'Decline', accept_order_path(order), remote: true, method: :delete, class: 'btn danger'
+          - if current_user.admin?
+            td= link_to order.user.full_name, user_path(order.user)
+            td= link_to 'Accept', accept_order_path(order), remote: true, class: (order.paid ? 'btn success' : 'btn danger')
+            td= link_to 'Decline', accept_order_path(order), remote: true, method: :delete, class: 'btn danger'
 
-        td
-          = link_to t('show'), order
-          |&nbsp;
-          = link_to t('destroy'), order, confirm: 'Are you sure?', method: :delete
+          td
+            = link_to t('show'), order
+            |&nbsp;
+            = link_to t('destroy'), order, confirm: 'Are you sure?', method: :delete
 
 - else
   .alert-message.block-message.info

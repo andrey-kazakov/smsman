@@ -2,6 +2,8 @@ Smsgate::Application.routes.draw do
   devise_for :users
 
   get '/faq' => 'pages#faq', as: :faq
+  get '/buckets' => 'pages#buckets', as: :buckets
+  get '/prices' => 'pages#prices', as: :prices
 
   resources :orders, except: [:edit, :update] do
     member do

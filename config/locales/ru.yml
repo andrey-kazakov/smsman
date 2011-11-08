@@ -18,6 +18,8 @@ ru:
   BulkOrder_type: 'Массовая'
   IndividualOrder_type: 'Индивидуальная'
   faq_panel: 'Вопросы и ответы'
+  prices_panel: 'Стоимость услуг'
+  buy_buckets: 'Купить пакет СМС'
   title: "SMS Man"
   orders: "Заказы"
   users: "Пользователи"
