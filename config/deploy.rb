@@ -1,4 +1,4 @@
-# load 'deploy/assets'
+load 'deploy/assets'
 
 set :stages, %w(production)
 set :default_stage, "production"
