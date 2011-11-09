@@ -42,7 +42,12 @@ namespace :deploy do
   end
 
   task :restart do
-    run "/etc/init.d/smsman stop;/etc/init.d/smsman start"
+    run %Q{
+      /etc/init.d/smsman stop;
+      /etc/init.d/smsman start;
+      sudo stop smsman;
+      sudo start smsman;
+    }
   end
 end
 
