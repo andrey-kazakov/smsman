@@ -16,18 +16,14 @@ class PagesController < ApplicationController
   end
 
   def explore
-
   end
 
   def prices
-
   end
 
   def contacts
-
   end
 
   def faq
-
   end
 end
