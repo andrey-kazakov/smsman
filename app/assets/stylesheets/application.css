@@ -148,3 +148,7 @@ ol.questions {
 dl dd {
 	padding-top: 5px;
 }
+
+ul.black_li li {
+	color: #404040;
+}

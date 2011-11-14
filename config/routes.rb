@@ -4,6 +4,8 @@ Smsgate::Application.routes.draw do
   get '/faq' => 'pages#faq', as: :faq
   get '/buckets' => 'pages#buckets', as: :buckets
   get '/prices' => 'pages#prices', as: :prices
+  get '/contacts' => 'pages#contacts', as: :contacts
+  get '/explore' => 'pages#explore', as: :explore
 
   resources :orders, except: [:edit, :update] do
     member do

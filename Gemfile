@@ -30,6 +30,8 @@ gem 'twitter-bootstrap-rails'
 
 gem 'unicorn'
 gem 'capistrano'
+gem 'foreman'
+gem 'resque'
 
 # group :test do
 #   gem 'autotest'
