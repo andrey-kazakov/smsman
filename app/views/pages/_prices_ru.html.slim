@@ -15,6 +15,8 @@ table.zebra-striped
       td 10,000
       td 3,000.0
       td 1,800.0
+      - if current_user
+        td= link_to t('buy'), ('/robokassa/start?'+RobokassaMerchant.signed_start_params(10000, '38', '60', current_user))
     tr
       td 50,000
       td 12,500.0

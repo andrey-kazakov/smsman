@@ -6,6 +6,7 @@ class User
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :orders
+  references_many :invoices
 
   field :first_name, type: String
   field :last_name, type: String
@@ -15,6 +16,10 @@ class User
   field :referral, type: String
   field :admin, type: Boolean, default: false
   # field :locale, type: String, length: 2
+
+  # filtering method: /^\+#{filter}\d{10}$/
+  field :object_amounts, type: Hash, default: {} # "filter" => count
+  attr_protected :object_amounts
 
   attr_protected :admin
   attr_reader :manager_id
@@ -27,6 +32,15 @@ class User
     end
   end
 
+  def amount_for number
+    # перебираем пары, отсортировав по убыванию длины ключа
+    object_amounts.sort{ |a,b| -(a[0].length <=> b[0].length) }.each do |k,v|
+      return v if number.index("+#{filter}") == 0
+    end
+
+    0
+  end
+   
   def manager_id= id
   end
 
