@@ -85,6 +85,7 @@ class RobokassaMerchant
         return [409, {}, []] if invoice.paid
 
         return [403, {}, []] unless invoice.money_amount.cost? out_sum
+        invoice.user.inc "object_amounts.#{invoice.objects_filter}", invoice.objects_count
 
         invoice.set :paid, true
         invoice.set :robokassa_invoice_id, inv_id.to_i
@@ -108,6 +109,7 @@ class RobokassaMerchant
         # вполне вероятная ситуация при отсутствии связи между робокассой и сервером
         unless invoice.paid
           return [403, {}, []] unless invoice.money_amount.cost? out_sum
+          invoice.user.inc "object_amounts.#{invoice.objects_filter}", invoice.objects_count
 
           invoice.set :paid, true
           invoice.set :robokassa_invoice_id, inv_id.to_i
