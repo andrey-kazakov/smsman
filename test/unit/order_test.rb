@@ -27,10 +27,9 @@ class OrderTest < ActiveSupport::TestCase
     @order.reload
     assert_equal 40, @order.targets.count
 
-    @tree = Ip2Sms.xml_for(@order)
-    assert_equal 40, @tree.search('to').count
-    assert_equal 1, @tree.search('body').count
-    assert_equal 'bulk', @tree.at('service')['id']
+    Ip2Sms.xml_for(@order) do |tree|
+      assert_equal 40, tree.search('sms').count
+    end
   end
 
   test 'individual order should create targets and gen valid xml' do
@@ -45,10 +44,9 @@ class OrderTest < ActiveSupport::TestCase
     @order.reload
     assert_equal 40, @order.targets.count
 
-    @tree = Ip2Sms.xml_for(@order)
-    assert_equal 40, @tree.search('to').count
-    assert_equal 40, @tree.search('body').count
-    assert_equal 'individual', @tree.at('service')['id']
+    Ip2Sms.xml_for(@order) do |tree|
+      assert_equal 40, tree.search('sms').count
+    end
   end
 
   test 'targets must not touch orders table' do
