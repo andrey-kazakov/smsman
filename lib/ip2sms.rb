@@ -14,7 +14,7 @@ module Ip2Sms
         xml = xml.to_s
 
         req = Net::HTTP::Post.new uri.path
-        req.plain_auth GATEWAY_LOGIN, GATEWAY_PASSWORD
+        req.basic_auth GATEWAY_LOGIN, GATEWAY_PASSWORD
         req.body = xml
         req.content_length = xml.length
         req.content_type = 'text/xml'
