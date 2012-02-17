@@ -1,0 +1,26 @@
+- set_title t('user_profile')
+
+.page-header
+  h1= t('user_profile')
+
+h5= t('user_balance')
+- @user.object_amounts.each_pair do |filter,amount|
+ b= filter + ':'
+ = amount.to_s
+ br
+
+= semantic_form_for @user do |f|
+  .clearfix
+    = f.input :email, required: false, input_html: { tabindex: 1, placeholder: '' }
+    = f.input :password, required: false, input_html: { tabindex: 2, placeholder: '' }
+    = f.input :first_name, required: false, input_html: { tabindex: 3, placeholder: '' }
+    = f.input :last_name, required: false, input_html: { tabindex: 4, placeholder: '' }
+    = f.input :company_name, required: false, input_html: { tabindex: 5, placeholder: '' }
+    = f.input :phone_number, required: false, input_html: { tabindex: 6, placeholder: '' }
+    / = f.input :referral
+
+  .actions
+    = f.submit t('update_profile'), class: 'btn primary', tabindex: 7
+
+/- if current_user.admin
+/  = render 'orders/index'

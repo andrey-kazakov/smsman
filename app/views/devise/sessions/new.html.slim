@@ -1,0 +1,13 @@
+- set_title t('sign_in_panel')
+
+.page-header
+  h1= t('sign_in_panel')
+
+= semantic_form_for resource, as: resource_name, url: session_path(resource_name) do |f|
+  .clearfix
+    = f.input :email, required: false, input_html: { auatofocus: true, tabindex: 1, placeholder: 'example@mail.ru' }
+    = f.input :password, required: false, input_html: { tabindex: 2, placeholder: 'password' }
+    = f.input :remember_me, as: :boolean, input_html: { checked: 'checked' }
+  
+  .actions
+    = f.submit t('sign_in'), class: 'btn primary', tabindex: 3

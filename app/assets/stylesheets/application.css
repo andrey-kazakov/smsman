@@ -1,35 +1,154 @@
 /*
- *= require_self
- *= require_tree . 
  *= require twitter/bootstrap
+ *= require_self
 */
-
-.toolbar-free-space {
-	height: 15px;
-}
 
 html, body {
     background-image: url('/assets/bg_noise_lg.png');
 }
 
-body .content {
+body {
+	padding-top: 40px;
+}
+
+body .container .content {
     background-color: white;
     padding: 10px;
     padding-top: 5px;
     padding-bottom: 10px;
     border-radius: 4px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+		-o-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+		-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+		-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+		-ms-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 footer, .footer {
     border-top: none;
 }
 
-.unselectable {
+.toolbar-free-space {
+	height: 15px;
+}
+
+.unselectable, label {
 	user-select: none;
 	-moz-user-select: -moz-none;
 	-khtml-user-select: none;
 	-webkit-user-select: none;
 	-o-user-select: none;
 	user-select: none;
+}
+
+.messages {
+    margin-top: 5px;
+    width: 940px;
+    zoom: 1;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 0;
+}
+
+.messages .alert-message {
+    margin-bottom: 0;
+}
+
+.formtastic li {
+	display: block;
+	list-style: none;
+	margin-left: 0;
+}
+
+.formtastic label {
+	margin-right: 15px;
+}
+
+.formtastic input {
+	margin-bottom: 8px;
+}
+
+p.inline-errors {
+	margin-top: 0;
+	margin-left: 151px;
+}
+
+.formtastic li.error input {
+	margin-bottom: 0;
+}
+
+.formtastic input[type=checkbox] {
+	margin-right: 8px;
+	margin-left: 151px;
+}
+
+.formtastic .boolean label {
+	width: 290px;
+	font-size: 12px;
+}
+
+.formtastic label {
+	background: none;
+	color: #404040;
+	font-size: 11px;
+	padding-top: 5px;
+	text-align: left;
+}
+
+.formtastic .manager_panel {
+	margin-bottom: 8px;
+}
+
+footer ul, footer li {
+	list-style: none;
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+}
+
+footer li {
+	margin-right: 10px;
+	border-left: 1px solid rgba(0, 0, 0, 0.25);
+	padding-left: 10px;
+}
+
+footer li:first-child {
+	padding-left: 0;
+	border-left: none;
+}
+
+footer img {
+	vertical-align: middle;
+}
+
+footer {
+	-webkit-transition: all 0.2s;
+	opacity: 0.7;
+}
+
+footer:hover {
+	opacity: 1;
+}
+
+footer {
+	padding-bottom: 10px;
+}
+
+.topbar ul.dropdown-menu a {
+	text-shadow: none;
+	color: #ccc;
+}
+
+ol.questions {
+	padding-top: 5px;
+	padding-left: 10px;
+	padding-bottom: 10px;
+}
+
+dl dd {
+	padding-top: 5px;
+}
+
+ul.black_li li {
+	color: #404040;
 }

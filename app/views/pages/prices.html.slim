@@ -1,10 +1,10 @@
-- set_title t('welcome')
+- set_title t('prices_panel')
 
 .page-header
-    h1= t('welcome')
+  h1= t('prices_panel')
 
 p
-  = render "welcome_#{I18n.locale}"
+  = render "prices_#{I18n.locale}"
 
 .actions
   = link_to t('sign_up_button'), new_user_registration_path, class: 'btn primary'
@@ -12,3 +12,4 @@ p
   = t('or')
   |&nbsp;
   = link_to t('sign_in_button'), new_user_session_path, class: 'btn'
+  |&nbsp; чтобы купить пакет смс.
