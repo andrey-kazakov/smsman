@@ -1,3 +1,6 @@
+$:.unshift(File.expand_path('./lib', ENV['rvm_path'])) # Add RVM's lib directory to the load path.
+require "rubygems"
+require "rvm/capistrano"                  # Load RVM's capistrano plugin.
 load 'deploy/assets'
 
 set :stages, %w(production)
@@ -16,19 +19,14 @@ set :scm_verbose, true
 set :use_sudo, false
 set :unicorn_script, "/etc/init.d/smsman"
 
+set :rvm_type, :local 
+set :rvm_ruby_string, 'ruby-1.9.2-p290'
+
 set :bundle_flags, "--deployment --quiet --binstubs"
 
 default_run_options[:pty] = true
 ssh_options[:user] = "deploy"
 ssh_options[:forward_agent] = true
-
-# For rbenv
-set :default_environment, { 
-  'PATH' => "/home/deploy/.rvm/rubies/ruby-1.9.2-p290/bin/:/home/deploy/.rvm/gems/ruby-1.9.2-p290/bin:/home/deploy/.rvm/bin:$PATH",
-  'RUBY_VERSION' => 'ruby 1.9.2-p290',
-  'GEM_HOME' => '/home/deploy/.rvm/gems/ruby-1.9.2-p290/',
-  'GEM_PATH' => '/home/deploy/.rvm/gems/ruby-1.9.2-p290/' 
-}
 
 namespace :deploy do
   task :bundle do
@@ -45,8 +43,6 @@ namespace :deploy do
     run %Q{
       /etc/init.d/smsman stop;
       /etc/init.d/smsman start;
-      sudo stop smsman;
-      sudo start smsman;
     }
   end
 end
