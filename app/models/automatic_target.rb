@@ -1,0 +1,2 @@
+class AutomaticTarget < IndividualOrder
+end

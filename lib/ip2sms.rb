@@ -32,15 +32,10 @@ module Ip2Sms
 
           next unless target
 
-          target.api_id   = push['push_id']
-          res             = push['res'].to_i
+          target.api_id       = push['push_id']
+          target.api_state_id = push['res'].to_i
 
-          if res != 0
-            description = push['description']
-            target.api_state = "#{res}: #{description}"
-          else
-            target.api_state = "OK"
-          end
+          target.api_state = target.api_state_id == 0 ? "OK" : push['description']
 
           target.save :validate => false
         end

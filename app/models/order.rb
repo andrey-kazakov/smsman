@@ -13,11 +13,6 @@ class Order
 
   index :accepted
 
-  field :api_id, type: String
-  field :api_state, type: String
-
-  index :api_id
-
   belongs_to :user, :inverse_of => :orders
   validates_presence_of :user
 

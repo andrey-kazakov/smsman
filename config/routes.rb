@@ -7,6 +7,12 @@ Smsgate::Application.routes.draw do
   get '/contacts' => 'pages#contacts', as: :contacts
   get '/explore' => 'pages#explore', as: :explore
 
+  resources :api, only: [:create] do
+    collection do
+      post 'status'
+    end
+  end
+
   resources :orders, except: [:edit, :update] do
     member do
       get 'accept'
