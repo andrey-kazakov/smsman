@@ -17,6 +17,7 @@ class ApiController < ApplicationController
     doc.encoding = 'utf-8'
 
     doc << Nokogiri::XML::Node.new('order', doc)
+    doc.at('order')['id'] = @order.id.to_s
     @order.explain_messages_to_xml doc.at('order')
 
     render xml: doc
