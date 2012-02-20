@@ -59,6 +59,7 @@ class Order
 
 private
   def save_targets
+    return if is_a? SingleOrder
     return unless respond_to? :targets
 
     if @_targets

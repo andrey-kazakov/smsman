@@ -7,17 +7,9 @@ class AutomaticOrder < IndividualOrder
     end
   end
 
-  def put_messages_to_xml output
+  def explain_messages_to_xml output
     targets.each do |target|
-      message = Nokogiri::XML::Node.new('message', output.document)
-
-      message['id'] = target.id.to_s
-      message['recipient'] = target.recipient_number
-      message['status'] = target.api_state_id
-
-      message.content = target.api_state unless target.api_state_id == 0
-
-      output << message
+      target.to_xml_node output, true
     end
   end
 end

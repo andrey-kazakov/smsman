@@ -33,9 +33,9 @@ gem 'capistrano'
 gem 'foreman'
 gem 'resque'
 
-# group :test do
-#   gem 'autotest'
-#   gem 'autotest-rails'
-#   gem 'faker'
-#   gem 'turn', :require => false
-# end
+group :test do
+   gem 'autotest'
+   gem 'autotest-rails'
+   gem 'faker'
+   gem 'turn', :require => false
+end

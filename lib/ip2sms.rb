@@ -8,21 +8,24 @@ module Ip2Sms
     GATEWAY_PASSWORD = '67048010'
     GATEWAY_MSG_PER_REQ = 250
 
-    def perform order
+    def query xml
       uri = URI.parse(GATEWAY_URL)
+      xml = xml.to_s
+
+      req = Net::HTTP::Post.new uri.path
+      req.basic_auth GATEWAY_LOGIN, GATEWAY_PASSWORD
+      req.body = xml
+      req.content_length = xml.length
+      req.content_type = 'text/xml'
+
+      raw = Net::HTTP.new(uri.host, uri.port).start{ |http| http.request(req).body }
+
+      Nokogiri::XML(raw).at('xml_result') rescue raise raw
+    end
+
+    def perform order
       xml_for(order) do |xml|
-        xml = xml.to_s
-
-        req = Net::HTTP::Post.new uri.path
-        req.basic_auth GATEWAY_LOGIN, GATEWAY_PASSWORD
-        req.body = xml
-        req.content_length = xml.length
-        req.content_type = 'text/xml'
-
-        raw = Net::HTTP.new(uri.host, uri.port).start{ |http| http.request(req).body }
-
-        result = Nokogiri::XML(raw).at('xml_result') rescue nil
-        raise raw unless result
+        result = query xml
 
         result.search('push').each do |push|
           target = case order
@@ -43,14 +46,31 @@ module Ip2Sms
       end
     end
 
-    def xml_for order, &block
-      raise 'please pass a block to Ip2Sms.xml_for' unless block_given?
+    def check_statuses targets
+      iterate_targets_for targets do |current|
+        req = xml_request 'sms_status2'
 
-      collection = case order
-              when SingleOrder then [order]
-              else order.targets
-              end
+        current.each do |target|
+          sms = Nokogiri::XML::Node.new('sms', req.document)
+          sms['push_id'] = target.api_id
+          req << sms
+        end
 
+        result = query req.document
+
+        current.each do |target|
+          push = result.at(%<sms[push_id="#{target.api_id}"]>)
+          next unless push
+
+          target.api_state_id = push['status'].to_i
+          target.api_state    = push['description']
+
+          target.save :validate => false
+        end
+      end
+    end
+
+    def iterate_targets_for collection, &block
       requests = (collection.count.to_f / GATEWAY_MSG_PER_REQ).ceil rescue 1
 
       requests.times do |i|
@@ -60,20 +80,35 @@ module Ip2Sms
                   when Array then collection[skip..GATEWAY_MSG_PER_REQ]
                   else collection.skip(skip).limit(GATEWAY_MSG_PER_REQ)
                   end
-        
-        doc = Nokogiri::XML::Document.new
-        doc.encoding = 'utf-8'
 
-        request = Nokogiri::XML::Node.new('xml_request', doc)
-        request['name'] = 'sms_send'
+        yield targets
+      end
+    end
 
-        credentials = Nokogiri::XML::Node.new('xml_user', doc)
-        credentials['lgn'] = GATEWAY_LOGIN
-        credentials['pwd'] = GATEWAY_PASSWORD
-        request << credentials
+    def xml_request name
+      doc = Nokogiri::XML::Document.new
+      doc.encoding = 'utf-8'
+
+      request = Nokogiri::XML::Node.new('xml_request', doc)
+      request['name'] = name
+      doc << request
+
+      credentials = Nokogiri::XML::Node.new('xml_user', doc)
+      credentials['lgn'] = GATEWAY_LOGIN
+      credentials['pwd'] = GATEWAY_PASSWORD
+      request << credentials
+
+      request
+    end
+
+    def xml_for order, &block
+      raise 'please pass a block to Ip2Sms.xml_for' unless block_given?
+
+      iterate_targets_for order.targets do |targets|
+        request = xml_request 'sms_send'
 
         targets.each do |target|
-          sms = Nokogiri::XML::Node.new('sms', doc)
+          sms = Nokogiri::XML::Node.new('sms', request.document)
 
           sms['sms_id'] = target.id.to_s
           sms['number'] = target[:recipient_number] || order[:recipient_number]
@@ -84,8 +119,7 @@ module Ip2Sms
           request << sms
         end
         
-        doc.add_child request
-        yield doc
+        yield request.document
       end
     end
   end
