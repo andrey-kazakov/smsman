@@ -14,6 +14,8 @@ class ApiController < ApplicationController
     @order.accept!
 
     doc = Nokogiri::XML::Document.new
+    doc.encoding = 'utf-8'
+
     doc << Nokogiri::XML::Node.new('order', doc)
     @order.explain_messages_to_xml doc.at('order')
 
@@ -38,9 +40,11 @@ class ApiController < ApplicationController
     Ip2Sms.check_statuses targets
 
     doc = Nokogiri::XML::Document.new
+    doc.encoding = 'utf-8'
+
     doc << Nokogiri::XML::Node.new('response', doc)
 
-    targets.each{ |t| t.to_xml_node doc.at('order'), false }
+    targets.each{ |t| t.to_xml_node doc.at('response'), false }
 
     render xml: doc
 
