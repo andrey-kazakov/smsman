@@ -1,6 +1,7 @@
 $:.unshift(File.expand_path('./lib', ENV['rvm_path'])) # Add RVM's lib directory to the load path.
 require "rubygems"
 require "rvm/capistrano"                  # Load RVM's capistrano plugin.
+require 'bundler/capistrano'
 load 'deploy/assets'
 
 set :stages, %w(production)
@@ -29,10 +30,6 @@ ssh_options[:user] = "deploy"
 ssh_options[:forward_agent] = true
 
 namespace :deploy do
-  task :bundle do
-    run "cd #{current_release} && bundle install"
-  end
-
   task :copy_configs do
     run "ln -nfs #{shared_path}/config/robokassa_merchant.yml #{release_path}/config/robokassa_merchant.yml"
     run "ln -nfs #{shared_path}/config/mongoid.yml #{release_path}/config/mongoid.yml"
