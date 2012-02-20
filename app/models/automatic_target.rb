@@ -1,2 +1,2 @@
-class AutomaticTarget < IndividualOrder
+class AutomaticTarget < IndividualTarget
 end

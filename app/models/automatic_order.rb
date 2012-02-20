@@ -3,7 +3,7 @@ class AutomaticOrder < IndividualOrder
     @_targets ||= []
 
     input.search('message').each do |message|
-      @_targets << { :_type => AutomaticTarget, :recipient_number => message['recipient'], :text => message.content }
+      @_targets << { _type: AutomaticTarget, recipient_number: message['recipient'], text: message.content }
     end
   end
 

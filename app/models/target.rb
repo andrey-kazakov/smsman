@@ -18,13 +18,13 @@ module TargetBase
         message = Nokogiri::XML::Node.new('message', output.document)
 
         message['id'] = id.to_s
-        message['status'] = api_state_id
+        message['status'] = api_state_id.to_s
 
         if explain
-          message['recipient'] = recipient_number
+          message['recipient'] = recipient_number.to_s
         end
 
-        message.content = api_state unless api_state_id == 0
+        message.content = api_state.to_s unless api_state_id == 0
 
         output << message
       end
