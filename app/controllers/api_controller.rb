@@ -7,7 +7,7 @@ class ApiController < ApplicationController
     raise 'No `order` element found' unless input
 
     @order = AutomaticOrder.new name: input['name'], sender_number: input['sender']
-    current_user << @order
+    current_user.orders << @order
     @order.load_messages_from_xml input
     @order.save!
 
