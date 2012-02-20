@@ -13,7 +13,7 @@ set :port, 2122
 set :repository,  "git@github.com:reflow/smsman.git"
 set :deploy_to, "/var/rails/smsman"
 set :deploy_via, :remote_cache
-set :branch, 'develop'
+set :branch, 'master'
 set :scm, :git
 set :scm_verbose, true
 set :use_sudo, false
