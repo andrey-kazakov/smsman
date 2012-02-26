@@ -9,3 +9,4 @@ config/robokassa_merchant.yml
 .DS_Store
 bin
 vendor
+public/assets
