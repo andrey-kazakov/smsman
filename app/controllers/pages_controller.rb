@@ -1,5 +1,6 @@
 class PagesController < ApplicationController
   include OrdersHelper
+  include PagesHelper
 
   def index
     if current_user.present?
