@@ -3,11 +3,12 @@
 .page-header
   h1= t('user_profile')
 
-h5= t('user_balance')
+h2= t('messages_left')
+h6= t('by_number_prefixes')
 - @user.object_amounts.each_pair do |filter,amount|
- b= filter + ':'
- = amount.to_s
- br
+  b= "+#{filter}: "
+  = amount.to_s
+  br
 
 = semantic_form_for @user do |f|
   .clearfix

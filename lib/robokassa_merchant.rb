@@ -48,7 +48,7 @@ class RobokassaMerchant
         #order_id = params['order_id']
         #order = Order.find order_id rescue return [404, {}, []]
         
-        invoice = RobokassaInvoice.create! :user_id => params['user_id'], :objects_amount => params['objects_amount'], :objects_filter => params['objects_filter'], :money_amount => Fixnum.cents(params['objects_cost'])
+        invoice = RobokassaInvoice.create! :user_id => params['user_id'], :objects_amount => params['objects_amount'], :objects_filter => params['objects_filter'], :money_amount => params['objects_cost']
         invoice_id = invoice.id.to_s
 
         query = {}
