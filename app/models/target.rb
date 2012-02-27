@@ -10,11 +10,11 @@ module TargetBase
       index :api_id
       index :api_state_id
 
-      field :cost, type: Integer
-
       belongs_to :targetable, :polymorphic => true
 
       def to_xml_node output, explain = true
+        reload
+
         message = Nokogiri::XML::Node.new('message', output.document)
 
         message['id'] = id.to_s
@@ -27,6 +27,11 @@ module TargetBase
         message.content = api_state.to_s unless api_state_id == 0
 
         output << message
+      end
+
+      def amount increment = 0
+        user = respond_to?(:user) ? user : targetable.user
+        user.amount_for recipient_number, increment
       end
     end
   end

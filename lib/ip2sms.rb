@@ -24,6 +24,16 @@ module Ip2Sms
     end
 
     def perform order
+      order.targets.each do |target|
+        if target.amount <= 0
+          target.api_state_id = (-2 ** 31)
+          target.api_state = 'Not enough money for operation'
+          target.save :validate => false
+        else
+          target.amount(-1)
+        end
+      end
+
       xml_for(order) do |xml|
         result = query xml
 
@@ -41,6 +51,11 @@ module Ip2Sms
           target.api_state = target.api_state_id == 0 ? "OK" : push['description']
 
           target.save :validate => false
+
+          unless target.api_state_id == 0
+            # moneyback
+            target.amount(1)
+          end
         end
 
       end
@@ -104,7 +119,7 @@ module Ip2Sms
     def xml_for order, &block
       raise 'please pass a block to Ip2Sms.xml_for' unless block_given?
 
-      iterate_targets_for order.targets do |targets|
+      iterate_targets_for order.targets.where(api_state_id: nil) do |targets|
         request = xml_request 'sms_send'
 
         targets.each do |target|

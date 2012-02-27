@@ -16,19 +16,18 @@ class Order
   belongs_to :user, :inverse_of => :orders
   validates_presence_of :user
 
-  attr_protected :paid
-  attr_protected :cost
-  field :paid, type: Boolean
-  field :cost, type: Integer
+  #attr_protected :paid
+  #attr_protected :cost
+  #field :paid, type: Boolean
+  #field :cost, type: Integer
 
-  index :paid
+  #index :paid
 
   def self.types
     { 'single' => SingleOrder, 'bulk' => BulkOrder, 'individual' => IndividualOrder }
   end
 
   def accept!
-    #raise "order #{id} is not paid" unless paid
     unless accepted
       set :accepted, true
 
@@ -41,21 +40,21 @@ class Order
     set :accepted, false
   end
 
-  def normalize_cost value
-    "%01.02f" % value
-  end
+  #def normalize_cost value
+  #  "%01.02f" % value
+  #end
 
-  def cost? value
-    cost_string == normalize_cost(value)
-  end
+  #def cost? value
+  #  cost_string == normalize_cost(value)
+  #end
 
-  def cost_string
-    normalize_cost(cost / 100.0)
-  end
+  #def cost_string
+  #  normalize_cost(cost / 100.0)
+  #end
 
-  def cost
-    read_attribute(:cost).to_i
-  end
+  #def cost
+  #  read_attribute(:cost).to_i
+  #end
 
 private
   def save_targets
@@ -65,12 +64,14 @@ private
     if @_targets
       targets.destroy_all
 
-      cost = 0
+      #cost = 0
       @_targets.each do |target|
         klass = target.delete(:_type)
-        cost += klass.create(target.merge(:targetable => self)).cost.to_i
+        #cost += 
+        klass.create(target.merge(:targetable => self))
+        #.cost.to_i
       end
-      set :cost, cost
+      #set :cost, cost
 
       @_targets = nil
     end

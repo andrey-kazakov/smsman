@@ -28,14 +28,20 @@ class User
 
   before_save do
     if password.present?
-      password_confirmation = password
+      self.password_confirmation = password
     end
   end
 
-  def amount_for number
+  def amount_for number, increment = 0
     # перебираем пары, отсортировав по убыванию длины ключа
-    object_amounts.sort{ |a,b| -(a[0].length <=> b[0].length) }.each do |k,v|
-      return v if number.index("+#{filter}") == 0
+    object_amounts.sort{ |a,b| -(a[0].length <=> b[0].length) }.each do |filter,v|
+      next unless number.index("+#{filter}") == 0 or number.index("#{filter}") == 0
+        
+      if increment != 0
+        inc "object_amounts.#{filter}", increment
+      end
+
+      return v
     end
 
     0
