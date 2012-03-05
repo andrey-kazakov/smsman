@@ -1,7 +1,7 @@
-$:.unshift(File.expand_path('./lib', ENV['rvm_path'])) # Add RVM's lib directory to the load path.
+#$:.unshift(File.expand_path('./lib', ENV['rvm_path'])) # Add RVM's lib directory to the load path.
 require "rubygems"
-require "rvm/capistrano"                  # Load RVM's capistrano plugin.
-require 'bundler/capistrano'
+#require "rvm/capistrano"                  # Load RVM's capistrano plugin.
+#require 'bundler/capistrano'
 load 'deploy/assets'
 
 set :stages, %w(production)

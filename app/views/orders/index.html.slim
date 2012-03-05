@@ -12,7 +12,7 @@
         th= t('order_name')
         th= link_to t('order_accepted'), orders_path(:order => 'accepted')
         th= link_to t('order_paid'), orders_path(:order => 'paid')
-        th= t('cost')
+        /th= t('cost')
         th= t('sender_number')
 
         - if current_user.admin?
@@ -29,7 +29,7 @@
           td= link_to order.name, order
           td.accepted= order.accepted ? 'yes' : 'no'
           td= order.paid ? 'yes' : 'no'
-          td= order.cost_string
+          /td= order.cost_string
           td= order.sender_number
 
           - if current_user.admin?

@@ -29,7 +29,7 @@ gem 'jquery-rails'
 gem 'twitter-bootstrap-rails'
 
 gem 'unicorn'
-gem 'capistrano'
+gem 'capistrano-ext-rvm-bundler'
 gem 'foreman'
 gem 'resque'
 
