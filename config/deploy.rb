@@ -31,6 +31,12 @@ set :rvm_lib_path,      "#{rvm_path}/lib"
 
 set :bundle_cmd, "#{rvm_path}/gems/#{rvm_ruby_string}/bin/bundle"
 
+set :default_environment, {
+  'PATH' => "#{rvm_path}/bin:#{rvm_path}/gems/#{rvm_ruby_string}/bin:#{rvm_path}/rubies/#{rvm_ruby_string}/bin:$PATH",
+  'GEM_HOME' => "#{rvm_path}/gems/#{rvm_ruby_string}",
+  'GEM_PATH' => "#{rvm_path}/gems/#{rvm_ruby_string}"
+}
+
 default_run_options[:pty] = true
 ssh_options[:user] = "deploy"
 ssh_options[:forward_agent] = true
