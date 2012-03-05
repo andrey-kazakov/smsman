@@ -1,7 +1,7 @@
 #$:.unshift(File.expand_path('./lib', ENV['rvm_path'])) # Add RVM's lib directory to the load path.
-require "rubygems"
+#require "rubygems"
 #require "rvm/capistrano"                  # Load RVM's capistrano plugin.
-#require 'bundler/capistrano'
+require 'bundler/capistrano'
 load 'deploy/assets'
 
 set :stages, %w(production)
@@ -20,10 +20,16 @@ set :scm_verbose, true
 set :use_sudo, false
 set :unicorn_script, "/etc/init.d/smsman"
 
-set :rvm_type, :local 
-set :rvm_ruby_string, 'ruby-1.9.2-p290'
+set :rvm_ruby_string, 'ruby-1.9.3-p125'
+set :rvm_type, :user
 
 set :bundle_flags, "--deployment --quiet --binstubs"
+
+set :rvm_path,              "/home/deploy/.rvm"
+set :rvm_bin_path,      "#{rvm_path}/bin"
+set :rvm_lib_path,      "#{rvm_path}/lib"
+
+set :bundle_cmd, "#{rvm_path}/gems/#{rvm_ruby_string}/bin/bundle"
 
 default_run_options[:pty] = true
 ssh_options[:user] = "deploy"
