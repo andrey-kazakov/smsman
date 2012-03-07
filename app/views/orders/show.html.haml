@@ -13,12 +13,12 @@
 /%p
 /  %b Cost:
 /  = @order.cost_string
-%p
-  %b Paid:
-  - if @order.paid?
-    yes
-  - else
-    =link_to 'Pay', "/robokassa/start?order_id=#{@order.id}", :class => 'btn primary'
+/%p
+/  %b Paid:
+/  - if @order.paid?
+/    yes
+/  - else
+/    =link_to 'Pay', "/robokassa/start?order_id=#{@order.id}", :class => 'btn primary'
 %p
   %b State:
   = @order.api_state
