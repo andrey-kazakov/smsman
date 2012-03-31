@@ -30,7 +30,7 @@ module TargetBase
       end
 
       def amount increment = 0
-        user = respond_to?(:user) ? user : targetable.user
+        user = self.respond_to?(:user) ? self.user : targetable.user
         user.amount_for recipient_number, increment
       end
     end
