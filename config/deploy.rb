@@ -11,7 +11,7 @@ set :application, "smsman"
 role :web, "smsman.myhotspot.ru"                          
 role :app, "smsman.myhotspot.ru"
 set :port, 2122
-set :repository,  "git@github.com:reflow/smsman.git"
+set :repository,  "git@github.com:myhotspot/smsman.git"
 set :deploy_to, "/var/rails/smsman"
 set :deploy_via, :remote_cache
 set :branch, 'master'
