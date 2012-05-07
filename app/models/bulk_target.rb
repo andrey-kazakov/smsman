@@ -1,2 +1,0 @@
-class BulkTarget < Target
-end

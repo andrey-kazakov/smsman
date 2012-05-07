@@ -4,4 +4,4 @@
 # If you change this key, all old signed cookies will become invalid!
 # Make sure the secret is at least 30 characters and all random,
 # no regular words or you'll be exposed to dictionary attacks.
-Smsgate::Application.config.secret_token = '7d8821714f9751d93b34759da41e221f9110551888f3b1defd0e6084bdadfd02a75f59a5f07c8f1eaa9a6c087bca7b6670eb0ea03e4a43152ebe398d5baf1f67'
+SmsManager::Application.config.secret_token = '9060a630a0d7ddb7694b60efe874731e2328f9b0c1535efc82bc6786ce527e0bdfb54b526d6f748cf180903123932487d8c58cf08fff5a43c55c69334456ed61'

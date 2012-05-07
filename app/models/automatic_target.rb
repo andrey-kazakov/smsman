@@ -1,2 +1,0 @@
-class AutomaticTarget < IndividualTarget
-end

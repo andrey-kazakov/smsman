@@ -3,8 +3,5 @@
 # for example lib/tasks/capistrano.rake, and they will automatically be available to Rake.
 
 require File.expand_path('../config/application', __FILE__)
-require 'resque/tasks'
 
-Smsgate::Application.load_tasks
-
-task "resque:setup" => :environment
+SmsManager::Application.load_tasks

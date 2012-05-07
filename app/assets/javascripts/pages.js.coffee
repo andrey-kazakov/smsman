@@ -1,2 +1,0 @@
-$ ->
-  $('.notice, .error, .alert').alert()
