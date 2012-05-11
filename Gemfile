@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'eventmachine', '1.0.0.beta.4.1'
 gem 'rails', '3.2.3'
 
 # Bundle edge Rails instead:
