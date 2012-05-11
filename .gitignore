@@ -1,2 +1,4 @@
 *.dbg0
 *.evt0
+log/
+database.yml
