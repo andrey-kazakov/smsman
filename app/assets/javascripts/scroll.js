@@ -9,7 +9,5 @@ $(document).ready(function() {
     }
   }
 
-  $(document).bind('scroll load', function(e) {
-    pinThePinner();
-  });
+  $(document).bind('scroll load', pinThePinner);
 });
