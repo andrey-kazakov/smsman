@@ -44,6 +44,11 @@
   }
 }
 
+.placeholder {
+  font-style: italic;
+  color: darken(@color-gray, 33%);
+}
+
 .button() {
     box-shadow:       0 1px 0px rgba(0, 0, 0, 0.15),
                       0 1px 3px rgba(0, 0, 0, 0.15),
@@ -81,7 +86,6 @@ body {
   margin: 0;
   background: url("/assets/background.gif");
   font-size: @font-size;
-  height: 2200px; /**/
   line-height: @line-height;
   font-family: @font-family;
   color: @color-black;
@@ -125,6 +129,14 @@ input, textarea {
   
   &:not([readonly]):focus {
     background: @color-white;
+  }
+  
+  &::-webkit-input-placeholder {
+    .placeholder;
+  }
+
+  &:-moz-placeholder {
+    .placeholder;
   }
 }
 
@@ -218,11 +230,11 @@ ol.list {
 }
 
 .none {
-  display: none;
+  display: none!important;
 }
 
 .hidden {
-  visibility: hidden;
+  visibility: hidden!important;
 }
 
 //// Typography
@@ -573,13 +585,15 @@ article {
     min-width: 100%;
     width: 100%;
     max-width: 100%;
-    height: @line-height * 4 + @text-padding * 2;
+    height: ( @line-height + @text-padding * 2 - 0.4em ) * 2;
   }
   
-  .recipient {
+  .recipients {
     .textarea;
     .border-box;
     margin-top: 0.4em;
+    padding-top: 0;
+    padding-bottom: 0;
     .fix-spaces;
     
     .bubble, input[type=text], .placeholder {
@@ -597,6 +611,14 @@ article {
       &.active, &:active {
         .button > .pressed;
       }
+      
+      &.contact {
+        background: #B9D6EB;
+      }
+    }
+    
+    .placeholder {
+      padding-left: 0;
     }
     
     input[type=text] {
@@ -643,6 +665,36 @@ article {
     
     h1 {
       color: darken(@new-color, 7.5%);
+    }
+  }
+}
+
+////// Addons
+
+//// jQueryUI
+
+// Autocomplete
+
+.ui-autocomplete.ui-menu {
+  background: lighten(@color-gray, 1.75%);
+  box-shadow: 0 3px 4px -2px rgba(0, 0, 0, 0.33),
+              0 1px 1px  0   rgba(0, 0, 0, 0.15);
+  padding: 0.3em 0;
+  .rounded(0em 0.3em 0.3em 0.3em);
+  
+  li {
+    padding: 0.2em 0.4em;
+    cursor: pointer;
+    
+    &:hover {
+      @color-start: lighten(@color-blue, 8.5%);
+      @color-stop:  darken(@color-blue, 8.5%);
+      background: @color-blue;
+      .gradient(@color-white, @color-stop, @color-start);
+      
+      a {
+        color: @color-white;
+      }
     }
   }
 }

@@ -6,6 +6,24 @@
   <title></title>
   <link rel="stylesheet/less" type="text/css" href="/stylesheets/application.less" media="all" />
   <script type="text/javascript" src="/assets/application.js"></script>
+ <script>
+    $(function() {
+      var contacts = [
+        "Сириус",
+        "Евангелина Козлова",
+        "Адольф Семёнов"
+      ];
+      $(".recipients input").autocomplete({
+        source: contacts,
+        position: { 
+          my : "left top",
+          offset: "-6 -3",
+          at: "left bottom",
+          collision: "none" 
+        }
+      });
+    });
+	</script>
 </head>
 <body>
   <nav id="top">
@@ -49,10 +67,11 @@
     <article class="message start clearfix">
       <h1 class="bold">1</h1>
       <textarea placeholder="Текст сообщения…"></textarea>
-      <div class="recipient">
+      <div class="recipients">
         <a href="" class="bubble pseudolink black"><u>+7&nbsp;(965)&nbsp;528-58-38</u></a>
         <a href="" class="bubble contact pseudolink black"><u>Сириус</u></a>
         <a href="" class="bubble contact pseudolink black"><u>Евангелина Козлова</u></a>
+        <a href="" class="bubble pseudolink black"><u>+7&nbsp;(917)&nbsp;426-99-26</u></a>
         <a href="" class="bubble contact pseudolink black"><u>Адольф Семёнов</u></a>
         <input type="text"/>
       </div>
@@ -60,8 +79,8 @@
     <article class="message">
       <h1 class="bold">2</h1>
       <textarea textarea placeholder="Текст сообщения…"></textarea>
-      <div class="recipient">
-        Получатели…
+      <div class="recipients">
+        <span class="placeholder">Получатели…</span>
       </div>
     </article>
     <article class="message pending">
