@@ -8,7 +8,7 @@
     //
   }
 
-  $('article.message > div.recipient > input').live('keyup mouseup', function(event)
+  $('article.message > div.recipients > input').live('keyup mouseup', function(event)
   {
     var input = $(this);
     var value = input.val();
