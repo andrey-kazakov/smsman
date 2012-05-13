@@ -391,6 +391,22 @@ a {
       border-bottom-style: dashed;
     }
   }
+  
+  &.black {
+    color: @color-black;
+  
+    u, .underline {
+      border-color: lighten(@color-black, 55%);
+    }
+    
+    &:hover {
+      color: lighten(@color-black, 25%);
+      
+      u, .underline {
+        border-color: lighten(@color-black, 70%);
+      }
+    }
+  }
 }
 
 //// Top Navigation
@@ -560,22 +576,27 @@ article {
     height: @line-height * 4 + @text-padding * 2;
   }
   
-  .recievers {
+  .recipient {
     .textarea;
     .border-box;
     margin-top: 0.4em;
+    .fix-spaces;
     
-    .bubble, input[type=text] {
-      color: @color-black;
+    .bubble, input[type=text], .placeholder {
       padding: 0.1em 0.8em;
       display: inline-block;
       margin: 0.2em;
+      .fix-spaces > .child;
     }
     
     .bubble {
       .button;
       .rounded(1em);
       background: #E1E8ED;
+      
+      &.active, &:active {
+        .button > .pressed;
+      }
     }
     
     input[type=text] {
