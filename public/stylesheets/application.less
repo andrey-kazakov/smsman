@@ -94,7 +94,7 @@ body {
 
 input, textarea {
   font-family: @font-family;
-  padding: @text-padding;
+  padding: @text-padding / 1.5 @text-padding;
   @top-color: darken(@color-gray, 12.5%);
   @side-color: darken(@color-gray, 8.5%);
   @bottom-color: darken(@color-gray, 5%);
@@ -389,17 +389,14 @@ a {
 nav#top {
   @new-color: hsla(hue(@color-gray), saturation(@color-gray), lightness(@color-gray), 0.75);
   width: 100%;
-  
-  &.pinnerfix {
-    padding-bottom: 100%;
-  }
-  
-  .pinner {
-    width: @width-all;
+
+  &.fixed {
     
-    &.fixed {
+    .pinner {
       position: fixed;
       top: 0;
+      left: 0;
+      width: 100%;
       z-index: 10;
       background: @color-gray;
       background: @new-color;
@@ -429,8 +426,10 @@ nav#top {
           .button;
           
           &.delogin {
-            color: @color-white;
-            background: @color-red;
+            
+            &:hover {
+              color: @color-red;
+            }
           }
         }
         
@@ -503,7 +502,7 @@ nav#top {
 // Article-message
 
 article {
-  margin-bottom: 2em;
+  margin-bottom: 1em;
   
   textarea {
     width: 100%;
@@ -514,6 +513,7 @@ article {
   
   &.new {
     opacity: 0.66;
+    padding-top: 0.6em;
     
     &:hover {
       opacity: 0.88;
