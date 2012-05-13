@@ -111,13 +111,13 @@ input, textarea {
   .border-box;
   margin: 0;
   
-  &:hover {
+  &.not([readonly]):hover {
     @new-color: hsla(hue(@color-white), saturation(@color-white), lightness(@color-white), 0.90);
     background: @color-white;
     background: @new-color;
   }
   
-  &:focus {
+  &.not([readonly]):focus {
     background: @color-white;
   }
 }
