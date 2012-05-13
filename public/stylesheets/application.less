@@ -1,17 +1,373 @@
+//// Mixins
+
+.border-box() {
+  -moz-box-sizing:    border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing:         border-box;
+}
+
+.gradient(@color: #F5F5F5, @start: #EEE, @stop: #FFF) {
+  background: @color;
+  background: -webkit-gradient(linear,
+                               left bottom,
+                               left top,
+                               color-stop(0, @start),
+                               color-stop(1, @stop));
+  background: -ms-linear-gradient(bottom,
+                                  @start,
+                                  @stop);
+  background: -moz-linear-gradient(center bottom,
+                                   @start 0%,
+                                   @stop 100%);
+}
+
+.bordered(@top-color: #EEE, @right-color: #EEE, @bottom-color: #EEE, @left-color: #EEE) {
+  border-top: solid 1px @top-color;
+  border-left: solid 1px @left-color;
+  border-right: solid 1px @right-color;
+  border-bottom: solid 1px @bottom-color;
+}
+
+.fix-spaces() {
+  letter-spacing: -.31em;
+  word-spacing:   -.43em;
+}
+
+.fix-spaces-child() {
+  letter-spacing: normal;
+  word-spacing:   normal;
+}
+
+//// Global
+
 // Vars
 
-// Mixins
+@width-all: 60em;
 
-// Global
+@color-black: #1F1F1F;
+@color-black-solid: #000;
+@color-white: #FFF;
+@color-gray: #F3F3F3;
+@color-blue: #0073CD;
+@color-orange: #FF3C00;
+@color-red: #EB001E;
 
-* {
-  background: #000;
+// Styles
+
+body {
+  padding: 0;
+  margin: 0;
+  background: url("/assets/background.gif");
+  font-size: @font-size;
+  line-height: @line-height;
+  font-family: @font-family;
+  color: @color-black;
 }
 
-.test {
-  width: 100px;
-  height: 100px;
-  background: #000;
+.wrapper {
+  width: @width-all;
+  margin: 0 auto;
 }
 
-//
+input, textarea {
+  font-family: @font-family;
+  .border-box;
+}
+
+header, footer, 
+nav, section, 
+article {  
+  display:block; 
+}
+
+h1, h2, h3,
+h4, h5, h6,
+ul, li, em,
+strong, pre,
+code {
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  font-weight: normal;
+  font-style: normal;
+}
+
+table {
+  font-size: inherit;
+  font: 100%;
+}
+
+ul, ol {
+  
+  li {
+    list-style-type: none;
+  }
+}
+
+ul.list {
+  
+  li {
+    list-style-type: circle;
+  }
+}
+
+ol.list {
+  
+  li {
+    list-style-type: decimal;
+  }
+}
+
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+
+.clearfix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+* html .clearfix {
+  height: 1%;
+}
+
+.row {
+  width: 100%;
+  text-align: justify;
+  display: block;
+  line-height: 0;
+  font-size: 1px;
+  text-align-last: justify;
+}
+
+.row:after {
+  content: "";
+  width: 100%;
+  display: inline-block;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+
+.cell { 
+  display: inline-block;
+  text-align: left;
+  vertical-align: top;
+  line-height: normal;
+}
+
+.none {
+  display: none;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+//// Typography
+
+// Vars
+
+@font-size: 100%;
+@line-height: 1.6em;
+
+@font-family: 'PT Sans', Arial, 'Helvetica Neue', Helvetica, sans-serif;
+@font-family-narrow: 'PT Sans Narrow', Arial, 'Helvetica Neue', Helvetica, sans-serif;
+
+// Fonts
+
+@font-face {
+  font-family: 'PT Sans';
+  font-style: normal;
+  font-weight: normal;
+  src: local('PT Sans'), local('PTSans-Regular'), url('http://themes.googleusercontent.com/static/fonts/ptsans/v4/jduSEW07_j4sIG_ERxiq4Q.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'PT Sans';
+  font-style: italic;
+  font-weight: bold;
+  src: local('PT Sans Bold Italic'), local('PTSans-BoldItalic'), url('http://themes.googleusercontent.com/static/fonts/ptsans/v4/lILlYDvubYemzYzN7GbLkBsxEYwM7FgeyaSgU71cLG0.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'PT Sans';
+  font-style: normal;
+  font-weight: bold;
+  src: local('PT Sans Bold'), local('PTSans-Bold'), url('http://themes.googleusercontent.com/static/fonts/ptsans/v4/HXiERDIZdwFzjXlbcMq7XPesZW2xOQ-xsNqO47m55DA.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'PT Sans';
+  font-style: italic;
+  font-weight: normal;
+  src: local('PT Sans Italic'), local('PTSans-Italic'), url('http://themes.googleusercontent.com/static/fonts/ptsans/v4/Pq7I38KtY37kAe5aYFKrSA.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'PT Sans Narrow';
+  font-style: normal;
+  font-weight: normal;
+  src: local('PT Sans Narrow'), local('PTSans-Narrow'), url('http://themes.googleusercontent.com/static/fonts/ptsansnarrow/v3/UyYrYy3ltEffJV9QueSi4S4mX3cpNo8MnLri8k21-rs.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'PT Sans Narrow';
+  font-style: normal;
+  font-weight: bold;
+  src: local('PT Sans Narrow Bold'), local('PTSans-NarrowBold'), url('http://themes.googleusercontent.com/static/fonts/ptsansnarrow/v3/Q_pTky3Sc3ubRibGToTAYigwe3ZcNEyK1ut-Sjba9Qg.woff') format('woff');
+}
+
+// Styles
+
+h1, h2, h3,
+h4, h5, h6 {
+  margin-bottom: 0.4em;
+}
+
+h1 {
+  font-size: 3.4em;
+}
+
+h2 {
+  font-size: 3em;
+}
+
+h3 {
+  font-size: 2.6em;
+}
+
+h4 {
+  font-size: 2.2em;
+}
+
+h5 {
+  font-size: 1.8em;
+}
+
+h6 {
+  font-size: 1.4em;
+}
+
+p {
+  margin: 0.6em 0 0.6em 0.2em;
+}
+
+b, strong, .bold {
+  font-weight: bold;
+  
+  i, em, .italic {
+    font-weight: bold;
+    font-style: italic;
+  }
+}
+
+i, em, .italic {
+  font-style: italic;
+  
+  b, strong, .bold {
+    font-style: italic;
+    font-weight: bold;
+  }
+}
+
+s, strike, del, .strike, .line-through {
+  text-decoration: line-through;
+}
+
+u, .underline {
+  text-decoration: none;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-color: lighten(@color-blue, 33%);
+  display: inline-block;
+  padding-bottom: 0.1em;
+  line-height: 1;
+}
+
+.sans {
+  font-family: @font-family;
+}
+
+.narrow {
+  font-family: @font-family-narrow;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
+}
+
+a {
+  color: @color-blue;
+  text-decoration: none;
+  
+  u, .underline {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-color: lighten(@color-blue, 33%);
+    display: inline-block;
+    padding-bottom: 0.1em;
+    line-height: 1;
+  }
+  
+  &:hover {
+    color: @color-orange;
+    
+    u, .underline {
+      border-color: lighten(@color-orange, 33%);
+    }
+  }
+  
+  &.pseudolink {
+    u, .underline {
+      border-bottom-style: dashed;
+    }
+  }
+}
+
+//// Top Navigation
+
+nav#top {
+  @new-color: hsla(hue(@color-gray), saturation(@color-gray), lightness(@color-gray), 0.75);
+  position: absolute;
+  width: 100%;
+  left: 0;
+  
+  &.fixed {
+    position: fixed;
+    top: 0;
+    background: @color-gray;
+    background: @new-color;
+  }
+  
+  ul {
+    margin: 0 auto;
+    white-space: nowrap;
+    .fix-spaces;
+    
+    li {
+      display: inline-block;
+      .fix-spaces-child;
+      
+      a, span {
+        display: inline-block;
+        padding: 0.4em 0.8em;
+      }
+    }
+  }
+}
