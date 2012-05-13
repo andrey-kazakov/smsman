@@ -10,15 +10,43 @@
 <body>
   <nav id="top">
     <div class="wrapper clearfix">
-      <ul class="float-left">
-        <li><a class="pseudolink" href=""><u>Раз</u></a></li>
-        <li><a class="pseudolink" href=""><u>Два</u></a></li>
-        <li><a class="pseudolink" href=""><u>Три</u></a></li>
-      </ul>
+      <div class="topline clearfix">
+        <ul class="float-left">
+          <li class="active"><a>Новые сообщения</a>
+          <li><a href=""><u>Черновики</u></a>
+          <li><a href=""><u>Контакты</u></a>
+        </ul>
+        <ul class="float-right">
+          <li>Добрый день, Леонид
+          <!-- <li><a class="pseudolink" href=""><u>Личный кабинет</u></a> -->
+          <li><a class="delogin" href=""><u>Выйти</u></a>
+        </ul>
+      </div>
+      <div class="pinner clearfix">
+        <ul class="float-left">
+          <li class="toggle">Сообщения:
+          <li class="active"><a>Первое</a>
+          <li><a class="pseudolink" href=""><u>Новое…</u></a>
+        </ul>
+        <ul class="float-right">
+          <li>Можно отправить 100500 смс</li>
+          <li><a class="pseudolink" href=""><u>Купить ещё</u></a>
+        </ul>
+      </div>
     </div>
   </nav>
-  <section>
-    <article class="message start "></article>
+  <a href="" class="logotype wrapper text-center">
+    <span class="test narrow">Logotype Placeholder</span>
+    <img src="" alt="" />
+  </a>
+  <section class="wrapper">
+    <article class="message start">
+      <p>Первое сообщение:</p>
+      <textarea></textarea>
+    </article>
+    <article class="message new">
+      <textarea placeholder="Ещё одно сообщение…"></textarea>
+    </artcile>
   </section>
 </body>
 </html>
