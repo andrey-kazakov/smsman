@@ -50,10 +50,10 @@
 }
 
 .button() {
-    box-shadow:       0 1px 0px rgba(0, 0, 0, 0.15),
-                      0 1px 3px rgba(0, 0, 0, 0.15),
-                inset 0 2px 0   rgba(255, 255, 255, 0.15),
-                inset 0 1px 0   rgba(255, 255, 255, 0.45);
+    box-shadow:       0  1px 3px rgba(0, 0, 0, 0.15),
+                inset 0 -1px 0px rgba(0, 0, 0, 0.1),
+                inset 0  2px 0   rgba(255, 255, 255, 0.15),
+                inset 0  1px 0   rgba(255, 255, 255, 0.45);
   
   .pressed() {
     box-shadow: inset 0 1px 0px rgba(0, 0, 0, 0.15),
@@ -606,10 +606,17 @@ article {
     .bubble {
       .button;
       .rounded(1em);
-      background: #E1E8ED;
+      @new-color: #E1E8ED;
+      @color-start: lighten(@new-color, 4.5%);
+      @color-stop:  darken(@new-color, 4.5%);
+      background: @new-color;
+      .gradient(@color-white, @color-stop, @color-start);
       
       &.active, &:active {
         .button > .pressed;
+        @color-start: lighten(@new-color, 2.5%);
+        @color-stop:  darken(@new-color, 2.5%);
+        .gradient(@color-white, @color-start, @color-stop);
       }
       
       &.contact {
@@ -617,11 +624,22 @@ article {
       }
     }
     
+    input.bubble {
+      .button > .pressed;
+      @new-color: #E1E8ED;
+      border: none;
+      padding: @text-padding / 1.5 @text-padding * 2;
+      min-height: 0;
+      @color-start: lighten(@new-color, 2.5%);
+      @color-stop:  darken(@new-color, 2.5%);
+      .gradient(@color-white, @color-start, @color-stop);
+    }
+    
     .placeholder {
       padding-left: 0;
     }
     
-    input[type=text] {
+    input[type=text].new {
       border: 0;
       padding: 0.1em 0;
       background: transparent;
