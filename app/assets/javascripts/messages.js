@@ -47,59 +47,38 @@
      return input
   }
 
-  // recipient button jumps
-  $(window).keydown(function(event)
+  $('article.message > div.recipients > a').live('keydown', function(event)
   {
-    if (event.target && event.target.tagName.toLowerCase() != 'body') return;
-
-    var active = $('a.active');
-    if (!active.length) return;
-
-    event.preventDefault();
+    var link = $(this);
 
     switch (event.keyCode)
     {
       case 37:
-        active.prev().length && active.blur().prev().focus();
-        break;
+        event.preventDefault();
+        link.prev().length && link.blur().prev().focus();
+        return;
       case 39:
-        active.blur().next().focus();
-        break;
+        event.preventDefault();
+        link.next().length && link.blur().next().focus();
+        return;
       case 46:
-        active.remove();
-        break;
-      case 32:
-      case 13:
-      case 8:
-        active.mousedown();
+        link.remove();
+        return;
     }
-  })
 
-  $('article.message > div.recipients > a').live('mousedown focus', function(event)
+    var number = tools.sanitizeNumber(link.attr('href'));
+
+    var input = createInput(number, true);
+
+    input.insertBefore(link);
+    input.focus();
+
+    link.remove();
+  }).live('mousedown click', function(event)
   {
     event.preventDefault();
-
-    var link = $(this);
-    if (link.hasClass('active') || event.type == 'mousedown')
-    {
-      var number = tools.sanitizeNumber(link.attr('href'));
-
-      var input = createInput(number, true);
-
-      input.insertBefore(link);
-      input.focus();
-      link.remove();
-    }
-    else
-    {
-      link.addClass('active');
-    }
-  }).live('blur', function(event)
-  { 
-    $(this).removeClass('active')
-  }).live('click keypress', function(event)
-  {
-    event.preventDefault();
+    this.focus();
+    return false
   });
 
   $('article.message > div.recipients').live('click', function(event)
@@ -109,8 +88,8 @@
     var tagName = event.target.tagName.toLowerCase();
     if (tagName == 'input' || tagName == 'a') return;
     
-    $(this).find('input.new').focus();
     event.preventDefault();
+    $(this).find('input.new').focus();
   })
 
   $('article.message > div.recipients > input').live('keyup blur', function(event)
@@ -119,6 +98,7 @@
     var value = input.val();
     var caret = input.caret();
     var allselected = (caret.start == 0 && caret.end == value.length);
+    var dontmatch;
 
     switch (event.keyCode)
     {
@@ -126,18 +106,32 @@
         if (caret.start == 0 || allselected)
         {
           event.preventDefault();
-          input.blur().prev().focus();
+          input.prev().length && input.blur().prev().focus();
         }
         break;
       case 39: // ->
         if (caret.end == value.length || allselected)
         {
-          //
+          event.preventDefault();
+          input.next().length && input.blur().next().focus();
         }
         break;
+      case 8: // Backspace
+        if (allselected)
+        {
+          value = '';
+        }
+        if (caret.start == 0)
+        {
+          event.preventDefault();
+          input.blur().prev().focus();
+        }
+        dontmatch = true;
+      case 32: // Space
+        dontmatch = true;
       default:
         var matches = value.match(tools.phoneRegex);
-        if (matches)
+        if (!dontmatch && matches)
         {
           for (var i = 0; i < matches.length; i++)
           {
@@ -158,14 +152,17 @@
         }
 
         input.val(value);
+
         if (!value.trim().length && /key/.test(event.type))
         { 
           var div = input.parent('div');
 
           input.remove();
 
+          placeholder = div.children().length ? '' : 'Получатели…'
+
           var input = div.find('input.new');
-          (!!input.length ? input : createInput('', false).appendTo(div)).focus();
+          (!!input.length ? input : createInput('', false).appendTo(div)).attr('placeholder', placeholder);
         }
     }
   })
