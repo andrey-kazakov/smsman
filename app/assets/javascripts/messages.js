@@ -41,7 +41,7 @@
      if (bubble) input.addClass('bubble').addClass('black'); else input.addClass('new');
      input.attr('type', 'text');
      input.val(tools.decorateNumber(number));
-     input.attr('size', Math.max(input.val().length - 2, 1));
+     input.attr('size', Math.max(input.val().length, 1));
 
      input.autocomplete(autocompleteSettings);
 
@@ -63,6 +63,8 @@
         link.next().length && link.blur().next().focus();
         return;
       case 46:
+        event.preventDefault();
+        link.next().length && link.blur().next().focus();
         link.remove();
         return;
     }
@@ -153,7 +155,7 @@
         }
 
         input.val(value);
-        input.attr('size', Math.max(input.val().length - 2, 1));
+        input.attr('size', Math.max(input.val().length, 1));
 
         if (!value.trim().length && /key/.test(event.type))
         { 
@@ -172,6 +174,6 @@
   {
     var input = $(this);
 
-    input.attr('size', Math.max(input.val().length - 2, 1));
+    input.attr('size', Math.max(input.val().length, 1));
   });
 })()
