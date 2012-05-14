@@ -1,7 +1,6 @@
 *.dbg0
 *.evt0
 log/
-database.yml
 *.swo
 *.swp
 .DS_Store
@@ -15,4 +14,4 @@ public/assets/
 public/javascripts/compiled/*
 spec/javascripts/generated/*
 tmp/*
-
+config/*.yml
