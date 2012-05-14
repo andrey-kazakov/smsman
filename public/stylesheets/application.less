@@ -63,6 +63,19 @@
   }
 }
 
+.message-status() {
+  @color-start: lighten(@new-color, 4.5%);
+  @color-stop:  darken(@new-color, 4.5%);
+  background: @new-color;
+  .gradient(@color-white, @color-stop, @color-start);
+  
+  .focus() {
+    @color-start: lighten(@new-color, 2.5%);
+    @color-stop:  darken(@new-color, 2.5%);
+    .gradient(@color-white, @color-start, @color-stop);
+  }
+}
+
 //// Global
 
 // Vars
@@ -597,9 +610,12 @@ article {
     .fix-spaces;
     
     .bubble, input[type=text], .placeholder {
-      padding: 0.1em 0.8em;
+      padding: 0 0.8em;
       display: inline-block;
       margin: 0.2em;
+      line-height: 1.8em;
+      min-height: 1.8em;
+      max-width: 100%;
       .fix-spaces > .child;
     }
     
@@ -608,27 +624,73 @@ article {
     }
     
     .bubble {
-      .rounded(1em);
-      .button;
-      @new-color: #E1E8ED;
-      @color-start: lighten(@new-color, 4.5%);
-      @color-stop:  darken(@new-color, 4.5%);
-      background: @new-color;
-      .gradient(@color-white, @color-stop, @color-start);
+      @new-color: #F2F2F2;
+      .message-status;
       
-      &:focus {
-        .button > .pressed;
+      &:not([readonly]):focus {
+        .message-status > .focus;
+      }
+
+      &.phone {
+        @new-color: #E1E7EB;
+        .message-status;
+        
+        &:not([readonly]):focus {
+          .message-status > .focus;
+        }
       }
       
       &.contact {
+        @new-color: #F8EED1;
+        .message-status;
+        
+        &:not([readonly]):focus {
+          .message-status > .focus;
+        }
+      }
+      
+      &.error {
+        @new-color: #FFEDC5;
+        .message-status;
+        
+        &:not([readonly]):focus {
+          .message-status > .focus;
+        }
+      }
+      
+      &.pending {
         @new-color: #B9D6EB;
-        @color-start: lighten(@new-color, 4.5%);
-        @color-stop:  darken(@new-color, 4.5%);
-        background: @new-color;
-        .gradient(@color-white, @color-stop, @color-start);
+        .message-status;
+        
+        &:not([readonly]):focus {
+          .message-status > .focus;
+        }
+      }
+      
+      &.delivered {
+        @new-color: #D8E8D1;
+        .message-status;
+        
+        &:not([readonly]):focus {
+          .message-status > .focus;
+        }
+      }
+      
+      &.error {
+        @new-color: #FFD0C5;
+        .message-status;
+        
+        &:not([readonly]):focus {
+          .message-status > .focus;
+        }
       }
     }
-    
+
+    input[type=text].new {
+      border: 0;
+      padding: 0.1em 0;
+      background: transparent;
+    }
   }
   
   &.new {
@@ -669,6 +731,22 @@ article {
     h1 {
       color: darken(@new-color, 7.5%);
     }
+  }
+}
+
+//// Bubbles
+
+.bubble {
+  .rounded(1em);
+  .button;
+  border: 0;
+  padding: 0 0.8em;
+  display: inline-block;
+  min-height: 1.8em;
+  line-height: 1.8em;
+  
+  &:not([readonly]):focus {
+    .button > .pressed;
   }
 }
 

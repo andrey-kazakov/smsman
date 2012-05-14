@@ -60,27 +60,23 @@
     <article class="message start clearfix">
       <h1 class="bold">1</h1>
       <textarea placeholder="Текст сообщения…"></textarea>
-      <!-- <div class="recipients">
-        <a href="tel:+79655285838" class="bubble pseudolink black"><u>+7&nbsp;(965)&nbsp;528-58-38</u></a>
-        <a href="tel:+79655285838" class="bubble contact pseudolink black"><u>Сириус</u></a>
-        <a href="tel:+79174269926" class="bubble contact pseudolink black"><u>Евангелина Козлова</u></a>
-        <a href="tel:+79174269926" class="bubble pseudolink black"><u>+7&nbsp;(917)&nbsp;426-99-26</u></a>
-        <a href="tel:+79655285838" class="bubble contact pseudolink black"><u>Адольф Семёнов</u></a>
-        <a href="tel:+79067473526" class="bubble pseudolink black"><u>+7 (906) 747-35-26</u></a>
-        <input class="new" type="text" size="1"/>
-      </div> -->
       <div class="recipients">
-        <input type="text" value="+7 (965) 528-58-38" class="bubble" />
+        <input type="text" value="+7&nbsp;(965)&nbsp;528-58-38" class="bubble phone" />
         <input type="text" value="Сириус" class="bubble contact" />
-        <input type="tel" pattern="(?:tel:)?\+(7|38)\s*[\(\)]?\d{3,}[\)\(]?\s*\d{3}[-\s]*\d{2}[-\s]*\d{2}" value="+7 (965) 528-58-38" class="bubble edit" />
-        <input class="new" type="text" size="1"/>
+        <input type="text" value="Евангелина Козлова" class="bubble contact" />
+        <input type="text" value="+7&nbsp;(917)&nbsp;426-99-26" class="bubble phone" />
+        <input type="text" value="+7&nbsp;(906)&nbsp;747-35-26" class="bubble phone" />
+        <input type="text" value="Адольф Семёнов" class="bubble contact" />
+        <input type="text" value="+Джигурда" class="bubble" />
+        <!-- <input type="tel" pattern="(?:tel:)?+(7|38)s*[()]?d{3,}[)(]?s*d{3}[-s]*d{2}[-s]*d{2}" value="+7 (965) 528-58-38" class="bubble" /> -->
+        <input class="new" type="text" />
       </div>
     </article>
     <article class="message">
       <h1 class="bold">2</h1>
       <textarea textarea placeholder="Текст сообщения…"></textarea>
       <div class="recipients">
-        <input class="new" type="text" size="1"/>
+        <span class="placeholder">Получатели…</span>
       </div>
     </article>
     <article class="message pending">
