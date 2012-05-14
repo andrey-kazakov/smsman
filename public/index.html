@@ -33,11 +33,15 @@
         <div class="wrapper clearfix">
           <ul class="float-left">
             <li class="toggle plain">Сообщения:
-            <li class="active"><a>Первое</a>
-            <li><a class="pseudolink" href=""><u>Второе</u></a>
-            <li><a class="pseudolink" href=""><u>Третие</u></a>
-            <li><a class="pseudolink" href=""><u>Четвёртое</u></a>
-            <li><a class="pseudolink" href=""><u>Пятое</u></a>
+            <li class="active"><a>1</a>
+            <li><a class="pseudolink" href=""><u>2</u></a>
+            <li><a class="pseudolink" href=""><u>3</u></a>
+            <li><a class="pseudolink" href=""><u>4</u></a>
+            <li><a class="pseudolink" href=""><u>5</u></a>
+            <li><a class="pseudolink" href=""><u>6</u></a>
+            <li><a class="pseudolink" href=""><u>7</u></a>
+            <li><a class="pseudolink" href=""><u>8</u></a>
+            <li><a class="pseudolink" href=""><u>9</u></a>
             <li><a class="pseudolink" href=""><u>Новое…</u></a>
           </ul>
           <ul class="float-right">
@@ -56,13 +60,19 @@
     <article class="message start clearfix">
       <h1 class="bold">1</h1>
       <textarea placeholder="Текст сообщения…"></textarea>
-      <div class="recipients">
+      <!-- <div class="recipients">
         <a href="tel:+79655285838" class="bubble pseudolink black"><u>+7&nbsp;(965)&nbsp;528-58-38</u></a>
         <a href="tel:+79655285838" class="bubble contact pseudolink black"><u>Сириус</u></a>
         <a href="tel:+79174269926" class="bubble contact pseudolink black"><u>Евангелина Козлова</u></a>
         <a href="tel:+79174269926" class="bubble pseudolink black"><u>+7&nbsp;(917)&nbsp;426-99-26</u></a>
         <a href="tel:+79655285838" class="bubble contact pseudolink black"><u>Адольф Семёнов</u></a>
         <a href="tel:+79067473526" class="bubble pseudolink black"><u>+7 (906) 747-35-26</u></a>
+        <input class="new" type="text" size="1"/>
+      </div> -->
+      <div class="recipients">
+        <input type="text" value="+7 (965) 528-58-38" class="bubble" />
+        <input type="text" value="Сириус" class="bubble contact" />
+        <input type="tel" pattern="(?:tel:)?\+(7|38)\s*[\(\)]?\d{3,}[\)\(]?\s*\d{3}[-\s]*\d{2}[-\s]*\d{2}" value="+7 (965) 528-58-38" class="bubble edit" />
         <input class="new" type="text" size="1"/>
       </div>
     </article>
