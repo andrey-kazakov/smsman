@@ -38,9 +38,13 @@
   var createInput = function(number, bubble)
   {
      var input = $('<input/>');
-     if (bubble) input.addClass('bubble').addClass('black'); else input.addClass('new');
+     if (bubble) input.addClass('bubble'); else input.addClass('new');
+
+     input.attr('id', 'tel' + number);
      input.attr('type', 'text');
+
      input.val(tools.decorateNumber(number));
+
      input.attr('size', Math.max(input.val().length, 1));
 
      input.autocomplete(autocompleteSettings);
@@ -48,54 +52,18 @@
      return input
   }
 
-  $('article.message > div.recipients > a').live('keydown', function(event)
-  {
-    var link = $(this);
-
-    switch (event.keyCode)
-    {
-      case 37:
-        event.preventDefault();
-        link.prev().length && link.blur().prev().focus();
-        return;
-      case 39:
-        event.preventDefault();
-        link.next().length && link.blur().next().focus();
-        return;
-      case 46:
-        event.preventDefault();
-        link.next().length && link.blur().next().focus();
-        link.remove();
-        return;
-    }
-
-    var number = tools.sanitizeNumber(link.attr('href'));
-
-    var input = createInput(number, true);
-
-    input.insertBefore(link);
-    input.focus();
-
-    link.remove();
-  }).live('mousedown click', function(event)
-  {
-    event.preventDefault();
-    this.focus();
-    return false
-  });
-
   $('article.message > div.recipients').live('click', function(event)
   {
     if (!event.target) return;
 
     var tagName = event.target.tagName.toLowerCase();
-    if (tagName == 'input' || tagName == 'a') return;
+    if (tagName == 'input') return;
     
     event.preventDefault();
     $(this).find('input.new').focus();
   })
 
-  $('article.message > div.recipients > input').live('keyup blur', function(event)
+  $('article.message > div.recipients > input').live('keyup keyrepeat', function(event)
   {
     var input = $(this);
     var value = input.val();
@@ -105,31 +73,24 @@
 
     switch (event.keyCode)
     {
+      case 8:  // Backspace
       case 37: // <-
         if (caret.start == 0 || allselected)
         {
-          event.preventDefault();
-          input.prev().length && input.blur().prev().focus();
+          //event.preventDefault();
+          input.prev().length && input.prev().focus();
+          input.blur()
         }
         break;
+      case 46: // Delete
       case 39: // ->
         if (caret.end == value.length || allselected)
         {
-          event.preventDefault();
-          input.next().length && input.blur().next().focus();
+          //event.preventDefault();
+          input.next().length && input.next().focus().caret({ start: 0, end: 0 });
+          input.blur()
         }
         break;
-      case 8: // Backspace
-        if (allselected)
-        {
-          value = '';
-        }
-        if (caret.start == 0)
-        {
-          event.preventDefault();
-          input.blur().prev().focus();
-        }
-        dontmatch = true;
       case 32: // Space
         dontmatch = true;
       default:
@@ -140,13 +101,7 @@
           {
             var number = tools.sanitizeNumber(matches[i]);
 
-            var link = $('<a></a>');
-            link.attr('href', 'tel:' + number);
-            link.text(tools.decorateNumber(number));
-
-            link.addClass('bubble').addClass('pseudolink').addClass('black');
-            
-            link.insertBefore(input);
+            createInput(number, true).insertBefore(input);
           }
 
           var lastMatch = matches[matches.length - 1];
@@ -157,23 +112,49 @@
         input.val(value);
         input.attr('size', Math.max(input.val().length, 1));
 
-        if (!value.trim().length && /key/.test(event.type))
-        { 
-          var div = input.parent('div');
-
-          input.remove();
-
-          //placeholder = div.children().length ? '' : 'Получатели…'
-
-          input = div.find('input.new');
-          (!!input.length ? input : createInput('', false).appendTo(div)) //.attr('placeholder', placeholder);
-        }
-        input.focus()
     }
-  }).live('keydown', function(event)
+  }).live('keydown keyup keypress keyrepeat focus blur change mouseover mouseout', function(event)
   {
     var input = $(this);
+    var test = $('<div class="bubble"></div>');
 
-    input.attr('size', Math.max(input.val().length, 1));
+    test.text(input.val() || "0");
+    test.css({ position: 'absolute', display: 'block', left: -9999, top: -9999 });
+    $('body').append(test);
+
+    input.css({ width: test.outerWidth() });
+
+    test.remove()
+  }).live('focus', function(event)
+  {
+    var input = $(this);
+    if (!input.hasClass('bubble')) return;
+
+    input.removeClass('contact');
+    input.val(tools.decorateNumber(tools.sanitizeNumber(input.attr('id'))));
+
+  }).live('blur', function(event)
+  {
+    var input = $(this);
+    if (!input.hasClass('bubble')) return;
+
+    if (!input.val().trim())
+    {
+      input.remove()
+    }
+    else
+    {
+      var match;
+      if (match = input.val().match(tools.phoneRegex))
+      {
+        input.attr('id', 'tel' + tools.sanitizeNumber(match[0]));
+      }
+      else
+      {
+        event.preventDefault();
+        input.focus();
+        input.caret({ start: 0, end: input.val().length });
+      }
+    }
   });
 })()
