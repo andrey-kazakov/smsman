@@ -41,6 +41,7 @@
      if (bubble) input.addClass('bubble').addClass('black'); else input.addClass('new');
      input.attr('type', 'text');
      input.val(tools.decorateNumber(number));
+     input.attr('size', Math.max(input.val().length - 2, 1));
 
      input.autocomplete(autocompleteSettings);
 
@@ -152,6 +153,7 @@
         }
 
         input.val(value);
+        input.attr('size', Math.max(input.val().length - 2, 1));
 
         if (!value.trim().length && /key/.test(event.type))
         { 
@@ -159,11 +161,17 @@
 
           input.remove();
 
-          placeholder = div.children().length ? '' : 'Получатели…'
+          //placeholder = div.children().length ? '' : 'Получатели…'
 
-          var input = div.find('input.new');
-          (!!input.length ? input : createInput('', false).appendTo(div)).attr('placeholder', placeholder);
+          input = div.find('input.new');
+          (!!input.length ? input : createInput('', false).appendTo(div)) //.attr('placeholder', placeholder);
         }
+        input.focus()
     }
-  })
+  }).live('keydown', function(event)
+  {
+    var input = $(this);
+
+    input.attr('size', Math.max(input.val().length - 2, 1));
+  });
 })()
