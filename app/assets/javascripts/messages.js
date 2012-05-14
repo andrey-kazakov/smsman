@@ -113,7 +113,7 @@
         input.attr('size', Math.max(input.val().length, 1));
 
     }
-  }).live('keydown keyup keypress keyrepeat focus blur change mouseover mouseout', function(event)
+  }).live('keydown keyup keypress keyrepeat focus blur change mousedown mouseup click mouseover mouseout', function(event)
   {
     var input = $(this);
     var test = $('<div class="bubble"></div>');
