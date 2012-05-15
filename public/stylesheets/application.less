@@ -91,11 +91,12 @@
 @color-red: #EB001E;
 
 @text-padding: 0.4em;
+@padding-global: 0 6em;
 
 // Styles
 
 body {
-  padding: 0 4em;
+  padding: @padding-global;
   margin: 0;
   background: url("/assets/background.gif");
   font-size: @font-size;
@@ -450,7 +451,7 @@ nav#top {
       z-index: 10;
       background: @color-gray;
       background: @new-color;
-      padding: 0 4em;
+      padding: @padding-global;
       .border-box;
     }
   }
@@ -458,7 +459,7 @@ nav#top {
   ul {
     margin: 0 auto;
     top: 0;
-    white-space: nowrap;
+    // /**/ white-space: nowrap;
     
     li {
       display: inline-block;
