@@ -49,6 +49,11 @@
 
      return input
   }
+  var modifyAmount = function(where)
+  {
+    var amount = where.parents('article.message').find('h1.amount');
+    amount.text(where.parent('div.recipients').find('input.phone, input.contact').size());
+  }
 
   $('article.message > div.recipients').live('click', function(event)
   {
@@ -99,7 +104,8 @@
           {
             var number = tools.sanitizeNumber(matches[i]);
 
-            createInput(number, true).insertBefore(input);
+            createInput(number, true).addClass('phone').insertBefore(input);
+            modifyAmount(input);
           }
 
           var lastMatch = matches[matches.length - 1];
@@ -112,6 +118,8 @@
   }).live('keyup keyrepeat focus blur change mouseup mouseover', function(event)
   {
     var input = $(this);
+    modifyAmount(input);
+
     var test = $('<div></div>');
     test.addClass('bubble');
 
@@ -156,17 +164,20 @@
 
     if (!input.val().trim())
     {
-      input.remove()
+      input[0] && input.remove()
     }
     else
     {
       var match;
       if (match = input.val().match(tools.phoneRegex))
       {
+        modifyAmount(input);
         input.attr('id', 'tel' + tools.sanitizeNumber(match[0]));
+        input.addClass('phone');
       }
       else
       {
+        modifyAmount(input);
         event.preventDefault();
         input.focus();
         input.caret({ start: 0, end: input.val().length });
