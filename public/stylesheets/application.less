@@ -752,10 +752,23 @@ article {
   .rounded(1em);
   .button;
   border: 0;
+  position: relative;
   padding: 0 0.8em;
   display: inline-block;
   min-height: 1.8em;
   line-height: 1.8em;
+  
+  &:after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    position: absolute;
+    background: black;
+    opacity: 0.5;
+  }
   
   &:not([readonly]):focus {
     .button > .pressed;
