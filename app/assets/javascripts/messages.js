@@ -21,7 +21,7 @@
 
     , sanitizeNumber: function(text)
       {
-        return '+' + text.replace(/[^\d]/g, '')
+        return text ? ('+' + text.replace(/[^\d]/g, '')) : ''
       }
     , decorateNumber: function(number)
       {
@@ -44,8 +44,6 @@
      input.attr('type', 'text');
 
      input.val(tools.decorateNumber(number));
-
-     input.attr('size', Math.max(input.val().length, 1));
 
      input.autocomplete(autocompleteSettings);
 
@@ -110,20 +108,35 @@
         }
 
         input.val(value);
-        input.attr('size', Math.max(input.val().length, 1));
-
     }
-  }).live('keydown keyup keypress keyrepeat focus blur change mousedown mouseup click mouseover mouseout', function(event)
+  }).live('keyup keyrepeat focus blur change mouseup mouseover', function(event)
   {
     var input = $(this);
-    var test = $('<div class="bubble"></div>');
+    var test = $('<div></div>');
+    test.addClass('bubble');
 
-    test.text(input.val().toString() + "|");
+    test.text(input.val().toString() + (input.is(':focus') ? "—" : ''));
     test.css({ position: 'absolute', left: -9999, top: -9999 });
 
-    $('article.message > div.recipients').append(test);
+    $('body').append(test);
 
-    input.css({ width: test.outerWidth() });
+    input.attr('data-target-width', test.outerWidth());
+
+    if (input.outerWidth() != test.outerWidth())
+    {
+      var fixWidth = function()
+      {
+        var targetWidth = input.attr('data-target-width');
+
+        input.animate({ width: targetWidth }, 50, function()
+        {
+          if (input.outerWidth() != targetWidth) fixWidth();
+          input.removeAttr('data-target-width');
+        });
+      }
+
+      fixWidth();
+    }
 
     test.remove()
   }).live('focus', function(event)
@@ -131,8 +144,10 @@
     var input = $(this);
     if (!input.hasClass('bubble')) return;
 
-    input.removeClass('contact');
+    input.removeClass().addClass('bubble');
     input.val(tools.decorateNumber(tools.sanitizeNumber(input.attr('id'))));
+
+    input.trigger('change');
 
   }).live('blur', function(event)
   {
