@@ -118,9 +118,10 @@
     var input = $(this);
     var test = $('<div class="bubble"></div>');
 
-    test.text(input.val() || "0");
-    test.css({ position: 'absolute', display: 'block', left: -9999, top: -9999 });
-    $('body').append(test);
+    test.text(input.val().toString() + "|");
+    test.css({ position: 'absolute', left: -9999, top: -9999 });
+
+    $('article.message > div.recipients').append(test);
 
     input.css({ width: test.outerWidth() });
 
