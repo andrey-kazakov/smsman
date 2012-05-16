@@ -61,6 +61,17 @@
                       0 2px 0   rgba(255, 255, 255, 0.15),
                       0 1px 0   rgba(255, 255, 255, 0.45);
   }
+  
+  .size() {
+    padding: 0 0.8em;
+    min-height: 1.8em;
+    line-height: 1.8em;
+  }
+}
+
+.inset-text(@color-top) {
+    text-shadow: 0 -1px 0 @color-top,
+                 0  1px 0 @color-white;
 }
 
 .message-status() {
@@ -91,12 +102,12 @@
 @color-red: #EB001E;
 
 @text-padding: 0.4em;
-@padding-global: 0 6em;
+@padding-global: 6em;
 
 // Styles
 
 body {
-  padding: @padding-global;
+  padding: 0 @padding-global;
   margin: 0;
   background: url("/assets/background.gif");
   font-size: @font-size;
@@ -451,7 +462,7 @@ nav#top {
       z-index: 10;
       background: @color-gray;
       background: @new-color;
-      padding: @padding-global;
+      padding: 0 @padding-global;
       .border-box;
     }
   }
@@ -556,6 +567,87 @@ nav#top {
 
 //// Section
 
+// Total and Sender
+
+.sender, .total {
+  left: -(@padding-global);
+  padding: @text-padding @padding-global;
+  position: relative;
+  width: 100%;
+  background: lighten(@color-blue, 20%);
+  .button > .pressed;
+  border-radius: 0;
+  margin-bottom: 1em;
+  
+  .wrapper {
+    width: 100%;
+    
+    div {
+      padding: 0 @text-padding;
+    }
+  }
+  
+  input {
+    font-size: 1.4em;
+    width: 100%;
+  }
+}
+
+.total {
+  background: gold;
+  margin-bottom: 0;
+  
+  h3 {
+    .inset-text(#E6C200);
+    white-space: nowrap;
+    margin: @text-padding 0 0;
+    
+    span {
+      display: inline-block;
+      vertical-align: top;
+      
+      &.countries {
+        white-space: normal;
+        padding-right: 3em;
+        
+        .russia, .ukraine {
+          display: inline-block;
+          margin-bottom: 0.4em;
+        }
+      }
+    }
+  }
+  
+  .actions {
+    text-align: center;
+    
+    button {
+      font-size: 1.6em;
+      /**/ color: @color-white;
+      /**/ background: @color-blue;
+      border: 0;
+      margin: 0.4em 0;
+      display: inline-block;
+      font-family: @font-family;
+      .rounded(1em);
+      .button;
+      .button > .size;
+      
+      &:active {
+        .button > .pressed;
+      }
+    }
+    
+    .draft {
+      margin-left: 1em;
+      margin-right: 0;
+      font-size: 1.4em;
+      padding: 0.1em 0;
+      display: inline-block;
+    }
+  }
+}
+
 // Article-message
 
 @color-blue-light:   #E9EEF2;
@@ -585,8 +677,8 @@ article {
   h1 {
     position: absolute;
     color: darken(@color-gray, 7.5%);
-    text-shadow: 0 -1px 0 darken(@color-gray, 22.5%),
-                 0  1px 0 @color-white;
+    .inset-text(darken(@color-gray, 22.5%));
+
     
     &.number {
     right: 101%;
@@ -752,12 +844,10 @@ article {
 .bubble {
   .rounded(1em);
   .button;
+  .button > .size;
   border: 0;
   position: relative;
-  padding: 0 0.8em;
   display: inline-block;
-  min-height: 1.8em;
-  line-height: 1.8em;
   
   &:not([readonly]):focus {
     .button > .pressed;
