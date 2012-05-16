@@ -1,7 +1,9 @@
 // tools for messages editor
 (function()
 {
-  var autocompleteSettings = 
+  var autocomplete = function(jq)
+  {
+    return $(jq).autocomplete(
        {
          source: CONTACTS,
          position: { 
@@ -10,9 +12,27 @@
            at: "left bottom",
            collision: "none" 
          }
-       };
+       })
+  }
+  var fixWidth = function(input)
+  {
+    input = $(input);
+    var test = $('<div></div>');
+    test.addClass('bubble');
 
-  $(document).ready(function(){ $('.recipients input.new').autocomplete(autocompleteSettings); });
+    test.text(input.val().toString() + (input.is(':focus') ? "—" : ''));
+    test.css({ position: 'absolute', left: -9999, top: -9999 });
+
+    $('body').append(test);
+
+    var targetWidth = test.outerWidth();
+
+    input.css({ width: targetWidth });
+
+    test.remove()
+  }
+
+  $(document).ready(function(){ autocomplete('.recipients input.new'); $('.recipients input').each(function() { fixWidth(this) }) });
 
 
   var tools  =
@@ -21,11 +41,11 @@
 
     , sanitizeNumber: function(text)
       {
-        return text ? ('+' + text.replace(/[^\d]/g, '')) : ''
+        return text ? (text.replace(/[^\d]/g, '')) : ''
       }
     , decorateNumber: function(number)
       {
-        var parts = number.match(/\+(\d+)(\d{3})(\d{3})(\d{2})(\d{2})$/)
+        var parts = number.match(/\+?(\d+)(\d{3})(\d{3})(\d{2})(\d{2})$/)
         return parts && parts[1] && parts[5] ? ('+' + 
                   parts[1] + ' (' +
                     parts[2] + ') ' + 
@@ -45,7 +65,7 @@
 
      input.val(tools.decorateNumber(number));
 
-     input.autocomplete(autocompleteSettings);
+     autocomplete(input);
 
      return input
   }
@@ -118,21 +138,8 @@
   }).live('keydown keyup keyrepeat focus blur change mouseup mouseover', function(event)
   {
     var input = $(this);
+    fixWidth(input);
     modifyAmount(input);
-
-    var test = $('<div></div>');
-    test.addClass('bubble');
-
-    test.text(input.val().toString() + (input.is(':focus') ? "—" : ''));
-    test.css({ position: 'absolute', left: -9999, top: -9999 });
-
-    $('body').append(test);
-
-    var targetWidth = test.outerWidth();
-
-    input.css({ width: targetWidth });
-
-    test.remove()
   }).live('focus', function(event)
   {
     var input = $(this);
