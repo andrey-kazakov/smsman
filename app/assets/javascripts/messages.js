@@ -66,28 +66,28 @@
     $(this).find('input.new').focus();
   })
 
-  $('article.message > div.recipients > input').live('keyup keyrepeat', function(event)
+  $('article.message > div.recipients > input').live('keydown', function(event)
   {
     var input = $(this);
     var value = input.val();
     var caret = input.caret();
-    var allselected = (caret.start == 0 && caret.end == value.length);
+    var allselected = value.length > 0 && (caret.start == 0 && caret.end == value.length);
     var dontmatch;
 
     switch (event.keyCode)
     {
       case 8:  // Backspace
       case 37: // <-
-        if (caret.start == 0 || allselected)
+        if (caret.start == 0 && !allselected)
         {
           //event.preventDefault();
-          input.prev().length && input.prev().focus();
+          input.prev().length && input.prev().focus().caret(/$/);
           input.blur()
         }
         break;
       case 46: // Delete
       case 39: // ->
-        if (caret.end == value.length || allselected)
+        if (caret.end == value.length && !allselected)
         {
           //event.preventDefault();
           input.next().length && input.next().focus().caret({ start: 0, end: 0 });
@@ -115,7 +115,7 @@
 
         input.val(value);
     }
-  }).live('keyup keyrepeat focus blur change mouseup mouseover', function(event)
+  }).live('keydown keyup keyrepeat focus blur change mouseup mouseover', function(event)
   {
     var input = $(this);
     modifyAmount(input);
@@ -128,23 +128,9 @@
 
     $('body').append(test);
 
-    input.attr('data-target-width', test.outerWidth());
+    var targetWidth = test.outerWidth();
 
-    if (input.outerWidth() != test.outerWidth())
-    {
-      var fixWidth = function()
-      {
-        var targetWidth = input.attr('data-target-width');
-
-        input.animate({ width: targetWidth }, 50, function()
-        {
-          if (input.outerWidth() != targetWidth) fixWidth();
-          input.removeAttr('data-target-width');
-        });
-      }
-
-      fixWidth();
-    }
+    input.css({ width: targetWidth });
 
     test.remove()
   }).live('focus', function(event)
@@ -164,7 +150,7 @@
 
     if (!input.val().trim())
     {
-      input[0] && input.remove()
+      input.parent().length && input.remove()
     }
     else
     {
@@ -179,8 +165,11 @@
       {
         modifyAmount(input);
         event.preventDefault();
-        input.focus();
-        input.caret({ start: 0, end: input.val().length });
+        setTimeout(function()
+        {
+          input.focus();
+          input.caret({ start: 0, end: input.val().length });
+        }, 100);
       }
     }
   });
