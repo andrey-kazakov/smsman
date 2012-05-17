@@ -12,7 +12,7 @@
 
     $('body').append(test);
 
-    var targetWidth = test.outerWidth();
+    var targetWidth = test.outerWidth() + 1;
 
     input.css({ width: targetWidth });
 
