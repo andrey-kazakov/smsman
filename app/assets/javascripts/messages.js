@@ -155,7 +155,7 @@
             {
               var number = tools.sanitizeNumber(matches[i]);
 
-              input.parent('div.recipients').find('input#tel' + number).remove();
+              input.parent('div.recipients').find('input#tel' + number).not(input).remove();
 
               var bubble = createInput(number, true).addClass('phone').insertBefore(input);
 
