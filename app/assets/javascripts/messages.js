@@ -1,19 +1,6 @@
 // tools for messages editor
 (function()
 {
-  var autocomplete = function(jq)
-  {
-    return $(jq).autocomplete(
-       {
-         source: CONTACTS,
-         position: { 
-           my : "left top",
-           offset: "-6 -3",
-           at: "left bottom",
-           collision: "none" 
-         }
-       })
-  }
   var fixWidth = function(input)
   {
     input = $(input);
@@ -32,7 +19,7 @@
     test.remove()
   }
 
-  $(document).ready(function(){ autocomplete('.recipients input.new'); setTimeout(function(){ $('.recipients input').each(function() { fixWidth(this) } ) }, 150) });
+  $(document).ready(function(){ setTimeout(function(){ $('.recipients input').each(function() { fixWidth(this) } ) }, 150) });
 
 
   var tools  =
@@ -46,7 +33,6 @@
     , decorateNumber: function(number)
       {
         var parts = number.match(/^\+?(7|38)(\d{1,3})?(\d{1,3})?(\d{1,2})?(\d{1,2})?$/)
-        console.log(parts)
         if (!parts || !parts[1]) return number;
 
         var ret = ('+' + parts[1] + ' (');
@@ -66,12 +52,36 @@
       }
     , decorateValue: function(value)
       {
-        value = value.trim();
-        if (/^\+?(7|38)/.test(value))
-          value = tools.decorateNumber(tools.sanitizeNumber(value))
+        if (/^\+?(7|38)/.test(value.trim()))
+          value = tools.decorateNumber(tools.sanitizeNumber(value.trim()))
         return value;
       }
   }
+
+  var lookupContact = function(text, callback)
+  {
+    text = text.replace(/^\s+/, '');
+
+    if (/^\+?(7|38)/.test(text))
+    {
+      text = tools.sanitizeNumber(text);
+
+      CONTACTS[text] && callback({ name: CONTACTS[text], number: text })
+    }
+    else
+    {
+      for (var number in CONTACTS)
+      {
+        var name = CONTACTS[number];
+
+        if (name.toLowerCase().indexOf(test.toLowerCase()) == 0)
+        {
+          callback({ name: name, number: number })
+        }
+      }
+    }
+  };
+
 
   var createInput = function(number, bubble)
   {
@@ -82,8 +92,6 @@
      input.attr('type', 'text');
 
      input.val(tools.decorateNumber(number));
-
-     autocomplete(input);
 
      fixWidth(input);
 
@@ -147,7 +155,16 @@
             {
               var number = tools.sanitizeNumber(matches[i]);
 
-              createInput(number, true).addClass('phone').insertBefore(input);
+              input.parent('div.recipients').find('input#tel' + number).remove();
+
+              var bubble = createInput(number, true).addClass('phone').insertBefore(input);
+
+              lookupContact(number, function(data)
+              {
+                bubble.removeClass('phone').addClass('contact').val(data.name)
+                fixWidth(bubble)
+              })
+
             }
 
             var lastMatch = matches[matches.length - 1];
@@ -186,6 +203,7 @@
   {
     var input = $(this);
     if (!input.hasClass('bubble')) return;
+    input.removeClass().addClass('bubble');
 
     if (!input.val().trim())
     {
@@ -196,9 +214,19 @@
       var match;
       if (match = input.val().match(tools.phoneRegex))
       {
-        input.attr('id', 'tel' + tools.sanitizeNumber(match[0]));
+        var number = tools.sanitizeNumber(match[0]);
+
+        input.parent('div.recipients').find('input#tel' + number).not(input).remove();
+
+        input.attr('id', 'tel' + number);
         input.addClass('phone');
         modifyAmount(input);
+
+        lookupContact(number, function(data)
+        {
+          input.removeClass('phone').addClass('contact').val(data.name)
+          fixWidth(input)
+        })
       }
       else
       {
