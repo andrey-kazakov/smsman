@@ -99,6 +99,7 @@
 @color-gray: #F3F3F3;
 @color-blue: #0073CD;
 @color-orange: #FF3C00;
+@color-gold: #FFD700;
 @color-red: #EB001E;
 
 @text-padding: 0.4em;
@@ -264,6 +265,9 @@ ol.list {
 
 hr {
   margin: 0.5em 0;
+  height: 0;
+  border-top: rgba(0, 0, 0, 0.33) 1px solid;
+  border-bottom: rgba(255, 255, 255, 0.33) 1px solid;
 }
 
 //// Typography
@@ -603,11 +607,16 @@ nav#top {
 }
 
 .total {
-  background: gold;
+  background: @color-gold;
   margin-bottom: 0;
+  overflow: hidden;
+  @color-gold-light: lighten(@color-gold, 20%);
+  @color-gold-dark:  darken(@color-gold, 10%);
   
   h3 {
-    .inset-text(#E6C200);
+    text-shadow: 0 -1px 0 lighten(@color-gold-dark,  5%),
+                 0  2px 0 @color-gold-light,
+                 0  1px 0 lighten(@color-gold-light, 5%);
     white-space: nowrap;
     margin: @text-padding - 0.2 0 @text-padding 0;
     line-height: 1.2em;
@@ -630,6 +639,8 @@ nav#top {
   hr {
     width: 105%;
     margin-left: -2.5%;
+    border-top-color:    @color-gold-dark;
+    border-bottom-color: @color-gold-light;
   }
   
   .actions {
