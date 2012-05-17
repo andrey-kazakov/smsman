@@ -32,12 +32,12 @@
     test.remove()
   }
 
-  $(document).ready(function(){ autocomplete('.recipients input.new'); $('.recipients input').each(function() { fixWidth(this) }) });
+  $(document).ready(function(){ autocomplete('.recipients input.new'); setTimeout(function(){ $('.recipients input').each(function() { fixWidth(this) } ) }, 150) });
 
 
   var tools  =
   {
-      phoneRegex: /(?:tel:)?\+(7|38)\s*[\(\)]?\d{3,}[\)\(]?\s*\d{3}[-\s]*\d{2}[-\s]*\d{2}/g
+      phoneRegex: /(?:tel:)?\+(7|38)\s*[\(\)]?\d{3}[\)\(]?\s*\d{3}[-\s]*\d{2}[-\s]*\d{2}/g
 
     , sanitizeNumber: function(text)
       {
@@ -45,13 +45,31 @@
       }
     , decorateNumber: function(number)
       {
-        var parts = number.match(/\+?(\d+)(\d{3})(\d{3})(\d{2})(\d{2})$/)
-        return parts && parts[1] && parts[5] ? ('+' + 
-                  parts[1] + ' (' +
-                    parts[2] + ') ' + 
-                      parts[3] + '-' + 
-                        parts[4] + '-' +
-                          parts[5]) : number
+        var parts = number.match(/^\+?(7|38)(\d{1,3})?(\d{1,3})?(\d{1,2})?(\d{1,2})?$/)
+        console.log(parts)
+        if (!parts || !parts[1]) return number;
+
+        var ret = ('+' + parts[1] + ' (');
+
+        if (parts[2]) ret += parts[2];
+        if (parts[2] && parts[2].length == 3) ret += ') ';
+
+        if (parts[3]) ret += parts[3];
+        if (parts[3] && parts[3].length == 3) ret += '-';
+
+        if (parts[4]) ret += parts[4];
+        if (parts[4] && parts[4].length == 2) ret += '-';
+
+        if (parts[5]) ret += parts[5];
+
+        return ret
+      }
+    , decorateValue: function(value)
+      {
+        value = value.trim();
+        if (/^\+?(7|38)/.test(value))
+          value = tools.decorateNumber(tools.sanitizeNumber(value))
+        return value;
       }
   }
 
@@ -66,6 +84,8 @@
      input.val(tools.decorateNumber(number));
 
      autocomplete(input);
+
+     fixWidth(input);
 
      return input
   }
@@ -86,58 +106,70 @@
     $(this).find('input.new').focus();
   })
 
-  $('article.message > div.recipients > input').live('keydown', function(event)
+  $('article.message > div.recipients > input').live('keydown keyup', function(event)
   {
     var input = $(this);
     var value = input.val();
     var caret = input.caret();
     var allselected = value.length > 0 && (caret.start == 0 && caret.end == value.length);
     var dontmatch;
+    var down = event.type == 'keydown';
 
     switch (event.keyCode)
     {
       case 8:  // Backspace
       case 37: // <-
-        if (caret.start == 0 && !allselected)
+        if (caret.start == 0 && !allselected && down)
         {
-          //event.preventDefault();
+          event.preventDefault();
           input.prev().length && input.prev().focus().caret(/$/);
           input.blur()
         }
         break;
       case 46: // Delete
       case 39: // ->
-        if (caret.end == value.length && !allselected)
+        if (caret.end == value.length && !allselected && down)
         {
-          //event.preventDefault();
+          event.preventDefault();
           input.next().length && input.next().focus().caret({ start: 0, end: 0 });
           input.blur()
         }
         break;
-      case 32: // Space
+      case event.keyCode <= 32: // Space
         dontmatch = true;
       default:
-        var matches = value.match(tools.phoneRegex);
-        if (!dontmatch && matches)
+        if (!down)
         {
-          for (var i = 0; i < matches.length; i++)
+          var matches = value.match(tools.phoneRegex);
+          if (!dontmatch && matches)
           {
-            var number = tools.sanitizeNumber(matches[i]);
+            for (var i = 0; i < matches.length; i++)
+            {
+              var number = tools.sanitizeNumber(matches[i]);
 
-            createInput(number, true).addClass('phone').insertBefore(input);
-            modifyAmount(input);
+              createInput(number, true).addClass('phone').insertBefore(input);
+            }
+
+            var lastMatch = matches[matches.length - 1];
+
+            value = value.substr(value.lastIndexOf(lastMatch) + lastMatch.length);
+            if (input.val() != value) input.val(value.trim());
           }
-
-          var lastMatch = matches[matches.length - 1];
-
-          value = value.substr(value.lastIndexOf(lastMatch) + lastMatch.length);
         }
-
-        input.val(value);
+        
+        if (caret.end == input.val().length)
+        {
+          value = tools.decorateValue(value)
+          input.val(value);
+        }
     }
-  }).live('keydown keyup keyrepeat focus blur change mouseup mouseover', function(event)
+
+    fixWidth(input);
+    modifyAmount(input);
+  }).live('keyrepeat focus blur change', function(event)
   {
     var input = $(this);
+
     fixWidth(input);
     modifyAmount(input);
   }).live('focus', function(event)
@@ -146,7 +178,7 @@
     if (!input.hasClass('bubble')) return;
 
     input.removeClass().addClass('bubble');
-    input.val(tools.decorateNumber(tools.sanitizeNumber(input.attr('id'))));
+    input.val(tools.decorateValue(input.attr('id') ? input.attr('id').replace(/^tel/, '+') : input.val()));
 
     input.trigger('change');
 
@@ -164,9 +196,9 @@
       var match;
       if (match = input.val().match(tools.phoneRegex))
       {
-        modifyAmount(input);
         input.attr('id', 'tel' + tools.sanitizeNumber(match[0]));
         input.addClass('phone');
+        modifyAmount(input);
       }
       else
       {
