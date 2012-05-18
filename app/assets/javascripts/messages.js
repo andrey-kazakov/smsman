@@ -12,7 +12,7 @@
 
     $('body').append(test);
 
-    var targetWidth = test.outerWidth() + 1;
+    var targetWidth = test.outerWidth() + 2;
 
     input.css({ width: targetWidth });
 
@@ -76,7 +76,7 @@
 
         if (name.toLowerCase().indexOf(test.toLowerCase()) == 0)
         {
-          callback({ name: name, number: number })
+          callback({ name: name, number: number, length: text.length })
         }
       }
     }
@@ -143,7 +143,16 @@
           input.blur()
         }
         break;
-      case event.keyCode <= 32: // Space
+      case 36:
+        input.caret({ start: 0, end: 0});
+        break;
+      case 35:
+        input.caret({ start: value.length, end: value.length });
+        break;
+      case event.charCode < 32: // do all service keys like default
+        event.preventDefault();
+        break;
+      case event.keyCode <= 32:
         dontmatch = true;
       default:
         if (!down)
@@ -185,10 +194,7 @@
     modifyAmount(input);
   }).live('keyrepeat focus blur change', function(event)
   {
-    var input = $(this);
-
-    fixWidth(input);
-    modifyAmount(input);
+    fixWidth(this);
   }).live('focus', function(event)
   {
     var input = $(this);
@@ -197,13 +203,11 @@
     input.removeClass().addClass('bubble');
     input.val(tools.decorateValue(input.attr('id') ? input.attr('id').replace(/^tel/, '+') : input.val()));
 
-    input.trigger('change');
-
+    fixWidth(this);
   }).live('blur', function(event)
   {
     var input = $(this);
     if (!input.hasClass('bubble')) return;
-    input.removeClass().addClass('bubble');
 
     if (!input.val().trim())
     {
@@ -228,7 +232,7 @@
           fixWidth(input)
         })
       }
-      else
+      else if (!input.hasClass('contact'))
       {
         modifyAmount(input);
         event.preventDefault();
