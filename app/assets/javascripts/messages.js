@@ -111,7 +111,16 @@
     if (tagName == 'input') return;
     
     event.preventDefault();
-    $(this).find('input.new').focus();
+
+    var div = $(this);
+    var input = div.find('input.new');
+
+    if (!input.length)
+    {
+      input = createInput('', false).appendTo(div.empty());
+    }
+
+    input.focus();
   })
 
   $('article.message > div.recipients > input').live('keydown keyup', function(event)
@@ -130,7 +139,7 @@
         if (caret.start == 0 && !allselected && down)
         {
           event.preventDefault();
-          input.prev().length && input.prev().focus().caret(/$/);
+          (input.prev().length ? input.prev() : input.parent('div').find('input.new')).focus().caret(/$/);
           input.blur()
         }
         break;
@@ -139,7 +148,7 @@
         if (caret.end == value.length && !allselected && down)
         {
           event.preventDefault();
-          input.next().length && input.next().focus().caret({ start: 0, end: 0 });
+          (input.next().length ? input.next() : input.parent('div').find('input:first')).focus().caret({ start: 0, end: 0 });
           input.blur()
         }
         break;
@@ -207,7 +216,15 @@
   }).live('blur', function(event)
   {
     var input = $(this);
-    if (!input.hasClass('bubble')) return;
+    if (!input.hasClass('bubble'))
+    {
+      if (!input.val().trim() && !input.prev().length && !input.next().length)
+      {
+        $('<span class="placeholder">Получатели…</span>').insertAfter(input);
+        input.remove();
+      }
+      return;
+    }
 
     if (!input.val().trim())
     {
