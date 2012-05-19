@@ -80,7 +80,7 @@
 
     article.removeClass('new')
 
-    area.attr('placeholer', 'Текст сообщения…');
+    area.attr('placeholder', 'Текст сообщения…');
 
     $('<div class="recipients"><span class="placeholder">Получатели…</span></div>').appendTo(article);
     $('<h1 class="bold amount">0</h1>').appendTo(article);
