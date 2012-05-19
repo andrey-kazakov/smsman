@@ -61,7 +61,7 @@
   -ms-interpolation-mode: nearest-neighbor;
 }
 
-.clearfix() {
+.clearfixed() {
   
   &:after {
     content: ".";
@@ -247,8 +247,8 @@ ol.list {
   float: right;
 }
 
-.clearfix:after {
-  .clearfix;
+.clearfix {
+  .clearfixed;
 }
 
 * html .clearfix {
@@ -872,7 +872,7 @@ article {
     margin-top: 0.4em;
     padding: 0 0.2em 0;
     .fix-spaces;
-    .clearfix;
+    .clearfixed;
     
     .bubble, input[type=text], .placeholder {
       padding: 0 0.8em;
