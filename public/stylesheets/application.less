@@ -28,10 +28,10 @@
   border-bottom: solid 1px @bottom-color;
 }
 
-.transition(@duration:0.2s, @ease:ease-out) {
-  -webkit-transition: all @duration @ease;
-  -moz-transition: all @duration @ease;
-  transition: all @duration @ease;
+.transition(@what: all, @duration:0.2s, @ease:ease-out) {
+  -webkit-transition: @what @duration @ease;
+  -moz-transition: @what @duration @ease;
+  transition: @what @duration @ease;
 }
 
 .rounded(@radius) {
@@ -510,7 +510,6 @@ nav#top {
   ul {
     margin: 0 auto;
     top: 0;
-    white-space: nowrap;
     
     &.float-right {
       margin-right: -0.4em;
@@ -725,7 +724,7 @@ nav#top {
       color: @color-white;
       @color-start: lighten(@color-blue, 10%);
       @color-stop:  darken(@color-blue, 10%);
-      .gradient(@color-start, @color-stop, @color-start);
+      .gradient(#0064C8, @color-stop, @color-start);
       border: 0;
       cursor: pointer;
       margin: 0.4em 0;
@@ -746,7 +745,7 @@ nav#top {
       &:hover {
         @color-start: lighten(@color-blue, 25%);
         @color-stop:  darken(@color-blue, 15%);
-        .gradient(@color-start, @color-stop, @color-start);
+        .gradient(#2378B9, @color-stop, @color-start);
         box-shadow:       0  3px 9px rgba(0, 0, 0, 0.20),
                           0  2px 4px rgba(0, 0, 0, 0.20),
                           0  1px 1px rgba(0, 0, 0, 0.20),
@@ -758,7 +757,7 @@ nav#top {
       &:active {
         @color-start: lighten(@color-blue, 10%);
         @color-stop:  darken(@color-blue, 10%);
-        .gradient(@color-stop, @color-start, @color-stop);
+        .gradient(#2873B9, @color-start, @color-stop);
         @color-inset-top: lighten(@color-blue, 22%);
         @color-inset-bottom:  darken(@color-blue, 22%);
         .inset-text(@color-inset-top, @color-inset-bottom);
@@ -975,7 +974,7 @@ article {
 footer {
   padding: 0.5em 0 0.5em;
   opacity: 0.5;
-  .transition(0.5s, ease);
+  .transition(all, 0.5s, ease);
   
   &:hover {
     opacity: 1;
@@ -1002,6 +1001,7 @@ footer {
   border: 0;
   position: relative;
   display: inline-block;
+  .transition(width, 0.125s, ease-out);
   
   &:not([readonly]):focus {
     .button > .pressed;
