@@ -1,6 +1,97 @@
 // tools for messages editor
 (function()
 {
+  var typoNumber = function(number, to)
+  {
+    to = $(to).empty();
+    number = number.toString();
+
+    while (number)
+    {
+      var part = number.substr(-3);
+      number = number.substr(0, number.length - 3);
+
+      to.prepend(part);
+      if (number) to.prepend($('<span/>').addClass('thinsp').text(' '))
+    }
+  }
+
+  // working w/ whole messages
+
+  var messagesSelector = 'section.wrapper > article.message:not(.new)'
+
+  var countMessages = function()
+  {
+    return $(messagesSelector).length
+  }
+
+  var countPrefixNumbers = function(prefix)
+  {
+    return $(messagesSelector).find('div.recipients').find('input.bubble.contact, input.bubble.phone').filter(function() { return this.getAttribute('id').indexOf('tel' + prefix) == 0 }).length
+  }
+
+  var setSendingCounts = function()
+  {
+    var prefixes = ['7', '38'];
+    for (var i = 0; i < prefixes.length; i++)
+    {
+      var prefix = prefixes[i];
+
+      typoNumber(countPrefixNumbers(prefix), '#sending_' + prefix)
+    }
+  }
+
+  $(document).bind('click', function(event)
+  {
+    var i = 0, wasRemoval;
+
+    $(messagesSelector).each(function()
+    {
+      i++;
+      var article = $(this) //.parents('article');
+      if (wasRemoval) article.find('h1.number').text(i);
+
+      if (article.find('textarea').val().trim()) return;
+
+      if (article.find(':focus').length) return;
+
+      if (article.find('div.recipients').find('input').length) return;
+
+      article.remove();
+      i--;
+      wasRemoval = true;
+    });
+  });
+
+  $('section.wrapper > article.message.new > textarea').live('focus', function(event)
+  {
+    // try to find some empty message first
+    var other = $(messagesSelector).filter(function() { var a = $(this); return a.find('div.recipients > span.placeholder').length && /^\s*$/.test(a.find('textarea').val()) })
+    if (other.length)
+    {
+      other.find('textarea').focus();
+      return
+    }
+
+    var area = $(this);
+    var article = area.parent('article');
+
+    article.clone().hide().insertAfter(article).show('slowly');
+
+    article.removeClass('new')
+
+    area.attr('placeholer', 'Текст сообщения…');
+
+    $('<div class="recipients"><span class="placeholder">Получатели…</span></div>').appendTo(article);
+    $('<h1 class="bold amount">0</h1>').appendTo(article);
+
+    $('<h1 class="bold number"></h1>').text(countMessages()).insertBefore(area);
+  });
+
+
+
+  // working w/ recipients
+
   var fixWidth = function(input)
   {
     input = $(input);
@@ -101,6 +192,8 @@
   {
     var amount = where.parents('article.message').find('h1.amount');
     amount.text(where.parent('div.recipients').find('input.phone, input.contact').size());
+
+    setSendingCounts();
   }
 
   $('article.message > div.recipients').live('click', function(event)
@@ -213,6 +306,7 @@
     input.val(tools.decorateValue(input.attr('id') ? input.attr('id').replace(/^tel/, '+') : input.val()));
 
     fixWidth(this);
+    modifyAmount(input);
   }).live('blur', function(event)
   {
     var input = $(this);
