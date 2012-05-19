@@ -61,6 +61,17 @@
   -ms-interpolation-mode: nearest-neighbor;
 }
 
+.clearfix() {
+  
+  &:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+  }
+}
+
 .placeholder {
   font-style: italic;
   color: darken(@color-gray, 33%);
@@ -237,11 +248,7 @@ ol.list {
 }
 
 .clearfix:after {
-  content: ".";
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
+  .clearfix;
 }
 
 * html .clearfix {
@@ -803,6 +810,22 @@ nav#top {
   .gradient(@color-blue-light, @color-start, @color-stop);
 }
 
+//// Bubbles
+
+.bubble {
+  .rounded(1em);
+  .button;
+  .button > .size;
+  border: 0;
+  position: relative;
+  display: block;
+  .transition(width, 0.125s, ease-out);
+  
+  &:not([readonly]):focus {
+    .button > .pressed;
+  }
+}
+
 article {
   @new-color: @color-gray-light;
   margin-bottom: 1em;
@@ -849,10 +872,12 @@ article {
     margin-top: 0.4em;
     padding: 0 0.2em 0;
     .fix-spaces;
+    .clearfix;
     
     .bubble, input[type=text], .placeholder {
       padding: 0 0.8em;
-      display: inline-block;
+      display: block;
+      float: left;
       margin: 0.2em;
       line-height: 1.8em;
       min-height: 1.8em;
@@ -993,22 +1018,6 @@ footer {
       display: inline-block;
       margin-right: 0.19em + 0.5;
     }
-  }
-}
-
-//// Bubbles
-
-.bubble {
-  .rounded(1em);
-  .button;
-  .button > .size;
-  border: 0;
-  position: relative;
-  display: inline-block;
-  .transition(width, 0.125s, ease-out);
-  
-  &:not([readonly]):focus {
-    .button > .pressed;
   }
 }
 
