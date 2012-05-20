@@ -555,12 +555,20 @@ nav#top {
           @new-color: lighten(@color-blue, 20%);
           color: @color-white;
           background: @new-color;
-          text-shadow: darken(@color-blue, 15%) 0 0.5px 1px;
+          text-shadow: darken(@color-orange, 15%) 0 0.5px 1px;
           .rounded(1em);
           .button > .pressed;
           
+          u {
+            border-bottom: 0;
+          }
+          
           &#buy-more {
-            background: black;
+            @color-start: lighten(@color-orange, 1.5%);
+            @color-stop:  darken(@color-orange, 7.5%);
+            .gradient(@color-gray, @color-start, @color-stop);
+            text-shadow: darken(@color-orange, 15%) 0 -1px 0,
+                        lighten(@color-orange, 35%) 0  1px 0;
           }
         }
       }
