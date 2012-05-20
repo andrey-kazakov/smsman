@@ -8,7 +8,7 @@
 
 .gradient(@color: #F5F5F5, @start: #EEE, @stop: #FFF) {
   background: @color;
-  background: -webkit-gradient(linear,
+  background: -weightbkit-gradient(linear,
                                left bottom,
                                left top,
                                color-stop(0, @start),
@@ -522,10 +522,6 @@ nav#top {
     margin: 0 auto;
     top: 0;
     
-    &.float-right {
-      margin-right: -0.4em;
-    }
-    
     li {
       display: inline-block;
       padding: 0.4em 0;
@@ -533,10 +529,8 @@ nav#top {
       a {
         display: inline-block;
         padding: 0 0.8em;
-      }
-      
-      &:hover {
-        a:hover {
+        
+        &:hover {
           @color-start: lighten(@color-gray, 1.5%);
           @color-stop:  darken(@color-gray, 7.5%);
           .gradient(@color-gray, @color-stop, @color-start);
@@ -551,22 +545,23 @@ nav#top {
           }
         }
         
-        a:active {
+        &:active {
           text-shadow: darken(@color-orange, 7.5%) 0 0.5px 0;
           .rounded(1em);
           .button > .pressed;
         }
-      }
-      
-      &.active, &.active:hover {
         
-        a {
+        &.active, &.active:hover {
           @new-color: lighten(@color-blue, 20%);
           color: @color-white;
           background: @new-color;
           text-shadow: darken(@color-blue, 15%) 0 0.5px 1px;
           .rounded(1em);
           .button > .pressed;
+          
+          &#buy-more {
+            background: black;
+          }
         }
       }
     }
@@ -583,6 +578,7 @@ nav#top {
     }
     
     &.float-right {
+      margin-right: -0.4em;
       
       li {
         margin-left: 0.4em;
