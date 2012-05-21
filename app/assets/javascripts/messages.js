@@ -116,7 +116,16 @@
   var tools  =
   {
       phoneRegex: /(?:tel:)?\+(7|38)\s*[\(\)]?\d{3}[\)\(]?\s*\d{3}[-\s]*\d{2}[-\s]*\d{2}/g
+    , wannaBeAPhoneRegex: /^\+?(7|38)/
 
+    , ltrim: function(text)
+      {
+        return(text = text.replace(/^\s+/, ''))
+      }
+    , wannaBeAPhone: function(text)
+      {
+        return tools.wannaBeAPhoneRegex.test(text)
+      }
     , sanitizeNumber: function(text)
       {
         return text ? (text.replace(/[^\d]/g, '')) : ''
@@ -143,8 +152,9 @@
       }
     , decorateValue: function(value)
       {
-        if (/^\+?(7|38)/.test(value.trim()))
-          value = tools.decorateNumber(tools.sanitizeNumber(value.trim()))
+        value = tools.ltrim(value);
+        if (tools.wannaBeAPhone(value))
+          value = tools.decorateNumber(tools.sanitizeNumber(value));
         return value;
       }
   }
@@ -165,9 +175,10 @@
       {
         var name = CONTACTS[number];
 
-        if (name.toLowerCase().indexOf(test.toLowerCase()) == 0)
+        if (name.toLowerCase().indexOf(text.toLowerCase()) == 0)
         {
-          callback({ name: name, number: number, length: text.length })
+          callback({ name: name, number: number, suggestion_start: text.length })
+          return
         }
       }
     }
@@ -221,7 +232,14 @@
     var input = $(this);
     var value = input.val();
     var caret = input.caret();
-    var allselected = value.length > 0 && (caret.start == 0 && caret.end == value.length);
+
+    var notEmpty = value.length > 0
+
+    var caretAtStart = caret.start == 0, 
+        caretAtEnd   = caret.end == value.length;
+
+    var allSelected  =  notEmpty && caretAtStart && caretAtEnd;
+
     var dontmatch;
     var down = event.type == 'keydown';
 
@@ -229,7 +247,7 @@
     {
       case 8:  // Backspace
       case 37: // <-
-        if (caret.start == 0 && !allselected && down)
+        if (caretAtStart && !allSelected && down)
         {
           event.preventDefault();
           (input.prev().length ? input.prev() : input.parent('div').find('input.new')).focus().caret(/$/);
@@ -238,7 +256,7 @@
         break;
       case 46: // Delete
       case 39: // ->
-        if (caret.end == value.length && !allselected && down)
+        if (caretAtEnd && !allSelected && down)
         {
           event.preventDefault();
           (input.next().length ? input.next() : input.parent('div').find('input:first')).focus().caret({ start: 0, end: 0 });
@@ -281,14 +299,40 @@
             var lastMatch = matches[matches.length - 1];
 
             value = value.substr(value.lastIndexOf(lastMatch) + lastMatch.length);
-            if (input.val() != value) input.val(value.trim());
           }
         }
         
-        if (caret.end == input.val().length)
+        if (caretAtEnd)
         {
-          value = tools.decorateValue(value)
-          input.val(value);
+          value = tools.decorateValue(value);
+
+          var autocomplete = input.attr('data-autocomplete');
+          var currentSuggestionStart = parseInt(input.attr('data-suggestion-start'));
+
+          // autocomplete shit
+          if (!down && notEmpty && !tools.wannaBeAPhone(value))
+          {
+              console.log(autocomplete, currentSuggestionStart, caret.start)
+            if (autocomplete && currentSuggestionStart != caret.start)
+            {
+              //
+            }
+
+            lookupContact(value, function(data)
+            {
+              input.attr('id', 'tel' + data.number);
+              input.val(data.name);
+
+              input.attr('data-autocomplete', data.name);
+
+              input.attr('data-suggestion-start', data.suggestion_start);
+              input.caret({ start: data.suggestion_start, end: data.name.length });
+            })
+          }
+          else
+          {
+            if (input.val() != value) input.val(value.trim());
+          }
         }
     }
 
