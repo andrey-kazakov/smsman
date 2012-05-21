@@ -78,10 +78,10 @@
 }
 
 .button() {
-    box-shadow: 0  1px 3px rgba(0, 0, 0, 0.15),
-          inset 0 -1px 0px rgba(0, 0, 0, 0.1),
-          inset 0  2px 0   rgba(255, 255, 255, 0.15),
-          inset 0  1px 0   rgba(255, 255, 255, 0.45);
+  box-shadow: 0  1px 3px rgba(0, 0, 0, 0.15),
+        inset 0 -1px 0px rgba(0, 0, 0, 0.1),
+        inset 0  2px 0   rgba(255, 255, 255, 0.15),
+        inset 0  1px 0   rgba(255, 255, 255, 0.45);
   
   .pressed() {
     box-shadow: inset 0 1px 0px rgba(0, 0, 0, 0.15),
@@ -139,7 +139,7 @@
 body {
   padding: 0 @padding-global;
   margin: 0;
-  background: url("/assets/background.gif");
+  background: url("/assets/background.gif") center center @color-gray;
   font-size: @font-size;
   line-height: @line-height;
   font-family: @font-family;
@@ -546,7 +546,7 @@ nav#top {
         }
         
         &:active {
-          text-shadow: darken(@color-orange, 7.5%) 0 0.5px 0;
+          .inset-text(hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.15), @color-white);
           .rounded(1em);
           .button > .pressed;
         }
@@ -555,20 +555,47 @@ nav#top {
           @new-color: lighten(@color-blue, 20%);
           color: @color-white;
           background: @new-color;
-          text-shadow: darken(@color-orange, 15%) 0 0.5px 1px;
+          .inset-text(hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30), hsla(hue(@color-white), saturation(@color-white), lightness(@color-white), 0.66));
           .rounded(1em);
           .button > .pressed;
           
           u {
-            border-bottom: 0;
+            border-bottom-style: none;
           }
           
           &#buy-more {
             @color-start: lighten(@color-orange, 1.5%);
             @color-stop:  darken(@color-orange, 7.5%);
             .gradient(@color-gray, @color-start, @color-stop);
-            text-shadow: darken(@color-orange, 15%) 0 -1px 0,
-                        lighten(@color-orange, 35%) 0  1px 0;
+            .inset-text(hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30), hsla(hue(@color-white), saturation(@color-white), lightness(@color-white), 0.66));
+          }
+          
+          &#toggleContacts {
+            background: transparent;
+            
+            u {
+              border-bottom-style: dashed;
+            }
+            
+            &.active {
+              color: @color-blue;
+              .inset-text(hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.15), @color-white);
+              
+              &:hover {
+                color: @color-orange;
+                @color-start: lighten(@color-gray, 0.75%);
+                @color-stop:  darken(@color-gray, 3.25%);
+                .gradient(@color-gray, @color-start, @color-stop);
+                
+                &:active {
+                  @color-start: lighten(@color-gray, 0.75%);
+                  @color-stop:  darken(@color-gray, 3.25%);
+                  .gradient(@color-gray, @color-stop, @color-start);
+                  .button;
+                  text-shadow: none;
+                }
+              }
+            }
           }
         }
       }
@@ -822,11 +849,13 @@ nav#top {
   .button > .size;
   border: 0;
   position: relative;
+  cursor: pointer;
   display: block;
   .transition(width, 0.125s, ease-out);
   
   &:not([readonly]):focus {
     .button > .pressed;
+    cursor: text;
   }
 }
 
@@ -875,6 +904,7 @@ article {
     .border-box;
     margin-top: 0.4em;
     padding: 0 0.2em 0;
+    cursor: text;
     .fix-spaces;
     .clearfixed;
     
