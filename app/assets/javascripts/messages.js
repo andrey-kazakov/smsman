@@ -159,7 +159,7 @@
       }
   }
 
-  var lookupContact = function(text, callback, shift)
+  var lookupContact = function(text, shift)
   {
     text = text.replace(/^\s+/, '');
     if (!text) return;
@@ -170,7 +170,7 @@
     {
       text = tools.sanitizeNumber(text);
 
-      CONTACTS[text] && callback({ name: CONTACTS[text], number: text })
+      return CONTACTS[text] ? { name: CONTACTS[text], number: text } : null
     }
     else
     {
@@ -184,7 +184,7 @@
         {
           if (i == 0)
           {
-            callback({ name: name, number: number, suggestion_start: text.length, suggestion_index: shift });
+            return { name: name, number: number, suggestion_start: text.length, suggestion_index: shift }
           }
 
           i++;
@@ -192,6 +192,7 @@
           if (i > 0) break;
         }
       }
+      return null
     }
   };
 
@@ -260,17 +261,17 @@
 
     var doContactLookup = function(input, value, shift)
     {
-      lookupContact(value, function(data)
-      {
-        input.attr('id', 'tel' + data.number);
-        input.val(data.name);
+      var data = lookupContact(value, shift);
+      if (!data) return;
 
-        input.attr('data-autocomplete', data.name);
-        input.attr('data-suggestion-start', data.suggestion_start);
-        input.attr('data-suggestion-index', data.suggestion_index);
+      input.attr('id', 'tel' + data.number);
+      input.val(data.name);
 
-        input.caret({ start: data.suggestion_start, end: data.name.length });
-      }, shift)
+      input.attr('data-autocomplete', data.name);
+      input.attr('data-suggestion-index', data.suggestion_index);
+      input.attr('data-suggestion-start', data.suggestion_start);
+
+      input.caret({ start: data.suggestion_start, end: data.name.length });
     }
 
     switch (event.keyCode)
@@ -331,11 +332,12 @@
 
               var bubble = createInput(number, true).addClass('phone').insertBefore(input);
 
-              lookupContact(number, function(data)
+              var data = lookupContact(number);
+              if (data)
               {
                 bubble.removeClass('phone').addClass('contact').val(data.name)
                 fixWidth(bubble)
-              })
+              }
 
             }
 
@@ -411,11 +413,12 @@
         input.addClass('phone');
         modifyAmount(input);
 
-        lookupContact(number, function(data)
+        var data = lookupContact(number);
+        if (data)
         {
           input.removeClass('phone').addClass('contact').val(data.name)
           fixWidth(input)
-        })
+        }
       }
       else if (!input.hasClass('contact'))
       {
