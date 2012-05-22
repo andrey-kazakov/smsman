@@ -159,10 +159,12 @@
       }
   }
 
-  var lookupContact = function(text, callback)
+  var lookupContact = function(text, callback, shift)
   {
     text = text.replace(/^\s+/, '');
     if (!text) return;
+
+    shift = shift || 0; 
 
     if (/^\+?(7|38)/.test(text))
     {
@@ -172,14 +174,22 @@
     }
     else
     {
+      var i = -shift;
+
       for (var number in CONTACTS)
       {
         var name = CONTACTS[number];
 
-        if (name.toLowerCase().indexOf(text.toLowerCase()) == 0)
+        if (name && name.toLowerCase().indexOf(text.toLowerCase()) == 0)
         {
-          callback({ name: name, number: number, suggestion_start: text.length })
-          return
+          if (i == 0)
+          {
+            callback({ name: name, number: number, suggestion_start: text.length, suggestion_index: shift });
+          }
+
+          i++;
+
+          if (i > 0) break;
         }
       }
     }
@@ -244,6 +254,25 @@
     var dontmatch;
     var down = event.type == 'keydown';
 
+    var autocomplete = input.attr('data-autocomplete');
+    var currentSuggestionStart = parseInt(input.attr('data-suggestion-start')) || 0;
+    var currentSuggestionIndex = parseInt(input.attr('data-suggestion-index')) || 0;
+
+    var doContactLookup = function(input, value, shift)
+    {
+      lookupContact(value, function(data)
+      {
+        input.attr('id', 'tel' + data.number);
+        input.val(data.name);
+
+        input.attr('data-autocomplete', data.name);
+        input.attr('data-suggestion-start', data.suggestion_start);
+        input.attr('data-suggestion-index', data.suggestion_index);
+
+        input.caret({ start: data.suggestion_start, end: data.name.length });
+      }, shift)
+    }
+
     switch (event.keyCode)
     {
       case 8:  // Backspace
@@ -264,15 +293,28 @@
           input.blur()
         }
         break;
-      case 36:
+      case 36: // Home
         input.caret({ start: 0, end: 0});
         break;
-      case 35:
+      case 35: // End
         input.caret({ start: value.length, end: value.length });
         break;
       case event.charCode < 32: // do all service keys like default
         event.preventDefault();
-        break;
+      case  9: // Tab
+        if (down)
+        {
+          event.preventDefault();
+
+          if (event.shiftKey)
+            currentSuggestionIndex--;
+          else
+            currentSuggestionIndex++;
+
+          input.attr('data-suggestion-index', currentSuggestionIndex);
+
+          break;
+        }
       case event.keyCode <= 32:
         dontmatch = true;
       default:
@@ -307,30 +349,18 @@
         {
           value = tools.decorateValue(value);
 
-          var autocomplete = input.attr('data-autocomplete');
-          var currentSuggestionStart = parseInt(input.attr('data-suggestion-start'));
-
           // autocomplete shit
           if (!down && notEmpty && !tools.wannaBeAPhone(value))
           {
             value = value.substr(0, caret.start);
-            console.log(caret.start, value)
 
             if (autocomplete && currentSuggestionStart != caret.start)
             {
               input.caret({ start: currentSuggestionStart, end: autocomplete.length });
             }
 
-            lookupContact(value, function(data)
-            {
-              input.attr('id', 'tel' + data.number);
-              input.val(data.name);
+            doContactLookup(input, value, currentSuggestionIndex)
 
-              input.attr('data-autocomplete', data.name);
-
-              input.attr('data-suggestion-start', data.suggestion_start);
-              input.caret({ start: data.suggestion_start, end: data.name.length });
-            })
           }
           else
           {
