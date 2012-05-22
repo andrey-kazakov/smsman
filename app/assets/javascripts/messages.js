@@ -348,6 +348,7 @@
         if (caretAtEnd)
         {
           value = tools.decorateValue(value);
+          if (input.val() != value) input.val(tools.ltrim(value));
 
           // autocomplete shit
           if (!down && notEmpty && !tools.wannaBeAPhone(value))
@@ -361,10 +362,6 @@
 
             doContactLookup(input, value, currentSuggestionIndex)
 
-          }
-          else
-          {
-            if (input.val() != value) input.val(value.trim());
           }
         }
     }
