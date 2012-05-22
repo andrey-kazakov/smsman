@@ -313,7 +313,9 @@
           // autocomplete shit
           if (!down && notEmpty && !tools.wannaBeAPhone(value))
           {
-              console.log(autocomplete, currentSuggestionStart, caret.start)
+            value = value.substr(0, caret.start);
+            console.log(caret.start, value)
+
             if (autocomplete && currentSuggestionStart != caret.start)
             {
               input.caret({ start: currentSuggestionStart, end: autocomplete.length });
