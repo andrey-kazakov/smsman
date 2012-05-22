@@ -162,6 +162,7 @@
   var lookupContact = function(text, callback)
   {
     text = text.replace(/^\s+/, '');
+    if (!text) return;
 
     if (/^\+?(7|38)/.test(text))
     {
@@ -315,7 +316,7 @@
               console.log(autocomplete, currentSuggestionStart, caret.start)
             if (autocomplete && currentSuggestionStart != caret.start)
             {
-              //
+              input.caret({ start: currentSuggestionStart, end: autocomplete.length });
             }
 
             lookupContact(value, function(data)
