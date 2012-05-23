@@ -166,15 +166,15 @@
 
     shift = shift || 0; 
 
-    if (/^\+?(7|38)/.test(text))
+    if (tools.wannaBeAPhoneRegex.test(text))
     {
       text = tools.sanitizeNumber(text);
 
-      return CONTACTS[text] ? { name: CONTACTS[text], number: text } : null
+      return { name: CONTACTS[text], number: text }
     }
     else
     {
-      var i = -shift;
+      var matches = [];
 
       for (var number in CONTACTS)
       {
@@ -182,17 +182,26 @@
 
         if (name && name.toLowerCase().indexOf(text.toLowerCase()) == 0)
         {
-          if (i == 0)
-          {
-            return { name: name, number: number, suggestion_start: text.length, suggestion_index: shift }
-          }
-
-          i++;
-
-          if (i > 0) break;
+          matches.push({ name: name, number: number })
         }
       }
-      return null
+
+      shift %= matches.length;
+      if (shift < 0) shift = matches.length + shift;
+
+      var ret = matches[shift];
+      if (ret)
+      {
+        ret.suggestion_start = text.length;
+        ret.suggestion_index = shift;
+        ret.suggestions_count = matches.length;
+
+        return ret
+      }
+      else
+      {
+        return null
+      }
     }
   };
 
@@ -259,26 +268,48 @@
     var currentSuggestionStart = parseInt(input.attr('data-suggestion-start')) || 0;
     var currentSuggestionIndex = parseInt(input.attr('data-suggestion-index')) || 0;
 
-    var doContactLookup = function(input, value, shift)
+    var doSuggestionLookup = function(input, value)
     {
+      var shift = input.attr('data-suggestion-index') || 0;
+
       var data = lookupContact(value, shift);
       if (!data) return;
 
-      input.attr('id', 'tel' + data.number);
-      input.val(data.name);
+      input.attr('id', 'tel' + data.number).
 
-      input.attr('data-autocomplete', data.name);
-      input.attr('data-suggestion-index', data.suggestion_index);
-      input.attr('data-suggestion-start', data.suggestion_start);
+        val(data.name).
 
-      input.caret({ start: data.suggestion_start, end: data.name.length });
+        attr('data-autocomplete', data.name).
+        attr('data-suggestion-index', data.suggestion_index).
+        attr('data-suggestion-start', data.suggestion_start).
+
+        caret({ start: data.suggestion_start, end: data.name.length });
+
+      if (input.hasClass('new'))
+      {
+        input.removeClass('new').addClass('bubble');
+        createInput('', false).insertAfter(input);
+      }
+    }
+    var removeAutocomplete = function(input, dropSuggestion)
+    {
+      input.removeAttr('data-autocomplete').
+        removeAttr('data-suggestion-index').
+        removeAttr('data-suggestion-start');
+
+      if (dropSuggestion) input.val(input.val().substr(0, input.caret().start));
     }
 
     switch (event.keyCode)
     {
       case 8:  // Backspace
       case 37: // <-
-        if (caretAtStart && !allSelected && down)
+        if (down && autocomplete)
+        {
+          event.preventDefault();
+          removeAutocomplete(input, true)
+        }
+        else if (caretAtStart && !allSelected && down)
         {
           event.preventDefault();
           (input.prev().length ? input.prev() : input.parent('div').find('input.new')).focus().caret(/$/);
@@ -287,6 +318,10 @@
         break;
       case 46: // Delete
       case 39: // ->
+        if (down && autocomplete)
+        {
+          event.preventDefault();
+        }
         if (caretAtEnd && !allSelected && down)
         {
           event.preventDefault();
@@ -303,7 +338,7 @@
       case event.charCode < 32: // do all service keys like default
         event.preventDefault();
       case  9: // Tab
-        if (down)
+        if (down && autocomplete)
         {
           event.preventDefault();
 
@@ -333,7 +368,7 @@
               var bubble = createInput(number, true).addClass('phone').insertBefore(input);
 
               var data = lookupContact(number);
-              if (data)
+              if (data.name)
               {
                 bubble.removeClass('phone').addClass('contact').val(data.name)
                 fixWidth(bubble)
@@ -362,7 +397,12 @@
               input.caret({ start: currentSuggestionStart, end: autocomplete.length });
             }
 
-            doContactLookup(input, value, currentSuggestionIndex)
+            if (autocomplete)
+            {
+              if (autocomplete.substr(0, caret.start) != input.val().substr(0, caret.start)) removeAutocomplete(input)
+            }
+
+            doSuggestionLookup(input, value)
 
           }
         }
@@ -402,10 +442,10 @@
     }
     else
     {
-      var match;
-      if (match = input.val().match(tools.phoneRegex))
+      var contact;
+      if (contact = lookupContact(input.val()))
       {
-        var number = tools.sanitizeNumber(match[0]);
+        var number = contact.number;
 
         input.parent('div.recipients').find('input#tel' + number).not(input).remove();
 
@@ -413,12 +453,11 @@
         input.addClass('phone');
         modifyAmount(input);
 
-        var data = lookupContact(number);
-        if (data)
+        if (contact.name)
         {
-          input.removeClass('phone').addClass('contact').val(data.name)
-          fixWidth(input)
+          input.removeClass('phone').addClass('contact').val(contact.name)
         }
+        fixWidth(input)
       }
       else if (!input.hasClass('contact'))
       {
