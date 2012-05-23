@@ -41,7 +41,7 @@
     }
   }
 
-  $(document).bind('click ready', function(event)
+  $(document).bind('ready change', function(event)
   {
     var i = 0, wasRemoval;
 
@@ -76,7 +76,20 @@
       var start = (k*divider) + 1, end = (k+1) * divider;
       var text = start == end ? start.toString() : (start + '-' + end);
       
-      ul.append($('<li><a href="">' + text  + '</a></li>'))
+      var link = $('<a/>').text(text).
+        addClass('active').
+        attr('href', '#' + start).
+        click(function()
+            {
+              event.preventDefault();
+
+              var height = $('div.pinner').outerHeight();
+              $('html,body').scrollTop($(messagesSelector).eq(parseInt(this.getAttribute('href').substr(1)) - 1).position().top);
+
+              return false
+            });
+
+      ul.append($('<li/>').append(link));
     }
 
   });
