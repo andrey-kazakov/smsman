@@ -78,16 +78,23 @@
 }
 
 .button() {
-  box-shadow: 0  1px 3px rgba(0, 0, 0, 0.15),
-        inset 0 -1px 0px rgba(0, 0, 0, 0.1),
-        inset 0  2px 0   rgba(255, 255, 255, 0.15),
-        inset 0  1px 0   rgba(255, 255, 255, 0.45);
+  border: 0;
+  cursor: pointer;
+  display: inline-block;
+  font-family: @font-family;
   
-  .pressed() {
-    box-shadow: inset 0 1px 0px rgba(0, 0, 0, 0.15),
-                inset 0 1px 3px rgba(0, 0, 0, 0.25),
-                      0 2px 0   rgba(255, 255, 255, 0.15),
-                      0 1px 0   rgba(255, 255, 255, 0.45);
+  .shadow() {
+    box-shadow: 0  1px 3px rgba(0, 0, 0, 0.15),
+          inset 0 -1px 0px rgba(0, 0, 0, 0.1),
+          inset 0  2px 0   rgba(255, 255, 255, 0.15),
+          inset 0  1px 0   rgba(255, 255, 255, 0.45);
+    
+    .pressed() {
+      box-shadow: inset 0 1px 0px rgba(0, 0, 0, 0.15),
+                  inset 0 1px 3px rgba(0, 0, 0, 0.25),
+                        0 2px 0   rgba(255, 255, 255, 0.15),
+                        0 1px 0   rgba(255, 255, 255, 0.45);
+    }
   }
   
   .size() {
@@ -173,13 +180,25 @@ body {
   line-height: 1.6em;
 }
 
-input, textarea {
+input[type=text],
+input[type=number],
+input[type=password],
+textarea {
   .textarea;
   
   &:not([readonly]):hover {
     @new-color: hsla(hue(@color-white), saturation(@color-white), lightness(@color-white), 0.90);
     background: @color-white;
     background: @new-color;
+  }
+  
+  &[type=number] {
+    text-align: right;
+  }
+  
+  &:invalid {
+    box-shadow: 0 0 6px 0 hsla(hue(@color-red), saturation(@color-red), lightness(@color-red), 0.50);
+    border-color: @color-red;
   }
   
   &:not([readonly]):focus {
@@ -195,9 +214,29 @@ input, textarea {
   }
 }
 
+textarea {
+  overflow: auto;
+}
+
+button,
+input[type=button],
+input[type=submit] {
+  .button;
+  .button > .shadow;
+  .rounded(1em);
+  @color-start: lighten(@color-gray, 1.5%);
+  @color-stop:  darken(@color-gray, 7.5%);
+  .gradient(@color-gray, @color-stop, @color-start);
+  font-size: @font-size;
+  
+  &:active {
+    .button > .shadow > .pressed;
+  }
+}
+
 header, footer, 
 nav, section, 
-article {  
+article, form {  
   display:block; 
 }
 
@@ -540,7 +579,7 @@ nav#top {
           @color-stop:  darken(@color-gray, 7.5%);
           .gradient(@color-gray, @color-stop, @color-start);
           .rounded(1em);
-          .button;
+          .button > .shadow;
           
           &.delogin {
             
@@ -553,7 +592,7 @@ nav#top {
         &:active {
           .inset-text(hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.15), @color-white);
           .rounded(1em);
-          .button > .pressed;
+          .button > .shadow > .pressed;
         }
         
         &.active, &.active:hover {
@@ -562,7 +601,7 @@ nav#top {
           background: @new-color;
           .inset-text(hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30), hsla(hue(@color-white), saturation(@color-white), lightness(@color-white), 0.66));
           .rounded(1em);
-          .button > .pressed;
+          .button > .shadow > .pressed;
           
           u {
             border-bottom-style: none;
@@ -573,6 +612,60 @@ nav#top {
             @color-stop:  darken(@color-orange, 7.5%);
             .gradient(@color-gray, @color-start, @color-stop);
             .inset-text(hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30), hsla(hue(@color-white), saturation(@color-white), lightness(@color-white), 0.66));
+            position: relative;
+            
+            &:before, &:after {
+              content: "";
+              display: block;
+              width: 100%;
+              height: 100%;
+              position: absolute;
+              top: 0;
+              left: 0;
+              .rounded(0.8em 0.8em 0 0);
+            }
+            
+            &:before {
+              z-index: 5;
+              box-shadow: -0.5px 2px 6px  -2px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
+                          -1px   6px 10px -4px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
+                           0     0   2px  -1px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
+                           0     0   1px   0   hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30);
+            }
+            
+            &:after {
+              z-index: 15;
+              @color-start: lighten(@color-orange, 1%);
+              @color-stop:  darken(@color-orange, 7.5%);
+              .gradient(@color-gray, @color-start, @color-stop);
+            }
+            
+            u {
+              position: relative;
+              z-index: 20;
+            }
+            
+            & + .dropdown {
+              position: absolute;
+              @color-start: lighten(@color-orange, 1.5%);
+              @color-stop:  darken(@color-orange, 7.5%);
+              .gradient(@color-gray, @color-stop, @color-start);
+              padding: 6px;
+              right: 0;
+              z-index: 10;
+              .rounded(12px 0 12px 12px);
+              box-shadow: -0.5px 2px 6px  -2px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
+                          -1px   6px 10px -4px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
+                           0     0   2px  -1px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
+                           0     0   1px   0   hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30);
+                           
+              .white {
+                background: @color-white;
+                padding: 6px;
+                .rounded(6px 0 6px 6px);
+                .button > .shadow;
+              }
+            }
           }
           
           &#toggleContacts {
@@ -596,7 +689,7 @@ nav#top {
                   @color-start: lighten(@color-gray, 0.75%);
                   @color-stop:  darken(@color-gray, 3.25%);
                   .gradient(@color-gray, @color-stop, @color-start);
-                  .button;
+                  .button > .shadow;
                   text-shadow: none;
                 }
               }
@@ -618,6 +711,7 @@ nav#top {
       
       li {
         margin-left: 0.4em;
+        position: relative;
       }
       
       .country {
@@ -691,7 +785,7 @@ nav#top {
   padding: @text-padding @padding-global;
   position: relative;
   width: 100%;
-  .button > .pressed;
+  .button > .shadow > .pressed;
   border-radius: 0;
   margin-bottom: 1em;
   
@@ -768,11 +862,8 @@ nav#top {
       @color-start: lighten(@color-blue, 10%);
       @color-stop:  darken(@color-blue, 10%);
       .gradient(#0064C8, @color-stop, @color-start);
-      border: 0;
-      cursor: pointer;
+      .button;
       margin: 0.4em 0;
-      display: inline-block;
-      font-family: @font-family;
       @color-inset-top:  darken(@color-blue, 22%);
       @color-inset-bottom: lighten(@color-blue, 22%);
       .inset-text(@color-inset-top, @color-inset-bottom);
@@ -844,9 +935,9 @@ nav#top {
 
 //// Bubbles
 
-.bubble {
+.bubble, .bubble[type=text] {
   .rounded(1em);
-  .button;
+  .button > .shadow;
   .button > .size;
   border: 0;
   position: relative;
@@ -855,7 +946,7 @@ nav#top {
   .transition(width, 0.125s, ease-out);
   
   &:not([readonly]):focus {
-    .button > .pressed;
+    .button > .shadow > .pressed;
     cursor: text;
   }
 }
