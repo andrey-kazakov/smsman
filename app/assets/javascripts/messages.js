@@ -107,7 +107,7 @@
     var area = $(this);
     var article = area.parent('article');
 
-    article.clone().hide().insertAfter(article).show('slowly');
+    article.clone().hide().insertAfter(article).slideDown('fast');
 
     article.removeClass('new')
 
