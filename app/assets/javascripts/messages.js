@@ -41,7 +41,7 @@
     }
   }
 
-  $(document).bind('click', function(event)
+  $(document).bind('click ready', function(event)
   {
     var i = 0, wasRemoval;
 
@@ -61,6 +61,24 @@
       i--;
       wasRemoval = true;
     });
+
+    // `i' is last message number now, so it's equal to their count
+
+    var count = i.toString();
+    var decades = count.length;
+    var divider = Math.pow(10, decades - 1);
+    var blocks = Math.ceil(count / divider);
+
+    var ul = $('div.pinner div.wrapper ul.float-left').empty();
+      
+    for (var k = 0; k < blocks; k++)
+    {
+      var start = (k*divider) + 1, end = (k+1) * divider;
+      var text = start == end ? start.toString() : (start + '-' + end);
+      
+      ul.append($('<li><a href="">' + text  + '</a></li>'))
+    }
+
   });
 
   $('section.wrapper > article.message.new > textarea').live('focus', function(event)
