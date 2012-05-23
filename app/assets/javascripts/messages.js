@@ -1,6 +1,15 @@
 // tools for messages editor
 (function()
 {
+  var $doc = $(document);
+
+  var scrollTo = function(el)
+  {
+    var pinnerHeight = $('div.pinner').outerHeight();
+
+    $doc.scrollTop($(el).position().top - pinnerHeight);
+  }
+
   var typoNumber = function(number, to)
   {
     to = $(to).empty();
@@ -41,7 +50,47 @@
     }
   }
 
-  $(document).bind('ready change', function(event)
+  var updateMessagesNavigation = function(count, decades)
+  {
+    count = parseInt(count) || countMessages();
+    decades = decades || Math.floor(Math.log(count) / Math.log(10));
+
+    var divider = Math.pow(10, decades);
+    var blocks = Math.ceil(count / divider);
+
+    var ul = $('div.pinner div.wrapper ul.float-left').empty();
+      
+    var messages = $(messagesSelector);
+    var scrollTop = $doc.scrollTop() + $('div.pinner').outerHeight();
+
+    for (var k = 0; k < blocks; k++)
+    {
+      var start = (k*divider) + 1, end = (k+1) * divider;
+      if (end >= messages.length) end = start + ((messages.length - 1) % divider);
+      
+      var link = $('<a/>').text(start).
+        attr('href', '#' + start).
+        click(function()
+            {
+              event.preventDefault();
+
+              scrollTo(messages.eq(parseInt(this.getAttribute('href').substr(1)) - 1));
+
+              return false
+            });
+
+      var lastMessage = messages.eq(end - 1);
+      var lastMessageBottom = lastMessage.position().top + lastMessage.outerHeight();
+
+      if (messages.eq(start - 1).position().top <= scrollTop && lastMessageBottom > scrollTop) link.addClass('active')
+
+      ul.append($('<li/>').append(link));
+    }
+
+
+  }
+
+  $doc.bind('change click', function(event)
   {
     var i = 0, wasRemoval;
 
@@ -64,35 +113,8 @@
 
     // `i' is last message number now, so it's equal to their count
 
-    var count = i.toString();
-    var decades = count.length;
-    var divider = Math.pow(10, decades - 1);
-    var blocks = Math.ceil(count / divider);
-
-    var ul = $('div.pinner div.wrapper ul.float-left').empty();
-      
-    for (var k = 0; k < blocks; k++)
-    {
-      var start = (k*divider) + 1, end = (k+1) * divider;
-      var text = start == end ? start.toString() : (start + '-' + end);
-      
-      var link = $('<a/>').text(text).
-        addClass('active').
-        attr('href', '#' + start).
-        click(function()
-            {
-              event.preventDefault();
-
-              var height = $('div.pinner').outerHeight();
-              $('html,body').scrollTop($(messagesSelector).eq(parseInt(this.getAttribute('href').substr(1)) - 1).position().top);
-
-              return false
-            });
-
-      ul.append($('<li/>').append(link));
-    }
-
-  });
+    if (wasRemoval) updateMessagesNavigation(i)
+  }).bind('ready scroll', $.proxy(updateMessagesNavigation));
 
   $('section.wrapper > article.message.new > textarea').live('focus', function(event)
   {
@@ -117,6 +139,8 @@
     $('<h1 class="bold amount">0</h1>').appendTo(article);
 
     $('<h1 class="bold number"></h1>').text(countMessages()).insertBefore(area);
+
+    updateMessagesNavigation();
   });
 
 
