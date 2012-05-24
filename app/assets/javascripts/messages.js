@@ -52,23 +52,23 @@
 
   var updateMessagesNavigation = function(count, decades, shift, undefined)
   {
-    count = parseInt(count) || countMessages();
+    var messages = $(messagesSelector);
+    var scrollTop = $doc.scrollTop() + $('div.pinner').outerHeight();
+
+    count = parseInt(count) || messages.length;
     decades = decades == undefined ? Math.floor(Math.log(count) / Math.log(10)) : decades;
     shift = shift || 0;
 
     var divider = Math.pow(10, decades);
-    var blocks = Math.min(Math.ceil(count / divider), 10);
+    var blocks = Math.min(Math.ceil(count / divider), 10, messages.length - shift);
 
     var ul = $('div.pinner div.wrapper ul.float-left').empty();
       
-    var messages = $(messagesSelector);
-    var scrollTop = $doc.scrollTop() + $('div.pinner').outerHeight();
-
     for (var k = 0; k < blocks; k++)
     {
       var
         start = shift + k*divider + 1,
-        end = Math.min(shift + (k+1)*divider, messages.length - 1);
+        end = Math.min(shift + (k+1)*divider, messages.length);
 
       var text = start == 1 && divider != 1 ? ('<' + divider) : start;
       
@@ -81,16 +81,24 @@
               var shift = parseInt(this.getAttribute('href').substr(1)) - 1;
               scrollTo(messages.eq(shift));
 
-              if (decades > 0) setTimeout(function() {  updateMessagesNavigation(count, decades - 1, shift); }, 100);
+              if (decades > 0) setTimeout(function() { updateMessagesNavigation(count, decades - 1, shift); }, 100);
 
               return false
             });
 
-      console.log(start, end, decades)
       var lastMessage = messages.eq(end - 1);
-      var lastMessageBottom = lastMessage.position().top + lastMessage.outerHeight();
+      var lastMessagePosition = lastMessage && lastMessage.position();
+      
+      var firstMessage = messages.eq(start - 1);
+      var firstMessagePosition = firstMessage && firstMessage.position();
 
-      if (messages.eq(start - 1).position().top <= scrollTop && lastMessageBottom > scrollTop) link.addClass('active')
+      if (lastMessagePosition &&
+          firstMessagePosition && 
+          firstMessagePosition.top <= scrollTop &&
+          (lastMessagePosition.top + lastMessage.outerHeight()) >= scrollTop)
+      {
+        link.addClass('active')
+      }
 
       ul.append($('<li/>').append(link));
     }
