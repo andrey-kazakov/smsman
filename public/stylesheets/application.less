@@ -523,6 +523,10 @@ a {
   }
 }
 
+label {
+  cursor: pointer;
+}
+
 //// Top Navigation
 
 nav#top {
@@ -665,7 +669,7 @@ nav#top {
                 .rounded(6px 0 6px 6px);
                 .button > .shadow;
                 
-                & > input {
+                & > input[type=number] {
                   width: 10em;
                 }
                 
@@ -673,18 +677,42 @@ nav#top {
                   .fix-spaces;
                   margin: 0 0 0.4em;
                   
-                  span, a {
+                  & > span {
                     width: 50%;
                     display: inline-block;
                     .fix-spaces > .child;
                     text-align: center;
                     .border-box;
-                    background: transparent;
-                    box-shadow: none;
-                    padding: 0;
                     
-                    &:active {
-                      text-shadow: none;
+                    input[type=radio] {
+                      display: none;
+                    
+                      & + label {
+                        color: @color-blue;
+                        
+                        u {
+                          border-bottom-style: dashed;
+                        }
+                        
+                        &:hover {
+                          color: @color-orange;
+                          
+                          u {
+                            border-color: lighten(@color-orange, 33%);
+                          }
+                        }
+                      }
+                      
+                      &:checked {
+                        
+                        & + label {
+                          color: @color-black;
+                          
+                          u {
+                            border-bottom: 0;
+                          }
+                        }
+                      }
                     }
                   }
                 }

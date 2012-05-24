@@ -55,7 +55,11 @@
               <a id="buy-more" class="pseudolink" href="#" onclick="$(this).toggleClass('active').next().toggle(); return false"><u>Купить ещё</u></a>
               <form class="dropdown" style="display: none">
                 <div class="white">
-                  <p><span>Россия</span><a href="" class="pseudolink"><u>Украина</u></a></p>
+                  <!-- <p><span>Россия</span><a href="" class="pseudolink"><u>Украина</u></a></p> -->
+                  <p>
+                    <span><input type="radio" name="prefix" id="buy-more-russia" value="7" checked></input><label for="buy-more-russia"><u>Россия</u></label></span>
+                    <span><input type="radio" name="prefix" id="buy-more-ukraine" value="38"></input><label for="buy-more-ukraine"><u>Украина</u></label></span>
+                  </p>
                   <input type="number" min="30" name="" id="" value="30" />
                   <button>Купить</button>
                 </div>
