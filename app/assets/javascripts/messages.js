@@ -50,13 +50,14 @@
     }
   }
 
-  var updateMessagesNavigation = function(count, decades)
+  var updateMessagesNavigation = function(count, decades, shift, undefined)
   {
     count = parseInt(count) || countMessages();
-    decades = decades || Math.floor(Math.log(count) / Math.log(10));
+    decades = decades == undefined ? Math.floor(Math.log(count) / Math.log(10)) : decades;
+    shift = shift || 0;
 
     var divider = Math.pow(10, decades);
-    var blocks = Math.ceil(count / divider);
+    var blocks = Math.min(Math.ceil(count / divider), 10);
 
     var ul = $('div.pinner div.wrapper ul.float-left').empty();
       
@@ -65,8 +66,9 @@
 
     for (var k = 0; k < blocks; k++)
     {
-      var start = (k*divider) + 1, end = (k+1) * divider;
-      if (end >= messages.length) end = start + ((messages.length - 1) % divider);
+      var
+        start = shift + k*divider + 1,
+        end = Math.min(shift + (k+1)*divider, messages.length - 1);
 
       var text = start == 1 && divider != 1 ? ('<' + divider) : start;
       
@@ -76,11 +78,15 @@
             {
               event.preventDefault();
 
-              scrollTo(messages.eq(parseInt(this.getAttribute('href').substr(1)) - 1));
+              var shift = parseInt(this.getAttribute('href').substr(1)) - 1;
+              scrollTo(messages.eq(shift));
+
+              if (decades > 0) setTimeout(function() {  updateMessagesNavigation(count, decades - 1, shift); }, 100);
 
               return false
             });
 
+      console.log(start, end, decades)
       var lastMessage = messages.eq(end - 1);
       var lastMessageBottom = lastMessage.position().top + lastMessage.outerHeight();
 
