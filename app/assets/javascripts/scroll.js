@@ -1,13 +1,16 @@
-$(document).ready(function() {
-  var offset = $('nav#top').height() - $('.pinner').height();
-  var pinThePinner = function() {
-    var scrollTop = $(window).scrollTop();
-    if ( scrollTop >= offset ) {
-      $('nav#top').addClass('fixed').css('padding-bottom', $('.pinner').height());
-    } if ( scrollTop <= offset ) {
-      $('nav#top').removeClass('fixed').removeAttr('style');
-    }
-  }
+$(document).bind('ready scroll load', function()
+{
+  var pinner = $('div.pinner'), navtop = $('nav#top');
 
-  $(document).bind('scroll load', pinThePinner);
+  var offset = navtop.position().top + navtop.outerHeight() - pinner.outerHeight();
+  var scrollTop = $(document).scrollTop();
+
+  if (scrollTop > offset)
+  {
+    navtop.addClass('fixed').css('padding-bottom', pinner.outerHeight());
+  }
+  else
+  {
+    navtop.removeClass('fixed').css('padding-bottom', '');
+  }
 });
