@@ -67,8 +67,10 @@
     {
       var start = (k*divider) + 1, end = (k+1) * divider;
       if (end >= messages.length) end = start + ((messages.length - 1) % divider);
+
+      var text = start == 1 && divider != 1 ? ('<' + divider) : start;
       
-      var link = $('<a/>').text(start).
+      var link = $('<a/>').text(text).
         attr('href', '#' + start).
         click(function()
             {
@@ -114,7 +116,7 @@
     // `i' is last message number now, so it's equal to their count
 
     if (wasRemoval) updateMessagesNavigation(i)
-  }).bind('ready scroll', $.proxy(updateMessagesNavigation));
+  }).bind('ready scroll', updateMessagesNavigation);
 
   $('section.wrapper > article.message.new > textarea').live('focus', function(event)
   {
