@@ -454,6 +454,10 @@ small, .small {
   display: inline-block;
 }
 
+.nobr {
+  white-space: nowrap;
+}
+
 .under() {
   text-decoration: none;
   border-bottom-width: 1px;
@@ -618,7 +622,7 @@ nav#top {
           &#buy-more {
             @color-start: lighten(@color-orange, 1.5%);
             @color-stop:  darken(@color-orange, 7.5%);
-            .gradient(@color-gray, @color-start, @color-stop);
+            .gradient(@color-orange, @color-start, @color-stop);
             .inset-text(hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30), hsla(hue(@color-white), saturation(@color-white), lightness(@color-white), 0.66));
             position: relative;
             
@@ -645,7 +649,7 @@ nav#top {
               z-index: 15;
               @color-start: lighten(@color-orange, 1%);
               @color-stop:  darken(@color-orange, 7.5%);
-              .gradient(@color-gray, @color-start, @color-stop);
+              .gradient(@color-orange, @color-start, @color-stop);
             }
             
             u {
@@ -657,7 +661,7 @@ nav#top {
               position: absolute;
               @color-start: lighten(@color-orange, 1.5%);
               @color-stop:  darken(@color-orange, 7.5%);
-              .gradient(@color-gray, @color-stop, @color-start);
+              .gradient(@color-orange, @color-stop, @color-start);
               padding: 6px;
               right: 0;
               z-index: 10;
@@ -674,7 +678,8 @@ nav#top {
                 .button > .shadow;
                 
                 & > input[type=number] {
-                  width: 10em;
+                  min-width: 10em;
+                  width: 100%;
                 }
                 
                 & > p:first-child {
@@ -711,6 +716,7 @@ nav#top {
                         
                         & + label {
                           color: @color-black;
+                          cursor: default;
                           
                           u {
                             border-bottom: 0;
@@ -721,36 +727,77 @@ nav#top {
                   }
                 }
                 
-                & > button {
-                  padding: 0.2em 0.8em;
-                  display: block;
-                  margin: 0.4em auto 0;
-                  color: @color-white;
-                  @color-start: lighten(@color-orange, 1.5%);
-                  @color-stop:   darken(@color-orange, 7.5%);
-                  .gradient(@color-gray, @color-stop, @color-start);
-                  margin-top: 0;
+                .total {
+                  #total;
+                  padding: 0.4em;
+                  left: -0.4em;
+                  margin-bottom: 0;
                   
-                  &:active {
-                    @color-start: darken(@color-orange, 3%);
-                    @color-stop:  darken(@color-orange, 10%);
-                    .gradient(@color-gray, @color-start, @color-stop);
+                  @color-gold-light: lighten(@color-gold, 20%);
+                  @color-gold-dark:  darken(@color-gold, 33%);
+                  
+                  & > p {
+                    .nobr;
+                    font-size: 1.2em;
+                    margin: 0;
+                    text-shadow: 0 -1px 0 lighten(@color-gold-dark, 15%),
+                                 0  1px 0 lighten(@color-gold-light, 5%);
+                  }
+                  
+                  hr {
+                    width: 100%;
+                    margin-left: 0;
+                    margin: 0.25em 0;
+                  }
+                  
+                  & > button {
+                    padding: 0.2em 0.8em;
+                    display: block;
+                    margin: 0.25em auto 0;
+                    color: @color-white;
+                    @color-start: lighten(@color-orange, 1.5%);
+                    @color-stop:   darken(@color-orange, 7.5%);
+                    .gradient(@color-orange, @color-stop, @color-start);
+                    @color-inset-top:     darken(@color-orange, 22%);
+                    @color-inset-bottom: lighten(@color-orange, 22%);
+                    .inset-text(@color-inset-top, @color-inset-bottom);
+                    font-size: 1.2em;
+                    
+                    &:hover {
+                      @color-start: lighten(@color-orange, 7.5%);
+                      @color-stop:   darken(@color-orange, 10%);
+                      .gradient(@color-orange, @color-stop, @color-start);
+                      box-shadow:       0  2px 4px rgba(0, 0, 0, 0.15),
+                                        0  1px 2px rgba(0, 0, 0, 0.15),
+                                  inset 0  2px 0   rgba(255, 255, 255, 0.15),
+                                  inset 0  1px 0   rgba(255, 255, 255, 0.45);
+                    }
+                    
+                    &:active {
+                      .button > .shadow > .pressed;
+                      @color-inset-top:   lighten(@color-orange, 22%);
+                      @color-inset-bottom: darken(@color-orange, 22%);
+                      .inset-text(@color-inset-top, @color-inset-bottom);
+                      @color-start: darken(@color-orange, 3%);
+                      @color-stop:  darken(@color-orange, 10%);
+                      .gradient(@color-orange, @color-start, @color-stop);
+                    }
                   }
                 }
                 
                 & > p {
-                  margin-left: 0;
-                  
-                  &.text {
-                    margin-bottom: 0;
-                  }
+                  margin: 0.2em 0 0.4em;
                 }
                 
                 & > p:last-child {
                   margin-bottom: 0;
-                  margin-top: 0.6em;
-                  box-shadow: 0 -1px 0 lighten(@color-gray, 2.5%),
-                              0 -2px 0 @color-gray;
+                  margin-top: 0.2em;
+                  opacity: 0.5;
+                  .transition(opacity, 0.5s, ease);
+                  
+                  &:hover {
+                    opacity: 1;
+                  }
                   
                   a {
                     background: transparent;
@@ -809,6 +856,7 @@ nav#top {
       }
       
       .country {
+        .nobr;
         
         &:before {
           content: "";
@@ -935,6 +983,7 @@ nav#top {
         
         .russia, .ukraine {
           display: inline-block;
+          .nobr;
         }
       }
     }
@@ -1228,7 +1277,7 @@ footer {
   
   padding: 0.5em 0 0.5em;
   opacity: 0.5;
-  .transition(all, 0.5s, ease);
+  .transition(opacity, 0.5s, ease);
   
   &:hover {
     opacity: 1;
@@ -1245,6 +1294,33 @@ footer {
     }
   }
 }
+
+//// Условия
+
+// IE8
+
+html#ie8 nav#top ul li a.active#buy-more + .dropdown .white
+> p:first-child > span,
+html#ie8 nav#top ul li a.active:hover#buy-more + .dropdown .white
+> p:first-child > span {
+  white-space: nowrap;
+  text-align: left;
+  
+  input[type=radio] {
+    display: inline;
+    margin-left: 0;
+    
+    & + label {
+      
+      u {
+        border-bottom-style: none;
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+// Медиа Кверис
 
 @media screen and (max-width: 960px) and (min-width: 681px) {
   
