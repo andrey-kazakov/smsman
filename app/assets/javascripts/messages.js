@@ -36,7 +36,7 @@
 
   var countPrefixNumbers = function(prefix)
   {
-    return $(messagesSelector).find('div.recipients').find('input.bubble.contact, input.bubble.phone').filter(function() { return this.getAttribute('id').indexOf('tel' + prefix) == 0 }).length
+    return $(messagesSelector).find('div.recipients').find('input.bubble.contact, input.bubble.phone').filter(function() { return this.getAttribute('name').indexOf('mailing[][recipients][' + prefix) == 0 }).length
   }
 
   var setSendingCounts = function()
@@ -129,7 +129,8 @@
 
     // `i' is last message number now, so it's equal to their count
 
-    if (wasRemoval) updateMessagesNavigation(i)
+    if (wasRemoval) updateMessagesNavigation(i);
+
   }).bind('ready scroll', updateMessagesNavigation);
 
   $('section.wrapper > article.message.new > textarea').live('focus', function(event)
@@ -282,7 +283,7 @@
      var input = $('<input/>');
      if (bubble) input.addClass('bubble'); else input.addClass('new');
 
-     input.attr('id', 'tel' + number);
+     input.attr('name', 'mailing[][recipients][' + number + ']');
      input.attr('type', 'text');
 
      input.val(tools.decorateNumber(number));
@@ -434,7 +435,7 @@
             {
               var number = tools.sanitizeNumber(matches[i]);
 
-              input.parent('div.recipients').find('input#tel' + number).not(input).remove();
+              input.parent('div.recipients').find('input[name="mailing[][recipients][' + number + ']"]').not(input).remove();
 
               var bubble = createInput(number, true).addClass('phone').insertBefore(input);
 
@@ -490,7 +491,7 @@
     if (!input.hasClass('bubble')) return;
 
     input.removeClass().addClass('bubble');
-    input.val(tools.decorateValue(input.attr('id') ? input.attr('id').replace(/^tel/, '+') : input.val()));
+    input.val(tools.decorateValue(input.attr('name') ? input.attr('name').replace(/^mailing\[\]\[recipients\]\[/, '+') : input.val()));
 
     fixWidth(this);
     modifyAmount(input);
@@ -518,9 +519,9 @@
       {
         var number = contact.number;
 
-        input.parent('div.recipients').find('input#tel' + number).not(input).remove();
+        input.parent('div.recipients').find('input[name="mailing[][recipients][' + number + ']"]').not(input).remove();
 
-        input.attr('id', 'tel' + number);
+        input.attr('name', 'mailing[][recipients][' + number + ']');
         input.addClass('phone');
         modifyAmount(input);
 
