@@ -120,7 +120,7 @@
 
       if (article.find(':focus').length) return;
 
-      if (article.find('div.recipients').find('input').length) return;
+      if (article.find('div.recipients').find('input:not([placeholder])').length) return;
 
       article.remove();
       i--;
@@ -136,7 +136,7 @@
   $('section.wrapper > article.message.new > textarea').live('focus', function(event)
   {
     // try to find some empty message first
-    var other = $(messagesSelector).filter(function() { var a = $(this); return a.find('div.recipients > span.placeholder').length && /^\s*$/.test(a.find('textarea').val()) })
+    var other = $(messagesSelector).filter(function() { var a = $(this); return a.find('div.recipients > input.new[placeholder]').length && /^\s*$/.test(a.find('textarea').val()) })
     if (other.length)
     {
       other.find('textarea').focus();
@@ -152,7 +152,7 @@
 
     area.attr('placeholder', 'Текст сообщения…');
 
-    $('<div class="recipients"><span class="placeholder">Получатели…</span></div>').appendTo(article);
+    $('<div class="recipients"><input class="new" type="text" placeholder="Получатели…" /></div>').appendTo(article);
     $('<h1 class="bold amount">0</h1>').appendTo(article);
 
     $('<h1 class="bold number"></h1>').text(countMessages()).insertBefore(area);
@@ -312,10 +312,10 @@
     var div = $(this);
     var input = div.find('input.new');
 
-    if (!input.length)
+    /*if (!input.length)
     {
       input = createInput('', false).appendTo(div.empty());
-    }
+    }*/
 
     input.focus();
   })
@@ -347,7 +347,7 @@
       var data = lookupContact(value, shift);
       if (!data) return;
 
-      input.attr('id', 'tel' + data.number).
+      input.attr('name', 'mailing[][recipients][' + data.number + ']').
 
         val(data.name).
 
@@ -360,7 +360,6 @@
       if (input.hasClass('new'))
       {
         input.removeClass('new').addClass('bubble');
-        createInput('', false).insertAfter(input);
       }
     }
     var removeAutocomplete = function(input, dropSuggestion)
@@ -482,6 +481,11 @@
 
     fixWidth(input);
     modifyAmount(input);
+
+    if (input.hasClass('new'))
+    {
+      !!input.val() ? input.removeAttr('placeholder') : input.attr('placeholder', 'Получатели…');
+    }
   }).live('keyrepeat focus blur change', function(event)
   {
     fixWidth(this);
@@ -502,8 +506,7 @@
     {
       if (!input.val().trim() && !input.prev().length && !input.next().length)
       {
-        $('<span class="placeholder">Получатели…</span>').insertAfter(input);
-        input.remove();
+        input.attr('placeholder', 'Получатели…');
       }
       return;
     }
