@@ -605,6 +605,9 @@ nav#top {
           .inset-text(hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.15), @color-white);
           .rounded(1em);
           .button > .shadow > .pressed;
+          @color-start: darken(@color-gray, 5.5%);
+          @color-stop:  darken(@color-gray, 1.5%);
+          .gradient(@color-gray, @color-stop, @color-start);
         }
         
         &.active, &.active:hover {
@@ -680,6 +683,14 @@ nav#top {
                 & > input[type=number] {
                   min-width: 10em;
                   width: 100%;
+                  
+                  &::-webkit-input-placeholder {
+                    text-align: left;
+                  }
+
+                  &:-moz-placeholder {
+                    text-align: left;
+                  }
                 }
                 
                 & > p:first-child {
