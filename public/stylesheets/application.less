@@ -445,6 +445,10 @@ s, strike, del, .strike, .line-through {
   text-decoration: line-through;
 }
 
+small, .small {
+  font-size: 0.8em;
+}
+
 .thinsp {
   width: 0.125em;
   display: inline-block;
@@ -673,7 +677,7 @@ nav#top {
                   width: 10em;
                 }
                 
-                & > p {
+                & > p:first-child {
                   .fix-spaces;
                   margin: 0 0 0.4em;
                   
@@ -725,11 +729,33 @@ nav#top {
                   @color-start: lighten(@color-orange, 1.5%);
                   @color-stop:   darken(@color-orange, 7.5%);
                   .gradient(@color-gray, @color-stop, @color-start);
+                  margin-top: 0;
                   
                   &:active {
                     @color-start: darken(@color-orange, 3%);
                     @color-stop:  darken(@color-orange, 10%);
                     .gradient(@color-gray, @color-start, @color-stop);
+                  }
+                }
+                
+                & > p {
+                  margin-left: 0;
+                  
+                  &.text {
+                    margin-bottom: 0;
+                  }
+                }
+                
+                & > p:last-child {
+                  margin-bottom: 0;
+                  margin-top: 0.6em;
+                  box-shadow: 0 -1px 0 lighten(@color-gray, 2.5%),
+                              0 -2px 0 @color-gray;
+                  
+                  a {
+                    background: transparent;
+                    padding: 0;
+                    box-shadow: none;
                   }
                 }
               }
