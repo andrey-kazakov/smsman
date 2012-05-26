@@ -601,6 +601,13 @@ nav#top {
           }
         }
         
+        &#buy-more {
+          
+          & + .dropdown {
+            display: none;
+          }
+        }
+        
         &:active {
           .inset-text(hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.15), @color-white);
           .rounded(1em);
@@ -623,6 +630,7 @@ nav#top {
           }
           
           &#buy-more {
+            display: block;
             @color-start: lighten(@color-orange, 1.5%);
             @color-stop:  darken(@color-orange, 7.5%);
             .gradient(@color-orange, @color-start, @color-stop);
@@ -661,6 +669,7 @@ nav#top {
             }
             
             & + .dropdown {
+              display: block;
               position: absolute;
               @color-start: lighten(@color-orange, 1.5%);
               @color-stop:  darken(@color-orange, 7.5%);
