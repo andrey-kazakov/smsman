@@ -1126,9 +1126,12 @@ nav#top {
   display: block;
   line-height: 1em;
   .transition(width, 0.125s, ease-out);
+  @new-color: #F2F2F2;
+  .message-status;
   
   &:not([readonly]):focus {
     .button > .shadow > .pressed;
+    .message-status > .focus;
     cursor: text;
   }
   
@@ -1241,15 +1244,6 @@ article {
     
     .placeholder {
       padding-left: 0;
-    }
-    
-    .bubble {
-      @new-color: #F2F2F2;
-      .message-status;
-      
-      &:not([readonly]):focus {
-        .message-status > .focus;
-      }
     }
 
     input[type=text].new {
