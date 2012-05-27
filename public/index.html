@@ -48,7 +48,7 @@
           <li><a class="active" href=""><u>Новая рассылка</u></a>
           <li><a href=""><u>Рассылки</u>
           <li><a href=""><u>Черновики</u></a>
-          <li><a id="toggleContacts" class="pseudolink" href=""><u>Контакты</u></a>
+          <li><a id="toggleContacts" class="pseudolink" href="#" onclick="$(this).toggleClass('active'); $('#contacts').toggleClass('none'); return false"><u>Контакты</u></a>
         </ul>
         <ul class="float-right">
           <li>Добрый день, Леонид
@@ -158,30 +158,32 @@
       </p>
     </div>
   </footer>
-  <aside id="contacts">
-    <p>Контакты</p>
-    <div class="white">
-      <div class="fixed">
-        <input type="search" name="" id="" placeholder="Поиск…" />
-      </div>
-      <div class="list">
-        <input type="text" name="79655285839"  value="Адольф Семёнов" class="bubble contact" />
-        <input type="text" name="79651151656"  value="Александр Сергеевич Пушкин" class="bubble contact" />
-        <input type="text" name="79067473526"  value="Андрей К." class="bubble contact" />
-        <input type="text" name="79122643565"  value="Аникей Скайуокер" class="bubble contact" />
-        <input type="text" name="79655165475"  value="Аники" class="bubble contact" />
-        <input type="text" name="389618663451" value="Армяне" class="bubble contact" />
-        <input type="text" name="79616546651"  value="Аркадий" class="bubble contact" />
-        <input type="text" name="71451654546"  value="Аркадий Папин-Сибиряк" class="bubble contact" />
-        <input type="text" name="79174269927"  value="Евангелина Козлова" class="bubble contact" />
-        <input type="text" name="79655285840"  value="Иосиф Козёнов" class="bubble contact" />
-        <input type="text" name="389964154155" value="Павел Евтушенко" class="bubble contact" />
-        <input type="text" name="389199597466" value="Пира" class="bubble contact" />
-        <input type="text" name="79115615665"  value="Пронин Андрей" class="bubble contact" />
-        <input type="text" name="79116546567"  value="Полевое Рудуправление" class="bubble contact" />
-        <input type="text" name="79651331586"  value="Передовые Интернет Технологии" class="bubble contact" />
-        <input type="text" name="79655285838"  value="Сириус" class="bubble contact" />
-        <input type="text" name="79655285833"  value="Сириус Блэк" class="bubble contact" />
+  <aside id="contacts" class="none">
+    <div>
+      <p>Контакты</p>
+      <div class="white scroll" style="max-height: 500px">
+        <div class="pinner">
+          <input type="search" name="" id="" placeholder="Поиск…" />
+        </div>
+        <div class="list">
+          <span><input type="text" name="79655285839"  value="Адольф Семёнов" class="bubble contact" /><a href="" class="edit"></a></span>
+          <span><input type="text" name="79651151656"  value="Александр Сергеевич Пушкин" class="bubble contact" /><a href="" class="edit"></a></span>
+          <span><input type="text" name="79067473526"  value="Андрей К." class="bubble contact" /><a href="" class="edit"></a></span>
+          <span><input type="text" name="79122643565"  value="Аникей Скайуокер" class="bubble contact" /><a href="" class="edit"></a></span>
+          <span><input type="text" name="79655165475"  value="Аники" class="bubble contact" /><a href="" class="edit"></a></span>
+          <span><input type="text" name="389618663451" value="Армяне" class="bubble contact" /><a href="" class="edit"></a></span>
+          <span><input type="text" name="79616546651"  value="Аркадий" class="bubble contact" /><a href="" class="edit"></a></span>
+          <span><input type="text" name="71451654546"  value="Аркадий Папин-Сибиряк" class="bubble contact" /><a href="" class="edit"></a></span>
+          <span><input type="text" name="79174269927"  value="Евангелина Козлова" class="bubble contact" /><a href="" class="edit"></a></span>
+          <span><input type="text" name="79655285840"  value="Иосиф Козёнов" class="bubble contact" /><a href="" class="edit"></a></span>
+          <span><input type="text" name="389964154155" value="Павел Евтушенко" class="bubble contact" /><a href="" class="edit"></a></span>
+          <span><input type="text" name="389199597466" value="Пира" class="bubble contact" /><a href="" class="edit"></a></span>
+          <span><input type="text" name="79115615665"  value="Пронин Андрей" class="bubble contact" /><a href="" class="edit"></a></span>
+          <span><input type="text" name="79116546567"  value="Полевое Рудуправление" class="bubble contact" /><a href="" class="edit"></a></span>
+          <span><input type="text" name="79651331586"  value="Передовые Интернет Технологии" class="bubble contact" /><a href="" class="edit"></a></span>
+          <span><input type="text" name="79655285838"  value="Сириус" class="bubble contact" /><a href="" class="edit"></a></span>
+          <span><input type="text" name="79655285833"  value="Сириус Блэк" class="bubble contact" /><a href="" class="edit"></a></span>
+        </div>
       </div>
     </div>
   </aside>

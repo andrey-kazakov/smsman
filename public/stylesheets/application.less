@@ -1235,6 +1235,7 @@ article {
       line-height: 1em;
       min-height: 1.8em;
       max-width: 100%;
+      width: 0;
       .fix-spaces > .child;
     }
     
@@ -1303,6 +1304,7 @@ article {
   position: fixed;
   top:  0.4em;
   left: 1em;
+  width: 15em;
   @color-start: lighten(@color-blue, 1.5%);
   @color-stop:   darken(@color-blue, 7.5%);
   .gradient(@color-orange, @color-stop, @color-start);
@@ -1322,24 +1324,102 @@ article {
                 0 0   1px   0   hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.45);
   }
   
-  > p {
-    margin: 0;
-    line-height: 1;
-    padding: 6px;
-    color: @color-white;
-    @color-inset-top:  darken(@color-blue, 22%);
-    @color-inset-bottom: lighten(@color-blue, 22%);
-    .inset-text(@color-inset-top, @color-inset-bottom);
+  > div {
+    position: relative;
+    overflow: hidden;
+    
+    > p {
+      margin: 0;
+      line-height: 1;
+      padding: 6px;
+      color: @color-white;
+      @color-inset-top:  darken(@color-blue, 22%);
+      @color-inset-bottom: lighten(@color-blue, 22%);
+      .inset-text(@color-inset-top, @color-inset-bottom);
+    }
   }
 
   .white {
     background: @color-white;
-    padding: 6px;
+    padding: 6px 6px 0;
     .rounded(6px);
     .button > .shadow;
-
-    input[type=text] {
-      margin-top: 0.2em;
+    overflow: hidden;
+    overflow-y: auto;
+    
+    .pinner {
+      width: 15em;
+      .rounded(6px 6px 0 0);
+      position: absolute;
+      z-index: 10;
+      padding: 0.4em;
+      margin: -0.4em;
+      top: 2.15em;
+      left: 0.4em;
+      .border-box;
+      background: @color-white;
+      
+      input[type=search] {
+        margin-bottom: 0;
+      }
+    }
+    
+    .list {
+      padding-top: 2.6em;
+      padding-bottom: 0.4em;
+    
+      span {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        
+        input[type=text] {
+          margin-top: 0.2em;
+          width: 100%;
+          
+          & + .edit {
+            display: inline-block;
+            height: 1.8em;
+            width: 1.8em;
+            background:  url("/assets/edit.svg") no-repeat center center;
+            position: absolute;
+            z-index: 5;
+            right: 0.2em;
+            top: 0.2em;
+            display: none;
+            
+            &:hover {
+              display: block;
+            }
+          }
+          
+          &:hover {
+            padding-right: 2em;
+            
+            & + .edit {
+              display: block;
+            }
+            
+            &:focus {
+              
+              & + .edit {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    &.scroll {
+      
+      .pinner {
+        width: 13.95em;
+        background: hsla(hue(@color-white), saturation(@color-white), lightness(@color-white), 0.75);
+        box-shadow: 0 2px  4px -2px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.05),
+                    0 1px  2px  0px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.05),
+                    0 2px 12px -6px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.25);
+      }
     }
   }
 }
@@ -1380,7 +1460,7 @@ html#ie8 nav#top ul li a.active:hover#buy-more + .dropdown .white
 > p:first-child > span {
   white-space: nowrap;
   text-align: left;
-
+  
   input[type=radio] {
     display: inline;
     margin-left: 0;
@@ -1421,4 +1501,4 @@ html#ie8 nav#top ul li a.active:hover#buy-more + .dropdown .white
       margin-bottom: 0.4em;
     }
   }
-}
+/*  */}
