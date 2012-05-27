@@ -167,19 +167,26 @@
   var fixWidth = function(input)
   {
     input = $(input);
-    var test = $('<div></div>');
-    test.addClass('bubble');
+    if (!input.attr('placeholder'))
+    {
+      var test = $('<div></div>');
+      test.addClass('bubble');
 
-    test.text(input.val().toString() + (input.is(':focus') ? "—" : ''));
-    test.css({ position: 'absolute', left: -9999, top: -9999 });
+      test.text(input.val().toString() + (input.is(':focus') ? "—" : ''));
+      test.css({ position: 'absolute', left: -9999, top: -9999 });
 
-    $('body').append(test);
+      $('body').append(test);
 
-    var targetWidth = test.outerWidth() + 2;
+      var targetWidth = test.outerWidth() + 2;
 
-    input.css({ width: targetWidth });
+      input.css({ width: targetWidth });
 
-    test.remove()
+      test.remove();
+    }
+    else
+    {
+      input.css({ width: '' })
+    }
   }
 
   $(document).ready(function(){ setTimeout(function(){ $('.recipients input').each(function() { fixWidth(this) } ) }, 150) });
@@ -479,25 +486,35 @@
         }
     }
 
-    fixWidth(input);
-    modifyAmount(input);
-
     if (input.hasClass('new'))
     {
-      !!input.val() ? input.removeAttr('placeholder') : input.attr('placeholder', 'Получатели…');
+      if (!input.val().trim() && !input.prev().length && !input.next().length)
+        input.attr('placeholder', 'Получатели…');
+      else
+        input.removeAttr('placeholder');
     }
+
+    fixWidth(input);
+    modifyAmount(input);
   }).live('keyrepeat focus blur change', function(event)
   {
     fixWidth(this);
   }).live('focus', function(event)
   {
     var input = $(this);
-    if (!input.hasClass('bubble')) return;
+    if (!input.hasClass('bubble'))
+    {
+      if (!input.val().trim() && !input.prev().length && !input.next().length)
+        input.attr('placeholder', 'Получатели…');
+      else
+        input.removeAttr('placeholder');
+      return;
+    }
 
     input.removeClass().addClass('bubble');
     input.val(tools.decorateValue(input.attr('name') ? input.attr('name').replace(/^mailing\[\]\[recipients\]\[/, '+') : input.val()));
 
-    fixWidth(this);
+    fixWidth(input);
     modifyAmount(input);
   }).live('blur', function(event)
   {
