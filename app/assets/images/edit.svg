@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="24px" height="24px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve">
+<g id="pen">
+	<g>
+		<g>
+			<path d="M22.184,1.815c-2.334-2.337-6.127-2.337-8.461,0l-13.7,13.698L0,24h8.462l13.722-13.722
+				C24.522,7.94,24.522,4.153,22.184,1.815z M7.191,21.008H2.96v-4.254c1.168-1.17,3.062-1.17,4.23,0
+				C8.359,17.922,8.36,19.839,7.191,21.008z M20.013,8.162l-4.23-4.23c1.168-1.169,3.062-1.169,4.23,0
+				C21.183,5.1,21.183,6.994,20.013,8.162z"/>
+		</g>
+	</g>
+</g>
+</svg>
