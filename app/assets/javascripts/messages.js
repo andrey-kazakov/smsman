@@ -122,7 +122,7 @@
 
       if (article.find('div.recipients').find('input:not([placeholder])').length) return;
 
-      article.remove();
+      article.slideUp('fast', function() { article.remove() });
       i--;
       wasRemoval = true;
     });
