@@ -2,12 +2,16 @@
 (function()
 {
   var $doc = $(document);
+  var $win = $(window);
 
   var scrollTo = function(el)
   {
-    var pinnerHeight = $('div.pinner').outerHeight();
+    el = $(el);
 
-    $doc.scrollTop($(el).position().top - pinnerHeight);
+    var pinnerHeight = $('div.pinner').outerHeight();
+    var halfHeight = ($win.outerHeight() / 2) - (el.outerHeight() / 2);
+
+    $doc.scrollTop($(el).position().top /*- pinnerHeight*/ - halfHeight);
   }
 
   var typoNumber = function(number, to)
@@ -92,10 +96,12 @@
       var firstMessage = messages.eq(start - 1);
       var firstMessagePosition = firstMessage && firstMessage.position();
 
+      var halfHeight = scrollTop + ($win.outerHeight() / 2) - (lastMessage.outerHeight() / 2);
+
       if (lastMessagePosition &&
           firstMessagePosition && 
-          firstMessagePosition.top <= scrollTop &&
-          (lastMessagePosition.top + lastMessage.outerHeight()) >= scrollTop)
+          firstMessagePosition.top < halfHeight &&
+          (lastMessagePosition.top + lastMessage.outerHeight()) >= halfHeight)
       {
         link.addClass('active')
       }
@@ -189,7 +195,7 @@
     }
   }
 
-  $(document).ready(function(){ setTimeout(function(){ $('.recipients input').each(function() { fixWidth(this) } ) }, 150) });
+  $doc.ready(function(){ setTimeout(function(){ $('.recipients input').each(function() { fixWidth(this) } ) }, 150) });
 
 
   var tools  =
