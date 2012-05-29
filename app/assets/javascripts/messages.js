@@ -11,7 +11,7 @@
     var pinnerHeight = $('div.pinner').outerHeight();
     var halfHeight = ($win.outerHeight() / 2) - (el.outerHeight() / 2);
 
-    $doc.scrollTop($(el).position().top /*- pinnerHeight*/ - halfHeight);
+    $doc.scrollTop($(el).position().top + pinnerHeight - halfHeight);
   }
 
   var typoNumber = function(number, to)
@@ -57,7 +57,7 @@
   var updateMessagesNavigation = function(count, decades, shift, undefined)
   {
     var messages = $(messagesSelector);
-    var scrollTop = $doc.scrollTop() + $('div.pinner').outerHeight();
+    var scrollTop = $doc.scrollTop() - $('div.pinner').outerHeight();
 
     count = parseInt(count) || messages.length;
     decades = decades == undefined ? Math.floor(Math.log(count) / Math.log(10)) : decades;
@@ -68,7 +68,7 @@
 
     var ul = $('div.pinner div.wrapper ul.float-left').empty();
       
-    for (var k = 0; k < blocks; k++)
+    for (var k = 0, wasActive; k < blocks; k++)
     {
       var
         start = shift + k*divider + 1,
@@ -90,20 +90,22 @@
               return false
             });
 
-      var lastMessage = messages.eq(end - 1);
-      var lastMessagePosition = lastMessage && lastMessage.position();
-      
       var firstMessage = messages.eq(start - 1);
       var firstMessagePosition = firstMessage && firstMessage.position();
 
-      var halfHeight = scrollTop + ($win.outerHeight() / 2) - (lastMessage.outerHeight() / 2);
+      var afterLastMessage = messages.eq(end);
+      var afterLastMessagePositionTop = afterLastMessage.position() ? afterLastMessage.position().top : $doc.outerHeight();
+      
+      var halfHeight = scrollTop + ($win.outerHeight() / 2);
 
-      if (lastMessagePosition &&
+      if (!wasActive &&
           firstMessagePosition && 
-          firstMessagePosition.top < halfHeight &&
-          (lastMessagePosition.top + lastMessage.outerHeight()) >= halfHeight)
+          halfHeight <= afterLastMessagePositionTop &&
+          halfHeight > firstMessagePosition.top
+         )
       {
-        link.addClass('active')
+        link.addClass('active');
+        wasActive = true
       }
 
       ul.append($('<li/>').append(link));
