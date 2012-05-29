@@ -257,21 +257,11 @@
     {
       text = tools.sanitizeNumber(text);
 
-      return { name: CONTACTS[text], number: text }
+      return { name: Contacts.findNameByNumber(text), number: text }
     }
     else
     {
-      var matches = [];
-
-      for (var number in CONTACTS)
-      {
-        var name = CONTACTS[number];
-
-        if (name && name.toLowerCase().indexOf(text.toLowerCase()) == 0)
-        {
-          matches.push({ name: name, number: number })
-        }
-      }
+      var matches = Contacts.suggestContactsByName(text);
 
       shift %= matches.length;
       if (shift < 0) shift = matches.length + shift;
