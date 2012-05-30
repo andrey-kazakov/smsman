@@ -90,14 +90,16 @@
     {
       this.wait();
 
-      var matches = [];
+      var matches = [], hit;
 
-      // TODO: more effective search in sorted array instead of simple iteration
       each(this.names, function(i, name)
       {
-        if (name && name.toLowerCase().indexOf(text.toLowerCase()) == 0)
+        if (hit && name.toLowerCase().substr(0, text.length) != text.toLowerCase()) return false;
+
+        if (stricmp(name, text) > -1)
         {
           matches.push({ name: name, number: this.numbers[i] })
+          hit = true
         }
       }, this);
 
