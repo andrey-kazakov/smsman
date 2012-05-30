@@ -3,8 +3,8 @@
   var
     cmp = function(x1, x2)
     {
-      if (!x1) return -1;
       if (!x2) return  1;
+      if (!x1) return -1;
 
       if (x1 > x2) return  1;
       if (x1 < x2) return -1;
@@ -46,12 +46,14 @@
       try
       {
         callback.apply(context || this, args);
-        this.mute = false;
       }
       catch (e)
       {
-        this.mute = false;
         throw e
+      }
+      finally
+      {
+        this.mute = false;
       }
     },
 
@@ -67,13 +69,10 @@
     {
       this.sync(function()
       {
-        var i = this.names.length - 1;
-        /*
+        for (var i = this.names.length - 1; i >= 0; i--)
         {
-          i += stricmp(this.names[i], name)
-
-          if (stricmp(this.names[i-1], name) < 0 && stricmp(this.names[i+1], name) > 0) break;
-        }*/
+          if (stricmp(this.names[i], name) < 0) { i++; break; }
+        }
 
         this.names.splice(i, 0, name);
         this.numbers.splice(i, 0, number);
@@ -103,8 +102,63 @@
       }, this);
 
       return matches;
-
     }
   }
+
+  // UI functions here
+  $(document).ready(function()
+  {
+    var aside = $('aside#contacts');
+    var searchField = aside.find('input[type="search"]');
+
+    var findContacts = function()
+    {
+      var list = aside.find('div.list').empty();
+      var contacts = Contacts.suggestContactsByName(searchField.val().replace(/^\s*/, ''));
+
+      each(contacts, function(i, contact)
+      {
+        var span = $('<span/>');
+
+        span.append
+        (
+          $('<input/>').
+            attr('type', 'text').
+            attr('name', contact.number).
+            val(contact.name).
+            addClass('bubble').
+            addClass('contact')
+        );
+        span.append($('<a/>').attr('href', '#').addClass('edit'));
+
+        list.append(span);
+      });
+    }
+
+    searchField.bind('keyup keyrepeat change search', findContacts);
+
+    var contactsToggler = function(event)
+    {
+      var contactsLink = $('#toggleContacts');
+
+      var gonnaShow = aside.hasClass('none');
+
+      if (gonnaShow)
+      {
+        // so, what we gonna do to show our nice contact list?
+        // at first, we must tend to keep contact list actual with server <- TODO
+        // at second, we must just find required contacts according to current search field value...
+        findContacts();
+      }
+
+      contactsLink.toggleClass('active');
+      aside.toggleClass('none');
+
+      event.preventDefault();
+      return false
+    }
+
+    $('#toggleContacts').add(aside.find('a.close')).click(contactsToggler)
+  })
 
 })()
