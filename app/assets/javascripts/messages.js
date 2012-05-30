@@ -78,7 +78,7 @@
       
       var link = $('<a/>').text(text).
         attr('href', '#' + start).
-        click(function()
+        click(function(event)
             {
               event.preventDefault();
 

@@ -22,7 +22,7 @@
     {
       for (var i = 0; i < array.length; i++)
       {
-        if (callback.apply(context || array, i, array[i]) === false) break;
+        if (callback.apply(context || array, [i, array[i]]) === false) break;
       }
     };
 
@@ -36,11 +36,11 @@
     mute: false,
     wait: function()
     {
-      //while (this.mute);
+      while (this.mute);
     },
     sync: function(callback, args, context)
     {
-      //this.wait();
+      this.wait();
       this.mute = true;
 
       try
@@ -84,7 +84,7 @@
     {
       this.wait();
 
-      this.names[this.names.indexOf(number)]
+      return this.names[this.numbers.indexOf(number)]
     },
 
     suggestContactsByName: function(text)
@@ -94,13 +94,13 @@
       var matches = [];
 
       // TODO: more effective search in sorted array instead of simple iteration
-      this.names.each(function(i, name)
+      each(this.names, function(i, name)
       {
         if (name && name.toLowerCase().indexOf(text.toLowerCase()) == 0)
         {
           matches.push({ name: name, number: this.numbers[i] })
         }
-      });
+      }, this);
 
       return matches;
 
