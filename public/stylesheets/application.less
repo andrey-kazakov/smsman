@@ -1328,12 +1328,31 @@ article {
     
     > p {
       margin: 0;
-      line-height: 1;
-      padding: 6px;
+      line-height: 1em;
+      padding: 6px 6px 9px;
       color: @color-white;
       @color-inset-top:  darken(@color-blue, 22%);
       @color-inset-bottom: lighten(@color-blue, 22%);
       .inset-text(@color-inset-top, @color-inset-bottom);
+    }
+    
+    .close {
+      background: url("/assets/close.png") no-repeat center center;
+      display: block;
+      width:  0.8em;
+      height: 0.8em;
+      text-align: center;
+      font-size: 2em;
+      position: absolute;
+      right: 0;
+      top:   0;
+      border: 3px solid @color-white;
+      .border-box;
+      .rounded(1em);
+      
+      &:hover {
+        border: 4px solid @color-white;
+      }
     }
   }
 
@@ -1352,7 +1371,7 @@ article {
       z-index: 10;
       padding: 0.4em;
       margin: -0.4em;
-      top: 2.15em;
+      top: 2.35em;
       left: 0.4em;
       .border-box;
       background: @color-white;
@@ -1368,7 +1387,7 @@ article {
     
       span {
         position: relative;
-        display: inline-block;
+        display: block;
         width: 100%;
         
         input[type=text] {
