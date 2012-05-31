@@ -232,7 +232,7 @@
 
         this.sync(function()
         {
-          var spans = ui && contactList.children('span').hide();
+          var spans = ui && contactList.children('span').addClass('none');
 
           each(this.names, function(i, name)
           {
@@ -243,7 +243,7 @@
               matches.push({ name: name, number: this.numbers[i] })
               hit = true
 
-              ui && spans.eq(i).show();
+              ui && spans.eq(i).removeClass('none');
             }
           }, this);
         });
