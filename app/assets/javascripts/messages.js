@@ -38,9 +38,9 @@
     return $(messagesSelector).length
   }
 
-  var countPrefixNumbers = function(prefix)
+  var findRecipientsByPrefix = function(prefix)
   {
-    return $(messagesSelector).find('div.recipients').find('input.bubble.contact, input.bubble.phone').filter(function() { return this.getAttribute('name').indexOf('mailing[][recipients][' + prefix) == 0 }).length
+    return $(messagesSelector).find('div.recipients').find('input.bubble.contact, input.bubble.phone').filter(function() { return this.getAttribute('name').indexOf('][recipients][' + prefix) >= 'mailing['.length })
   }
 
   var setSendingCounts = function()
@@ -50,7 +50,7 @@
     {
       var prefix = prefixes[i];
 
-      typoNumber(countPrefixNumbers(prefix), '#sending_' + prefix)
+      typoNumber(findRecipientsByPrefix(prefix).length, '#sending_' + prefix)
     }
   }
 
@@ -199,6 +199,21 @@
 
   $doc.ready(function(){ setTimeout(function(){ $('.recipients input').each(function() { fixWidth(this) } ) }, 150) });
 
+  $doc.ready(function()
+  {
+    $('#contacts').bind('contact', function(event, number, name)
+    {
+      var makePhone = !name;
+
+      findRecipientsByPrefix(number)[makePhone ? 'addClass' : 'removeClass']('phone')[makePhone ? 'removeClass' : 'addClass']('contact').
+        val(makePhone ? tools.decorateNumber(number) : name).
+        each(function()
+        {
+          fixWidth(this)
+        })
+    })
+  })
+
   var lookupContact = function(text, shift)
   {
     text = text.replace(/^\s+/, '');
@@ -236,12 +251,14 @@
   };
 
 
-  var createInput = function(number, bubble)
+  var createInput = function(number, message_id)
   {
-     var input = $('<input/>');
-     if (bubble) input.addClass('bubble'); else input.addClass('new');
+     message_id = message_id || '';
 
-     input.attr('name', 'mailing[][recipients][' + number + ']');
+     var input = $('<input/>');
+     input.addClass('bubble');
+
+     input.attr('name', 'mailing[' + message_id + '][recipients][' + number + ']');
      input.attr('type', 'text');
 
      input.val(tools.decorateNumber(number));
@@ -394,7 +411,7 @@
 
               input.parent('div.recipients').find('input[name="mailing[][recipients][' + number + ']"]').not(input).remove();
 
-              var bubble = createInput(number, true).addClass('phone').insertBefore(input);
+              var bubble = createInput(number).addClass('phone').insertBefore(input);
 
               var data = lookupContact(number);
               if (data.name)
@@ -463,7 +480,7 @@
     }
 
     input.removeClass().addClass('bubble');
-    input.val(tools.decorateValue(input.attr('name') ? input.attr('name').replace(/^mailing\[\]\[recipients\]\[/, '+') : input.val()));
+    input.val(tools.decorateValue(input.attr('name') ? input.attr('name').replace(/^mailing\[.*?\]\[recipients\]\[/, '+') : input.val()));
 
     fixWidth(input);
     modifyAmount(input);

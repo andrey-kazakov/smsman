@@ -143,10 +143,34 @@
         }
       },
 
+      // simple events
+      handlers: { drop: function(number){}, push: function(number,name){} },
+
+      dropContact: function(number)
+      {
+        this.sync(function()
+        {
+          var index = this.numbers.indexOf(number);
+
+          this.names.splice(index, 1);
+          this.numbers.splice(index, 1);
+
+          aside.trigger('contact', [number]);
+        })
+      },
+
       pushContact: function(number, name)
       {
         this.sync(function()
         {
+          var old_index = this.numbers.indexOf(number);
+          if (old_index > -1)
+          {
+            this.names[old_index] = name;
+            aside.trigger('contact', [number, name]);
+            return;
+          }
+
           var insert = function(i, number, name)
           {
             this.names.splice(i, 0, name);
@@ -187,6 +211,10 @@
             span.insertBefore(spans.eq(index));
           else
             span.appendTo(contactList);
+
+          // ...and now call event handler
+          
+          aside.trigger('contact', [number, name]);
 
         });
       },
