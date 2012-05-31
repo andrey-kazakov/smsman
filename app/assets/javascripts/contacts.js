@@ -24,117 +24,212 @@
       {
         if (callback.apply(context || array, [i, array[i]]) === false) break;
       }
+
+      return i
     };
 
 
+  tools  =
+  {
+      phoneRegex: /(?:tel:)?\+(7|38)\s*[\(\)]?\d{3}[\)\(]?\s*\d{3}[-\s]*\d{2}[-\s]*\d{2}/g
+    , wannaBeAPhoneRegex: /^\+?(7|38)/
+
+    , ltrim: function(text)
+      {
+        return(text = text.replace(/^\s+/, ''))
+      }
+    , wannaBeAPhone: function(text)
+      {
+        return tools.wannaBeAPhoneRegex.test(text)
+      }
+    , sanitizeNumber: function(text)
+      {
+        return text ? (text.replace(/[^\d]/g, '')) : ''
+      }
+    , decorateNumber: function(number)
+      {
+        var parts = number.match(/^\+?(7|38)(\d{1,3})?(\d{1,3})?(\d{1,2})?(\d{1,2})?$/)
+        if (!parts || !parts[1]) return number;
+
+        var ret = ('+' + parts[1] + ' (');
+
+        if (parts[2]) ret += parts[2];
+        if (parts[2] && parts[2].length == 3) ret += ') ';
+
+        if (parts[3]) ret += parts[3];
+        if (parts[3] && parts[3].length == 3) ret += '-';
+
+        if (parts[4]) ret += parts[4];
+        if (parts[4] && parts[4].length == 2) ret += '-';
+
+        if (parts[5]) ret += parts[5];
+
+        return ret
+      }
+    , decorateValue: function(value)
+      {
+        value = tools.ltrim(value);
+        if (tools.wannaBeAPhone(value))
+          value = tools.decorateNumber(tools.sanitizeNumber(value));
+        return value;
+      }
+  }
+
+  // we must have ready DOM to actually work with contacts
+
+  var stubQueue = {};
   Contacts =
   {
-    numbers: [],
-    names: [],
-
-    // synchrony stuff
-    mute: false,
-    wait: function()
-    {
-      while (this.mute);
-    },
-    sync: function(callback, args, context)
-    {
-      this.wait();
-      this.mute = true;
-
-      try
-      {
-        callback.apply(context || this, args);
-      }
-      catch (e)
-      {
-        throw e
-      }
-      finally
-      {
-        this.mute = false;
-      }
-    },
-
     parse: function(obj)
     {
-      for (var number in obj)
-      {
-        this.pushContact(number, obj[number]);
-      }
+      stubQueue = obj
     },
-
     pushContact: function(number, name)
     {
-      this.sync(function()
-      {
-        for (var i = this.names.length - 1; i >= 0; i--)
-        {
-          if (stricmp(this.names[i], name) < 0) { i++; break; }
-        }
-
-        this.names.splice(i, 0, name);
-        this.numbers.splice(i, 0, number);
-      });
-    },
-
-    findNameByNumber: function(number)
-    {
-      this.wait();
-
-      return this.names[this.numbers.indexOf(number)]
-    },
-
-    suggestContactsByName: function(text)
-    {
-      this.wait();
-
-      var matches = [], hit;
-
-      each(this.names, function(i, name)
-      {
-        if (hit && stricmp(name.substr(0, text.length), text) != 0) return false;
-
-        if (stricmp(name, text) > -1 && stricmp(name.substr(0, text.length), text) == 0)
-        {
-          matches.push({ name: name, number: this.numbers[i] })
-          hit = true
-        }
-      }, this);
-
-      return matches;
+      stubQueue[number] = name
     }
   }
 
-  // UI functions here
   $(document).ready(function()
   {
+    // necessary UI locations
+
     var aside = $('aside#contacts');
     var searchField = aside.find('input[type="search"]');
+    var contactList = aside.find('div.list');
 
+    Contacts =
+    {
+      numbers: [],
+      names: [],
+
+      // synchrony stuff
+      mute: false,
+      wait: function()
+      {
+        while (this.mute);
+      },
+      sync: function(callback, args, context)
+      {
+        this.wait();
+        this.mute = true;
+
+        try
+        {
+          callback.apply(context || this, args);
+        }
+        catch (e)
+        {
+          throw e
+        }
+        finally
+        {
+          this.mute = false;
+        }
+      },
+
+      parse: function(obj)
+      {
+        this.sync(function()
+        {
+          contactList.empty();
+          this.numbers = []
+          this.names = []
+        });
+
+        for (var number in obj)
+        {
+          this.pushContact(number, obj[number]);
+        }
+      },
+
+      pushContact: function(number, name)
+      {
+        this.sync(function()
+        {
+          var insert = function(i, number, name)
+          {
+            this.names.splice(i, 0, name);
+            this.numbers.splice(i, 0, number);
+          }
+
+          var index = each(this.names, function(i, current_name)
+          {
+            var diff = stricmp(name, current_name);
+
+            if (diff == 0)
+              diff = cmp(number, this.numbers[i]);
+
+            if (diff < 0)
+            {
+              return false
+            }
+          }, this);
+
+          insert.call(this, index, number, name);
+
+          // we add UI contact immediately!
+
+          var span = $('<span/>');
+          span.append
+          (
+            $('<input/>').
+              attr('type', 'text').
+              attr('name', number).
+              val(name || tools.decorateNumber(number)).
+              addClass('bubble').
+              addClass(name ? 'contact' : 'phone')
+          );
+          span.append($('<a/>').attr('href', '#').addClass('edit'));
+
+          var spans = contactList.children('span');
+          if (spans.length > index)
+            span.insertBefore(spans.eq(index));
+          else
+            span.appendTo(contactList);
+
+        });
+      },
+
+      findNameByNumber: function(number)
+      {
+        this.wait();
+
+        return this.names[this.numbers.indexOf(number)]
+      },
+
+      suggestContactsByName: function(text, ui)
+      {
+        var matches = [], hit;
+
+        this.sync(function()
+        {
+          var spans = ui && contactList.children('span').hide();
+
+          each(this.names, function(i, name)
+          {
+            if (hit && stricmp((name || '').substr(0, text.length), text) != 0) return false;
+
+            if (stricmp(name, text) > -1 && stricmp((name || '').substr(0, text.length), text) == 0)
+            {
+              matches.push({ name: name, number: this.numbers[i] })
+              hit = true
+
+              ui && spans.eq(i).show();
+            }
+          }, this);
+        });
+
+        return matches;
+      }
+    }
+    Contacts.parse(stubQueue);
+    delete stubQueue;
+
+    // UI functions here
     var findContacts = function()
     {
-      var list = aside.find('div.list').empty();
-      var contacts = Contacts.suggestContactsByName(searchField.val().replace(/^\s*/, ''));
-
-      each(contacts, function(i, contact)
-      {
-        var span = $('<span/>');
-
-        span.append
-        (
-          $('<input/>').
-            attr('type', 'text').
-            attr('name', contact.number).
-            val(contact.name).
-            addClass('bubble').
-            addClass('contact')
-        );
-        span.append($('<a/>').attr('href', '#').addClass('edit'));
-
-        list.append(span);
-      });
+      Contacts.suggestContactsByName(tools.ltrim(searchField.val()), true);
     }
 
     searchField.bind('keyup keyrepeat change search', findContacts);
@@ -142,16 +237,6 @@
     var contactsToggler = function(event)
     {
       var contactsLink = $('#toggleContacts');
-
-      var gonnaShow = aside.hasClass('none');
-
-      if (gonnaShow)
-      {
-        // so, what we gonna do to show our nice contact list?
-        // at first, we must tend to keep contact list actual with server <- TODO
-        // at second, we must just find required contacts according to current search field value...
-        findContacts();
-      }
 
       contactsLink.toggleClass('active');
       aside.toggleClass('none');
