@@ -3,20 +3,20 @@
   var
     cmp = function(x1, x2)
     {
+      if (x1 == x2) return 0;
+
       if (!x2) return  1;
       if (!x1) return -1;
 
       if (x1 > x2) return  1;
       if (x1 < x2) return -1;
-
-      return 0;
     }
   , stricmp = function(s1, s2)
     {
       s1 = s1 || '';
       s2 = s2 || '';
 
-      return cmp(s1.toLowerCase().trim(), s2.toLowerCase().trim());
+      return cmp(s1.toLowerCase(), s2.toLowerCase());
     }
   , each = function(array, callback, context)
     {
@@ -94,9 +94,9 @@
 
       each(this.names, function(i, name)
       {
-        if (hit && name.toLowerCase().substr(0, text.length) != text.toLowerCase()) return false;
+        if (hit && stricmp(name.substr(0, text.length), text) != 0) return false;
 
-        if (stricmp(name, text) > -1)
+        if (stricmp(name, text) > -1 && stricmp(name.substr(0, text.length), text) == 0)
         {
           matches.push({ name: name, number: this.numbers[i] })
           hit = true
