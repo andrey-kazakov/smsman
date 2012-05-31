@@ -4,14 +4,14 @@
   var $doc = $(document);
   var $win = $(window);
 
-  var scrollTo = function(el)
+  var scrollTo = function(el, callback)
   {
     el = $(el);
 
     var pinnerHeight = $('div.pinner').outerHeight();
     var halfHeight = ($win.outerHeight() / 2) - (el.outerHeight() / 2);
 
-    $doc.scrollTop($(el).position().top + pinnerHeight - halfHeight);
+    $('body').animate({ scrollTop: ($(el).position().top + pinnerHeight - halfHeight) }, 200, callback);
   }
 
   var typoNumber = function(number, to)
@@ -83,9 +83,8 @@
               event.preventDefault();
 
               var shift = parseInt(this.getAttribute('href').substr(1)) - 1;
-              scrollTo(messages.eq(shift));
-
-              if (decades > 0) setTimeout(function() { updateMessagesNavigation(count, decades - 1, shift); }, 100);
+              console.log(shift)
+              scrollTo(messages.eq(shift), (decades > 0) && (messages.length - shift > 1) && function() { setTimeout(function() { updateMessagesNavigation(count, decades - 1, shift) }, 1) });
 
               return false
             });
@@ -216,7 +215,7 @@
 
   var lookupContact = function(text, shift)
   {
-    text = text.replace(/^\s+/, '');
+    tools.ltrim(text);
     if (!text) return;
 
     shift = shift || 0; 
@@ -285,14 +284,7 @@
     event.preventDefault();
 
     var div = $(this);
-    var input = div.find('input.new');
-
-    /*if (!input.length)
-    {
-      input = createInput('', false).appendTo(div.empty());
-    }*/
-
-    input.focus();
+    div.find('input.new').focus();
   })
 
   $('article.message > div.recipients > input').live('keydown keyup', function(event)
