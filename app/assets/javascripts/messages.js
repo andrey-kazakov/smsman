@@ -83,7 +83,6 @@
               event.preventDefault();
 
               var shift = parseInt(this.getAttribute('href').substr(1)) - 1;
-              console.log(shift)
               scrollTo(messages.eq(shift), (decades > 0) && (messages.length - shift > 1) && function() { setTimeout(function() { updateMessagesNavigation(count, decades - 1, shift) }, 1) });
 
               return false
