@@ -143,17 +143,19 @@
         }
       },
 
-      // simple events
-      handlers: { drop: function(number){}, push: function(number,name){} },
+      _removeIndex: function(index)
+      {
+        this.names.splice(index, 1);
+        this.numbers.splice(index, 1);
+
+        contactList.children('span').eq(index).remove();
+      },
 
       dropContact: function(number)
       {
         this.sync(function()
         {
-          var index = this.numbers.indexOf(number);
-
-          this.names.splice(index, 1);
-          this.numbers.splice(index, 1);
+          this._removeIndex(this.numbers.indexOf(number));
 
           aside.trigger('contact', [number]);
         })
@@ -164,11 +166,10 @@
         this.sync(function()
         {
           var old_index = this.numbers.indexOf(number);
-          if (old_index > -1)
+          if (old_index > -1 && this.names[old_index] != name)
           {
-            this.names[old_index] = name;
-            aside.trigger('contact', [number, name]);
-            return;
+            // renaming means reordering both of arrays and UI...
+            this._removeIndex(old_index)
           }
 
           var insert = function(i, number, name)
