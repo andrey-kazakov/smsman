@@ -249,14 +249,12 @@
   };
 
 
-  var createInput = function(number, message_id)
+  var createInput = function(number, where)
   {
-     message_id = message_id || '';
-
      var input = $('<input/>');
      input.addClass('bubble');
 
-     input.attr('name', 'mailing[' + message_id + '][recipients][' + number + ']');
+     input.attr('name', 'mailing[][recipients][' + number + ']');
      input.attr('type', 'text');
 
      var name;
@@ -271,6 +269,9 @@
      }
 
      fixWidth(input);
+
+     // TODO: detect message ID using where`s parent article
+     where && input.insertBefore($(where));
 
      return input
   }
@@ -408,8 +409,7 @@
             {
               findRecipientsByPrefix(number, input.parent('div.recipients')).not(input).remove();
 
-              createInput(number).insertBefore(input);
-
+              createInput(number, input);
             })
           }
         }
