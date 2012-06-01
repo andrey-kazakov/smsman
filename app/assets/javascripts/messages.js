@@ -259,7 +259,16 @@
      input.attr('name', 'mailing[' + message_id + '][recipients][' + number + ']');
      input.attr('type', 'text');
 
-     input.val(tools.decorateNumber(number));
+     var name;
+     if (name = Contacts.findNameByNumber(number))
+     {
+       input.val(name);
+       input.addClass('contact');
+     }
+     else
+     {
+       input.val(tools.decorateNumber(number));
+     }
 
      fixWidth(input);
 
@@ -399,14 +408,8 @@
             {
               findRecipientsByPrefix(number, input.parent('div.recipients')).not(input).remove();
 
-              var bubble = createInput(number).addClass('phone').insertBefore(input);
+              createInput(number).insertBefore(input);
 
-              var data = lookupContact(number);
-              if (data.name)
-              {
-                bubble.removeClass('phone').addClass('contact').val(data.name)
-                fixWidth(bubble)
-              }
             })
           }
         }
