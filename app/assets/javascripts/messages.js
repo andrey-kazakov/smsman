@@ -266,6 +266,7 @@
      else
      {
        input.val(tools.decorateNumber(number));
+       input.addClass('phone');
      }
 
      fixWidth(input);
@@ -296,7 +297,7 @@
     div.find('input.new').focus();
   })
 
-  $('article.message > div.recipients > input').live('keydown keyup', function(event)
+  $('article.message > div.recipients > input').live('keydown keyup input propertychange', function(event)
   {
     var input = $(this);
     var value = input.val();
@@ -310,7 +311,8 @@
     var allSelected  =  notEmpty && caretAtStart && caretAtEnd;
 
     var dontmatch;
-    var down = event.type == 'keydown';
+    var down = event.type == 'keydown',
+        up = event.type == 'keyup';
 
     var autocomplete = input.attr('data-autocomplete');
     var currentSuggestionStart = parseInt(input.attr('data-suggestion-start')) || 0;
@@ -401,26 +403,23 @@
       case event.keyCode <= 32:
         dontmatch = true;
       default:
-        if (!down)
+        if (!down && !dontmatch)
         {
-          if (!dontmatch)
+          value = tools.consumeNumbers(value, function(number)
           {
-            value = tools.consumeNumbers(value, function(number)
-            {
-              findRecipientsByPrefix(number, input.parent('div.recipients')).not(input).remove();
+            findRecipientsByPrefix(number, input.parent('div.recipients')).not(input).remove();
 
-              createInput(number, input);
-            })
-          }
+            createInput(number, input);
+          })
+
         }
         
+        input.val(up ? tools.decorateValue(value) : value)
+
         if (caretAtEnd)
         {
-          value = tools.decorateValue(value);
-          if (input.val() != value) input.val(tools.ltrim(value));
-
           // autocomplete shit
-          if (!down && notEmpty && !tools.wannaBeAPhone(value))
+          if (up && notEmpty && !tools.wannaBeAPhone(value))
           {
             value = value.substr(0, caret.start);
 
