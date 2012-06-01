@@ -38,9 +38,9 @@
     return $(messagesSelector).length
   }
 
-  var findRecipientsByPrefix = function(prefix)
+  var findRecipientsByPrefix = function(prefix, where)
   {
-    return $(messagesSelector).find('div.recipients').find('input.bubble.contact, input.bubble.phone').filter(function() { return this.getAttribute('name').indexOf('][recipients][' + prefix) >= 'mailing['.length })
+    return $(where || $(messagesSelector).find('div.recipients')).find('input.bubble.contact, input.bubble.phone').filter(function() { return this.getAttribute('name').indexOf('][recipients][' + prefix) >= 'mailing['.length })
   }
 
   var setSendingCounts = function()
@@ -393,14 +393,11 @@
       default:
         if (!down)
         {
-          var matches = value.match(tools.phoneRegex);
-          if (!dontmatch && matches)
+          if (!dontmatch)
           {
-            for (var i = 0; i < matches.length; i++)
+            value = tools.consumeNumbers(value, function(number)
             {
-              var number = tools.sanitizeNumber(matches[i]);
-
-              input.parent('div.recipients').find('input[name="mailing[][recipients][' + number + ']"]').not(input).remove();
+              findRecipientsByPrefix(number, input.parent('div.recipients')).not(input).remove();
 
               var bubble = createInput(number).addClass('phone').insertBefore(input);
 
@@ -410,12 +407,7 @@
                 bubble.removeClass('phone').addClass('contact').val(data.name)
                 fixWidth(bubble)
               }
-
-            }
-
-            var lastMatch = matches[matches.length - 1];
-
-            value = value.substr(value.lastIndexOf(lastMatch) + lastMatch.length);
+            })
           }
         }
         
@@ -498,7 +490,7 @@
       {
         var number = contact.number;
 
-        input.parent('div.recipients').find('input[name="mailing[][recipients][' + number + ']"]').not(input).remove();
+        findRecipientsByPrefix(number, input.parent('div.recipients')).not(input).remove();
 
         input.attr('name', 'mailing[][recipients][' + number + ']');
         input.addClass('phone');

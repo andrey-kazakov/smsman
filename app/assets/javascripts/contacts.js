@@ -73,6 +73,23 @@
           value = tools.decorateNumber(tools.sanitizeNumber(value));
         return value;
       }
+    , consumeNumbers: function(value, callback)
+      {
+        var matches = value.match(tools.phoneRegex);
+
+        if (matches)
+        {
+          var lastMatch = matches[matches.length - 1];
+          value = value.substr(value.lastIndexOf(lastMatch) + lastMatch.length);
+
+          each(matches, function(i, match)
+          {
+            callback(tools.sanitizeNumber(matches[i]));
+          });
+        }
+
+        return value
+      }
   }
 
   // we must have ready DOM to actually work with contacts
@@ -265,15 +282,24 @@
     delete stubQueue;
 
     // UI functions here
-    var findContacts = function()
+    searchField.bind('keyup keyrepeat change search', function()
     {
       Contacts.suggestContactsByName(tools.ltrim(searchField.val()), true);
-    }
+    });
 
-    searchField.bind('keyup keyrepeat change search', findContacts);
-
-    var contactsToggler = function(event)
+    $('#toggleContacts').add(aside.find('a.close')).bind('click keydown', function(event)
     {
+      if (/key/.test(event.type))
+      {
+        switch (event.keyCode)
+        {
+          case 32:
+          case 13:
+            break;
+          default:
+            return;
+        }
+      }
       var contactsLink = $('#toggleContacts');
 
       contactsLink.toggleClass('active');
@@ -281,9 +307,11 @@
 
       event.preventDefault();
       return false
-    }
+    })
 
-    $('#toggleContacts').add(aside.find('a.close')).click(contactsToggler)
+    aside.find('div.add input').bind('keyup keydown', function()
+    {
+      //
+    })
   })
-
 })()
