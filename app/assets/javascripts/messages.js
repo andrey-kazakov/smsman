@@ -32,6 +32,18 @@
   // working w/ whole messages
 
   var messagesSelector = 'section.wrapper > article.message:not(.new)'
+  
+  var countParts = function(text)
+  {
+    var 7bit = /^[\u0000-\u007f]*$/.test(text);
+
+    // TODO: count all using octets! (140 for whole message, 153 for partial)
+    if (7bit && text.length <= 160) return 1;
+    if (text.length <= 70) return 1;
+
+    if (7bit) return Math.ceil(text.length / 153);
+    return Math.ceil(text.length / 67);
+  }
 
   var countMessages = function()
   {
