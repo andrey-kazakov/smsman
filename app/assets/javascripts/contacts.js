@@ -231,20 +231,31 @@
 
         this.sync(function()
         {
-          var spans = ui && contactList.children('span').addClass('none');
-
-          each(this.names, function(i, name)
+          if (text)
           {
-            if (hit && stricmp((name || '').substr(0, text.length), text) != 0) return false;
+            var spans = ui && contactList.children('span').addClass('none');
 
-            if (stricmp(name, text) > -1 && stricmp((name || '').substr(0, text.length), text) == 0)
+            each(this.names, function(i, name)
+            {
+              if (hit && stricmp((name || '').substr(0, text.length), text) != 0) return false;
+
+              if (stricmp(name, text) > -1 && stricmp((name || '').substr(0, text.length), text) == 0)
+              {
+                matches.push({ name: name, number: this.numbers[i] })
+                hit = true
+
+                ui && spans.eq(i).removeClass('none');
+              }
+            }, this);
+          }
+          else
+          {
+            ui && contactList.children('span').removeClass('none');
+            each(this.names, function(i, name)
             {
               matches.push({ name: name, number: this.numbers[i] })
-              hit = true
-
-              ui && spans.eq(i).removeClass('none');
-            }
-          }, this);
+            })
+          }
         });
 
         return matches;
