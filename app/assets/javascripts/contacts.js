@@ -151,6 +151,30 @@
         contactList.children('span').eq(index).remove();
       },
 
+      _insertIndex: function(index, number, name)
+      {
+        this.names.splice(index, 0, name);
+        this.numbers.splice(index, 0, number);
+
+        var span = $('<span/>');
+        span.append
+        (
+          $('<input/>').
+            attr('type', 'text').
+            attr('name', number).
+            val(name || tools.decorateNumber(number)).
+            addClass('bubble').
+            addClass(name ? 'contact' : 'phone')
+        );
+        span.append($('<a/>').attr('href', '#').addClass('edit'));
+
+        var spans = contactList.children('span');
+        if (spans.length > index)
+          span.insertBefore(spans.eq(index));
+        else
+          span.appendTo(contactList);
+      },
+
       dropContact: function(number)
       {
         this.sync(function()
@@ -172,12 +196,6 @@
             this._removeIndex(old_index)
           }
 
-          var insert = function(i, number, name)
-          {
-            this.names.splice(i, 0, name);
-            this.numbers.splice(i, 0, number);
-          }
-
           var index = each(this.names, function(i, current_name)
           {
             var diff = stricmp(name, current_name);
@@ -191,27 +209,7 @@
             }
           }, this);
 
-          insert.call(this, index, number, name);
-
-          // we add UI contact immediately!
-
-          var span = $('<span/>');
-          span.append
-          (
-            $('<input/>').
-              attr('type', 'text').
-              attr('name', number).
-              val(name || tools.decorateNumber(number)).
-              addClass('bubble').
-              addClass(name ? 'contact' : 'phone')
-          );
-          span.append($('<a/>').attr('href', '#').addClass('edit'));
-
-          var spans = contactList.children('span');
-          if (spans.length > index)
-            span.insertBefore(spans.eq(index));
-          else
-            span.appendTo(contactList);
+          this._insertIndex(index, number, name);
 
           // ...and now call event handler
           
