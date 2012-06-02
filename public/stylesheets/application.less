@@ -679,13 +679,17 @@ nav#top {
             &:hover {
               .rounded(0.8em 0 0 0);
               
+              & ~ .dropdown {
+                right: 1.4em;
+              }
+              
               &:before, &:after {
                 .rounded(0.8em 0 0 0);
               }
             }
             
             + a {
-              .rounded(0 1em 0 0);
+              .rounded(0 1em 1em 0);
               color: @color-white;
               @color-start: lighten(@color-orange, 1.5%);
               @color-stop:  darken(@color-orange, 7.5%);
@@ -714,6 +718,10 @@ nav#top {
                                    0     0   2px  -1px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
                                    0     0   1px   0   hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30);
               }
+            }
+            
+            & ~ .dropdown {
+              right: 1.4em;
             }
           }
         }
