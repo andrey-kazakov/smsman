@@ -134,7 +134,7 @@
 
         try
         {
-          callback.apply(context || this, args);
+          return callback.apply(context || this, args);
         }
         catch (e)
         {
@@ -205,10 +205,10 @@
 
       pushContact: function(number, name)
       {
-        this.sync(function()
+        return this.sync(function()
         {
           var old_index = this.numbers.indexOf(number);
-          if (old_index > -1 && this.names[old_index] != name)
+          if (old_index > -1)
           {
             // renaming means reordering both of arrays and UI...
             this._removeIndex(old_index)
@@ -233,6 +233,7 @@
           
           aside.trigger('contact', [number, name]);
 
+          return index;
         });
       },
 
@@ -272,7 +273,7 @@
             each(this.names, function(i, name)
             {
               matches.push({ name: name, number: this.numbers[i] })
-            })
+            }, this)
           }
         });
 
@@ -286,6 +287,14 @@
     searchField.bind('keyup keyrepeat change search', function()
     {
       Contacts.suggestContactsByName(tools.ltrim(searchField.val()), true);
+    }).bind('keydown', function(event)
+    {
+      if (event.keyCode == 40)
+      {
+        event.preventDefault();
+
+        aside.find('div.list input:first').focus()
+      }
     });
 
     $('#toggleContacts').add(aside.find('a.close')).bind('click keydown', function(event)
@@ -310,7 +319,9 @@
       return false
     })
 
-    aside.find('div.add input').bind('input propertychange', function(event)
+    var addField = aside.find('div.add input');
+
+    addField.bind('input propertychange', function(event)
     {
       var input = $(this);
 
@@ -318,7 +329,7 @@
       {
         Contacts.pushContact(number);
       }));
-    }).bind('keyup keydown', function(event)
+    }).bind('keyup', function(event)
     {
       var input = $(this);
       var value = input.val();
@@ -327,6 +338,72 @@
       var caretAtEnd = value.length == caret.start;
 
       if (caretAtEnd && event.keyCode != 8) { input.val(tools.decorateValue(value)); input.caret(/$/); }
+    }).bind('keydown', function(event)
+    {
+      if (event.keyCode == 38)
+      {
+        event.preventDefault();
+
+        aside.find('div.list input:last').focus()
+      }
+    });
+
+    aside.find('div.list input').live('keydown', function(event)
+    {
+      var input = $(this);
+      var span = input.parents('span');
+
+      var number = tools.sanitizeNumber(input.attr('name'))
+
+      var isContact = input.hasClass('contact');
+
+      switch (event.keyCode)
+      {
+        case 38:
+          event.preventDefault();
+
+          if (span.prev().length)
+          {
+            input.blur();
+            span.prev().find('input').focus()
+          }
+          else
+          {
+            searchField.focus();
+          }
+          break;
+        case 40:
+          event.preventDefault();
+
+          if (span.next().length)
+          {
+            input.blur();
+            span.next().find('input').focus()
+          }
+          else
+          {
+            addField.focus();
+          }
+          break;
+        case  8:
+        case 46:
+          if (!input.val())
+          {
+            event.preventDefault();
+
+            if (isContact)
+            {
+              var index = Contacts.pushContact(number);
+              contactList.children('span').eq(index).find('input').focus()
+            }
+            else
+            {
+              Contacts.dropContact(number);
+              addField.focus();
+            }
+          }
+          break;
+      }
     });
   })
 })()
