@@ -475,7 +475,7 @@
 
         }
         
-        input.val(up ? tools.decorateValue(value) : value)
+        if (input.val() != value) input.val(up ? tools.decorateValue(value) : value)
 
         if (caretAtEnd)
         {
