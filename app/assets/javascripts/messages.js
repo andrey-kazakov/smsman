@@ -164,9 +164,9 @@
       var article = $(this) //.parents('article');
       if (wasRemoval) article.find('h1.number').text(i);
 
-      if (article.attr('data-parts-amount')) return;
+      if (parseInt(article.attr('data-parts-amount'))) return;
 
-      if (article.find('div.recipients').find('input:not([placeholder])')) return;
+      if (article.find('div.recipients > input:not([placeholder])').length) return;
 
       if (article.find(':focus').length) return;
 
@@ -475,10 +475,10 @@
 
         }
         
-        if (input.val() != value) input.val(up ? tools.decorateValue(value) : value)
-
         if (caretAtEnd)
         {
+          !autocomplete && input.val(up ? tools.decorateValue(value) : value);
+
           // autocomplete shit
           if (up && notEmpty && !tools.wannaBeAPhone(value))
           {
