@@ -51,9 +51,16 @@
           <li><a id="toggleContacts" class="pseudolink" href="#"><u>Контакты</u></a>
         </ul>
         <ul class="float-right">
-          <li>Добрый день, Леонид
+          <li>Добрый день
           <!-- <li><a class="pseudolink" href=""><u>Личный кабинет</u></a> -->
-          <li><a class="delogin" href=""><u>Выйти</u></a>
+          <li>
+            <div class="buttongroup">
+              <a id="profile" class="pseudolink" href="#" onclick="$(this).toggleClass('active'); return false"><u>s3rious.ls@gmail.com</u></a><a href="" id="delogin" class="pseudolink">&nbsp;</a>
+              <div class="dropdown">
+                <div class="white">
+                </div>
+              </div>
+            </div>
         </ul>
       </div>
       <div class="pinner">
@@ -73,15 +80,13 @@
                     <span><input type="radio" name="prefix" id="buy-more-ukraine" value="38"></input><label for="buy-more-ukraine"><u>Украина</u></label></span>
                   </p>
                   <input type="number" name="" id="" placeholder="Количество…" min="30" />
-                  <p class="text-center">Цена за смс: 0.7 &#8399;</p>
-                  <!-- <p class="text-center">Цена за смс: 0.7 &#8372;</p> -->
+                  <p class="text-center">Цена за смс: 0.03 $</p>
                   <div class="total">
-                    <p class="text-center">Итого: <span class="nobr">1<span class="thinsp">&nbsp;</span>415&nbsp;&#8399;</span></p>
-                    <!-- <p class="text-center">Итого: <span class="nobr">1<span class="thinsp">&nbsp;</span>415&nbsp;&#8372;</span></p> -->
+                    <p class="text-center">Итого: <span class="nobr">1<span class="thinsp">&nbsp;</span>002&nbsp;$</span></p>
                     <hr />
                     <button>Купить</button>
                   </div>
-                  <p class="text-center"><small>или <a href=""><u>заключить договор</u></a></small></p>
+                  <p class="footer text-center"><small>или <a href=""><u>заключить договор</u></a></small></p>
                 </div>
               </form>
           </ul>

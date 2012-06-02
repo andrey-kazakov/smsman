@@ -599,9 +599,136 @@ nav#top {
       display: inline-block;
       padding: 0.4em 0;
       
+      .buttongroup {
+        display: inline-block;
+        padding: 0;
+        
+        &:hover {
+          
+          a {
+            @color-start: lighten(@color-gray, 1.5%);
+            @color-stop:  darken(@color-gray, 7.5%);
+            .gradient(@color-gray, @color-stop, @color-start);
+            .button > .shadow;
+          }
+        }
+        
+        a {
+          .rounded(0);
+          
+          &:first-child {
+            .rounded(1em 0 0 1em);
+            padding-right: 0.4em;
+          }
+          
+          &:last-child, &#delogin {
+            .rounded(0 1em 1em 0);
+            padding-left: 0.8em;
+          }
+          
+          &#delogin {
+            display: inline-block;
+            width: 1.4em;
+            padding: 0;
+            position: relative;
+            
+            &:after {
+              content: "";
+              display: block;
+              width: 12px;
+              height: 15px;
+              position: absolute;
+              top:     4px;
+              bottom:  0;
+              right:   0;
+              left:   -3px;
+              margin: auto;
+              background: url("/assets/exit.png") 0 0 no-repeat;
+            }
+            
+            &:hover {
+              
+              &:after {
+                background-position: 0 -24px;
+              }
+            }
+            
+            &:active {
+                
+              &:after {
+                background-position: 0 -60px;
+              }
+            }
+          }
+          
+          &:active {
+            .inset-text(hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.15), @color-white);
+            .button > .shadow > .pressed;
+            @color-start: darken(@color-gray, 5.5%);
+            @color-stop:  darken(@color-gray, 1.5%);
+            .gradient(@color-gray, @color-stop, @color-start); 
+          }
+          
+          &#profile.active {
+            .rounded(0.8em 0 0 0);
+            
+            &:before, &:after {
+              .rounded(0.8em 0 0 0);
+            }
+            
+            &:hover {
+              .rounded(0.8em 0 0 0);
+              
+              &:before, &:after {
+                .rounded(0.8em 0 0 0);
+              }
+            }
+            
+            + a {
+              .rounded(0 1em 0 0);
+              color: @color-white;
+              @color-start: lighten(@color-orange, 1.5%);
+              @color-stop:  darken(@color-orange, 7.5%);
+              .gradient(@color-orange, @color-start, @color-stop);
+              .inset-text(hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30), hsla(hue(@color-white), saturation(@color-white), lightness(@color-white), 0.66));
+              box-shadow: -0.5px 2px 6px  -2px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
+                          -1px   6px 10px -4px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
+                           0     0   2px  -1px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
+                           0     0   1px   0   hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30);
+              
+              &:after {
+                background-position: 0 -86px;
+              }
+              
+              &:hover {
+                @color-start: lighten(@color-red, 1.5%);
+                @color-stop:  darken(@color-red, 7.5%);
+                .gradient(@color-red, @color-start, @color-stop);
+              }
+              
+              &:active {
+                box-shadow: inset  1px   0   6px       hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.25),
+                            inset  1px   0   2px       hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.25),
+                                  -0.5px 2px 6px  -2px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
+                                  -1px   6px 10px -4px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
+                                   0     0   2px  -1px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
+                                   0     0   1px   0   hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30);
+              }
+            }
+          }
+        }
+      }
+      
       a {
         display: inline-block;
         padding: 0 0.8em;
+        
+        &#buy-more, &#profile {
+          
+          & + .dropdown {
+            display: none;
+          }
+        }
         
         &:hover {
           @color-start: lighten(@color-gray, 1.5%);
@@ -609,20 +736,6 @@ nav#top {
           .gradient(@color-gray, @color-stop, @color-start);
           .rounded(1em);
           .button > .shadow;
-          
-          &.delogin {
-            
-            &:hover {
-              color: @color-red;
-            }
-          }
-        }
-        
-        &#buy-more {
-          
-          & + .dropdown {
-            display: none;
-          }
         }
         
         &:active {
@@ -646,8 +759,8 @@ nav#top {
             border-bottom-style: none;
           }
           
-          &#buy-more {
-            display: block;
+          &#buy-more, &#profile {
+            display: inline-block;
             @color-start: lighten(@color-orange, 1.5%);
             @color-stop:  darken(@color-orange, 7.5%);
             .gradient(@color-orange, @color-start, @color-stop);
@@ -685,13 +798,14 @@ nav#top {
               z-index: 20;
             }
             
-            & + .dropdown {
+            & ~ .dropdown {
               display: block;
               position: absolute;
               @color-start: lighten(@color-orange, 1.5%);
               @color-stop:   darken(@color-orange, 7.5%);
               .gradient(@color-orange, @color-stop, @color-start);
               padding: 6px;
+              min-width: 100%;
               right: 0;
               z-index: 10;
               .rounded(12px 0 12px 12px);
@@ -764,6 +878,23 @@ nav#top {
                   }
                 }
                 
+                button {
+                  padding: 0.2em 0.8em;
+                  display: block;
+                  margin: 0.25em auto 0;
+                  
+                  &:hover {
+                    box-shadow:       0  2px 4px rgba(0, 0, 0, 0.15),
+                                      0  1px 2px rgba(0, 0, 0, 0.15),
+                                inset 0  2px 0   rgba(255, 255, 255, 0.15),
+                                inset 0  1px 0   rgba(255, 255, 255, 0.45);
+                  }
+                  
+                  &:active {
+                    .button > .shadow > .pressed;
+                  }
+                }
+                
                 .total {
                   #total;
                   padding: 0.4em;
@@ -788,9 +919,7 @@ nav#top {
                   }
                   
                   & > button {
-                    padding: 0.2em 0.8em;
-                    display: block;
-                    margin: 0.25em auto 0;
+                    font-size: 1.2em;
                     color: @color-white;
                     @color-start: lighten(@color-orange, 1.5%);
                     @color-stop:   darken(@color-orange, 7.5%);
@@ -798,20 +927,14 @@ nav#top {
                     @color-inset-top:     darken(@color-orange, 22%);
                     @color-inset-bottom: lighten(@color-orange, 22%);
                     .inset-text(@color-inset-top, @color-inset-bottom);
-                    font-size: 1.2em;
                     
                     &:hover {
                       @color-start: lighten(@color-orange, 7.5%);
                       @color-stop:   darken(@color-orange, 10%);
                       .gradient(@color-orange, @color-stop, @color-start);
-                      box-shadow:       0  2px 4px rgba(0, 0, 0, 0.15),
-                                        0  1px 2px rgba(0, 0, 0, 0.15),
-                                  inset 0  2px 0   rgba(255, 255, 255, 0.15),
-                                  inset 0  1px 0   rgba(255, 255, 255, 0.45);
                     }
                     
                     &:active {
-                      .button > .shadow > .pressed;
                       @color-inset-top:   lighten(@color-orange, 22%);
                       @color-inset-bottom: darken(@color-orange, 22%);
                       .inset-text(@color-inset-top, @color-inset-bottom);
@@ -826,7 +949,7 @@ nav#top {
                   margin: 0.2em 0 0.4em;
                 }
                 
-                & > p:last-child {
+                & > p.footer {
                   margin-bottom: 0;
                   margin-top: 0.2em;
                   opacity: 0.5;
