@@ -348,7 +348,7 @@
       }
     });
 
-    aside.find('div.list input').live('keydown', function(event)
+    contactList.find('input').live('keydown', function(event)
     {
       var input = $(this);
       var span = input.parents('span');
@@ -404,6 +404,18 @@
           }
           break;
       }
+    });
+
+    contactList.find('a.edit').live('click keydown', function(event)
+    {
+      var span = $(this).parents('span');
+      var input = span.find('input');
+
+      event.preventDefault();
+
+      input.removeClass('contact').addClass('phone');
+      input.val(tools.decorateValue(tools.sanitizeNumber(input.attr('name'))));
+      input.caret(/$/).focus();
     });
   })
 })()
