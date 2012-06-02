@@ -4,6 +4,10 @@
   var $doc = $(document);
   var $win = $(window);
 
+  var each = tools.each;
+
+  var billingPrefixes = ['7', '38'];
+
   var scrollTo = function(el, callback)
   {
     el = $(el);
@@ -33,16 +37,17 @@
 
   var messagesSelector = 'section.wrapper > article.message:not(.new)'
   
-  var countParts = function(text)
+  var countMessageBodyParts = function(text)
   {
-    var 7bit = /^[\u0000-\u007f]*$/.test(text);
+    if (!text.length) return 0;
 
-    // TODO: count all using octets! (140 for whole message, 153 for partial)
-    if (7bit && text.length <= 160) return 1;
-    if (text.length <= 70) return 1;
+    var isSeptets = /^[\u0000-\u007f]*$/.test(text);
 
-    if (7bit) return Math.ceil(text.length / 153);
-    return Math.ceil(text.length / 67);
+    var octets = Math.ceil(isSeptets ? (7/8) * text.length : text.length * 2);
+
+    // 140 octets for whole message, 134 for each part of partial message
+
+    return octets <= 140 ? 1 : Math.ceil(octets / 134);
   }
 
   var countMessages = function()
@@ -57,14 +62,39 @@
 
   var setSendingCounts = function()
   {
-    var prefixes = ['7', '38'];
-    for (var i = 0; i < prefixes.length; i++)
-    {
-      var prefix = prefixes[i];
+    var res = {};
 
-      typoNumber(findRecipientsByPrefix(prefix).length, '#sending_' + prefix)
-    }
+    each(billingPrefixes, function(i, prefix) { res[prefix] = 0 });
+
+    $('section.wrapper > article.message:not(.new)').each(function()
+    {
+      var article = $(this);
+      var parts = parseInt(article.attr('data-parts-amount')) || 1;
+
+      each(billingPrefixes, function(i, prefix)
+      {
+        var count = parseInt(article.attr('data-recipients-amount-' + prefix));
+        if (count) res[prefix] += count * parts;
+      })
+    })
+
+    each(billingPrefixes, function(i, prefix) { typoNumber(res[prefix], '#sending_' + prefix) });
   }
+
+  $('section.wrapper > article.message').live('amountchange', function(event)
+  {
+    var article = $(this);
+
+    // those attrs must be set anyway!
+    var parts = article.attr('data-parts-amount');
+    var recipients = article.attr('data-recipients-amount');
+
+    var text = recipients == 0 ? '0' : (recipients + (parts > 1 ? ('x' + parts) : ''))
+
+    article.find('h1.amount').text(text);
+
+    setSendingCounts();
+  });
 
   var updateMessagesNavigation = function(count, decades, shift, undefined)
   {
@@ -134,11 +164,10 @@
       var article = $(this) //.parents('article');
       if (wasRemoval) article.find('h1.number').text(i);
 
-      if (article.find('textarea').val().trim()) return;
+      if (article.attr('data-recipients-amount')) return;
+      if (article.attr('data-parts-amount')) return;
 
       if (article.find(':focus').length) return;
-
-      if (article.find('div.recipients').find('input:not([placeholder])').length) return;
 
       article.slideUp('fast', function() { article.remove() });
       i--;
@@ -176,6 +205,17 @@
     $('<h1 class="bold number"></h1>').text(countMessages()).insertBefore(area);
 
     updateMessagesNavigation();
+  })
+  
+  $('section.wrapper > article.message:not(.new) > textarea').live('input propertychange', function(event)
+  {
+    var area = $(this);
+    var article = area.parents('article.message');
+
+    var old_amount = article.attr('data-parts-amount') || 1;
+    var new_amount = countMessageBodyParts(area.val());
+
+    old_amount != new_amount && article.attr('data-parts-amount', new_amount).trigger('amountchange');
   });
 
 
@@ -290,10 +330,18 @@
   }
   var modifyAmount = function(where)
   {
-    var amount = where.parents('article.message').find('h1.amount');
-    amount.text(where.parent('div.recipients').find('input.phone, input.contact').size());
+    var article = where.parents('article.message');
+    var recipients = where.parents('div.recipients');
 
-    setSendingCounts();
+    var amount = recipients.find('input.phone, input.contact').size();
+
+    // 別々にお願いします
+    each(billingPrefixes, function(i, prefix)
+    {
+      article.attr('data-recipients-amount-' + prefix, findRecipientsByPrefix(prefix, recipients).length)
+    })
+
+    article.attr('data-recipients-amount', amount).trigger('amountchange');
   }
 
   $('article.message > div.recipients').live('click', function(event)

@@ -90,6 +90,7 @@
 
         return value
       }
+    , each: each
   }
 
   // we must have ready DOM to actually work with contacts
