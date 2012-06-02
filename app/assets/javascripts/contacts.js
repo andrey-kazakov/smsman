@@ -214,7 +214,7 @@
             this._removeIndex(old_index)
           }
 
-          var index = each(this.names, function(i, current_name)
+          var index = !name ? this.names.length : each(this.names, function(i, current_name)
           {
             var diff = stricmp(name, current_name);
 
@@ -310,7 +310,15 @@
       return false
     })
 
-    aside.find('div.add input').bind('keyup input propertychange', function(event)
+    aside.find('div.add input').bind('input propertychange', function(event)
+    {
+      var input = $(this);
+
+      input.val(tools.consumeNumbers(input.val(), function(number)
+      {
+        Contacts.pushContact(number);
+      }));
+    }).bind('keyup keydown', function(event)
     {
       var input = $(this);
       var value = input.val();
@@ -318,13 +326,7 @@
 
       var caretAtEnd = value.length == caret.start;
 
-      value = tools.consumeNumbers(value, function(number)
-      {
-        Contacts.pushContact(number);
-        contactList.children('span').eq(Contacts.numbers.indexOf(number)).find('input').focus();
-      });
-
-      if (caretAtEnd) { input.val(tools.decorateValue(value)); input.caret(/$/); }
-    })
+      if (caretAtEnd && event.keyCode != 8) { input.val(tools.decorateValue(value)); input.caret(/$/); }
+    });
   })
 })()
