@@ -201,9 +201,13 @@ textarea {
     background: @new-color;
   }
   
-  &:invalid {
+  &:not([required]):invalid {
     box-shadow: 0 0 6px 0 hsla(hue(@color-red), saturation(@color-red), lightness(@color-red), 0.50);
     border-color: @color-red;
+  }
+  
+  &:required {
+    box-shadow: none;
   }
   
   &:not([readonly]):focus {
@@ -464,6 +468,7 @@ s, strike, del, .strike, .line-through {
 
 small, .small {
   font-size: 0.8em;
+  line-height: 1.2em;
 }
 
 .thinsp {
@@ -681,6 +686,17 @@ nav#top {
               
               & ~ .dropdown {
                 right: 1.4em;
+                min-width: -webkit-calc(~"100% - 1.4em");
+                min-width: -moz-calc(~"100% - 1.4em");
+                min-width: calc(~"100% - 1.4em");
+                
+                .white {
+                  padding-bottom: 0;
+                }
+                
+                p.total {
+                  .rounded(0 0 6px 6px);
+                }
               }
               
               &:before, &:after {
@@ -722,6 +738,22 @@ nav#top {
             
             & ~ .dropdown {
               right: 1.4em;
+              min-width: -webkit-calc(~"100% - 1.4em");
+              min-width: -moz-calc(~"100% - 1.4em");
+              min-width: calc(~"100% - 1.4em");
+              
+              .white {
+                padding-bottom: 0;
+              }
+              
+              p.total {
+                .rounded(0 0 6px 6px);
+              }
+              
+              input[type=text],
+              input[type=password] {
+                width: 100%;
+              }
             }
           }
         }
@@ -733,7 +765,7 @@ nav#top {
         
         &#buy-more, &#profile {
           
-          & + .dropdown {
+          & ~ .dropdown {
             display: none;
           }
         }
@@ -841,7 +873,11 @@ nav#top {
                   }
                 }
                 
-                & > p:first-child {
+                & p:first-child {
+                  margin: 0 0 0.4em;
+                }
+                
+                p.radioholder {
                   .fix-spaces;
                   margin: 0 0 0.4em;
                   
@@ -928,6 +964,7 @@ nav#top {
                   
                   & > button {
                     font-size: 1.2em;
+                    white-space: nowrap;
                     color: @color-white;
                     @color-start: lighten(@color-orange, 1.5%);
                     @color-stop:   darken(@color-orange, 7.5%);
@@ -957,7 +994,7 @@ nav#top {
                   margin: 0.2em 0 0.4em;
                 }
                 
-                & > p.footer {
+                p.footer {
                   margin-bottom: 0;
                   margin-top: 0.2em;
                   opacity: 0.5;

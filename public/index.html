@@ -56,10 +56,31 @@
           <li>
             <div class="buttongroup">
               <a id="profile" class="pseudolink" href="#" onclick="$(this).toggleClass('active'); return false"><u>s3rious.ls@gmail.com</u></a><a href="" id="delogin" class="pseudolink">&nbsp;</a>
-              <div class="dropdown">
+              <form class="dropdown">
                 <div class="white">
+                  <p>
+                    <label>
+                      Новый логин
+                      <input type="text" name="user_login" id="user_login" />
+                    </label>
+                  </p>
+                  <p>
+                    <label>
+                       Новый пароль
+                      <input type="password" name="user_password" id="user_password" />
+                    </label>
+                  </p>
+                  <p>
+                    <label>
+                      Текущий пароль
+                      <input type="password" name="user_current_password" id="user_current_password" placeholder="Обязательное поле" required />
+                    </label>
+                  </p>
+                  <p class="total">
+                    <button class="save">Сохранить изменения</button>
+                  </p>
                 </div>
-              </div>
+              </form>
             </div>
         </ul>
       </div>
@@ -74,8 +95,7 @@
               <a id="buy-more" class="pseudolink" href="#" onclick="$(this).toggleClass('active'); return false"><u>Купить ещё</u></a>
               <form class="dropdown">
                 <div class="white">
-                  <!-- знаки рубля\гривны меняюся в зависимости от радиобатона конечно же -->
-                  <p>
+                  <p class="radioholder">
                     <span><input type="radio" name="prefix" id="buy-more-russia" value="7" checked></input><label for="buy-more-russia"><u>Россия</u></label></span>
                     <span><input type="radio" name="prefix" id="buy-more-ukraine" value="38"></input><label for="buy-more-ukraine"><u>Украина</u></label></span>
                   </p>
@@ -86,7 +106,7 @@
                     <hr />
                     <button>Купить</button>
                   </div>
-                  <p class="footer text-center"><small>или <a href=""><u>заключить договор</u></a></small></p>
+                  <p class="footer text-center small">или <a href=""><u>заключить договор</u></a></p>
                 </div>
               </form>
           </ul>
