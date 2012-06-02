@@ -310,9 +310,21 @@
       return false
     })
 
-    aside.find('div.add input').bind('keyup keydown', function()
+    aside.find('div.add input').bind('keyup input propertychange', function(event)
     {
-      //
+      var input = $(this);
+      var value = input.val();
+      var caret = input.caret();
+
+      var caretAtEnd = value.length == caret.start;
+
+      value = tools.consumeNumbers(value, function(number)
+      {
+        Contacts.pushContact(number);
+        contactList.children('span').eq(Contacts.numbers.indexOf(number)).find('input').focus();
+      });
+
+      if (caretAtEnd) { input.val(tools.decorateValue(value)); input.caret(/$/); }
     })
   })
 })()
