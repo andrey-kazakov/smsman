@@ -89,7 +89,7 @@
     var parts = article.attr('data-parts-amount');
     var recipients = article.attr('data-recipients-amount');
 
-    var text = recipients == 0 ? '0' : (recipients + (parts > 1 ? ('x' + parts) : ''))
+    var text = recipients == 0 ? '0' : (recipients + (parts > 1 ? ('×' + parts) : ''))
 
     article.find('h1.amount').text(text);
 
@@ -475,10 +475,10 @@
 
         }
         
+        if (!autocomplete && caretAtEnd && up) {  input.val(!down ? tools.decorateValue(value) : value); input.caret(/$/); } 
+
         if (caretAtEnd)
         {
-          !autocomplete && input.val(up ? tools.decorateValue(value) : value);
-
           // autocomplete shit
           if (up && notEmpty && !tools.wannaBeAPhone(value))
           {
