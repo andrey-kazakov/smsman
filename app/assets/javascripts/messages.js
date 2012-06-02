@@ -164,8 +164,9 @@
       var article = $(this) //.parents('article');
       if (wasRemoval) article.find('h1.number').text(i);
 
-      if (article.attr('data-recipients-amount')) return;
       if (article.attr('data-parts-amount')) return;
+
+      if (article.find('div.recipients').find('input:not([placeholder])')) return;
 
       if (article.find(':focus').length) return;
 
@@ -212,7 +213,7 @@
     var area = $(this);
     var article = area.parents('article.message');
 
-    var old_amount = article.attr('data-parts-amount') || 1;
+    var old_amount = article.attr('data-parts-amount');
     var new_amount = countMessageBodyParts(area.val());
 
     old_amount != new_amount && article.attr('data-parts-amount', new_amount).trigger('amountchange');
