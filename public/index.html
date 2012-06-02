@@ -51,11 +51,10 @@
           <li><a id="toggleContacts" class="pseudolink" href="#"><u>Контакты</u></a>
         </ul>
         <ul class="float-right">
-          <li>Добрый день
-          <!-- <li><a class="pseudolink" href=""><u>Личный кабинет</u></a> -->
+          <!-- <li>Добрый день
           <li>
             <div class="buttongroup">
-              <a id="profile" class="pseudolink" href="#" onclick="$(this).toggleClass('active'); return false"><u>s3rious.ls@gmail.com</u></a><a href="" id="delogin" class="pseudolink">&nbsp;</a>
+              <a id="profile" class="pseudolink drop" href="#" onclick="$(this).toggleClass('active'); return false"><u>s3rious.ls@gmail.com</u></a><a href="" id="delogin" class="pseudolink drop">&nbsp;</a>
               <form class="dropdown">
                 <div class="white">
                   <p>
@@ -77,11 +76,54 @@
                     </label>
                   </p>
                   <p class="total">
-                    <button class="save">Сохранить изменения</button>
+                    <button>Сохранить изменения</button>
                   </p>
                 </div>
               </form>
-            </div>
+            </div> -->
+          <li>
+            <a id="login" class="pseudolink drop" href="#" onclick="$(this).toggleClass('active'); return false"><u>Войти</u></a>
+            <form class="dropdown">
+              <div class="white">
+                <p>
+                  <label>
+                    Логин
+                    <input type="text" name="login_login" id="login_login" placeholder="Обязательное поле" required />
+                  </label>
+                </p>
+                <p>
+                  <label>
+                    Пароль
+                    <input type="password" name="login_password" id="login_password" placeholder="Обязательное поле" required />
+                  </label>
+                </p>
+                <p class="total">
+                  <button>Войти</button>
+                </p>
+              </div>
+            </form>
+          <li><em>или</em>
+          <li>
+            <a id="register" class="pseudolink drop" href="#" onclick="$(this).toggleClass('active'); return false"><u>Зарегистрироваться</u></a>
+            <form class="dropdown">
+              <div class="white">
+                <p>
+                  <label>
+                    Адрес эл. почты
+                    <input type="text" name="register_login" id="register_login" placeholder="Обязательное поле" required />
+                  </label>
+                </p>
+                <p>
+                  <label>
+                    Пароль
+                    <input type="password" name="register_password" id="register_password" placeholder="Обязательное поле" required />
+                  </label>
+                </p>
+                <p class="total">
+                  <button>Зарегистрироваться</button>
+                </p>
+              </div>
+            </form>
         </ul>
       </div>
       <div class="pinner">
@@ -92,14 +134,14 @@
           <ul class="float-right">
             <li><span id="amount_7" class="russia country">9<span class="thinsp">&nbsp;</span>763</span> и <span id="amount_38" class="ukraine country">100<span class="thinsp">&nbsp;</span>500</span> смс</li>
             <li>
-              <a id="buy-more" class="pseudolink" href="#" onclick="$(this).toggleClass('active'); return false"><u>Купить ещё</u></a>
+              <a id="buy-more" class="pseudolink drop" href="#" onclick="$(this).toggleClass('active'); return false"><u>Купить ещё</u></a>
               <form class="dropdown">
                 <div class="white">
                   <p class="radioholder">
                     <span><input type="radio" name="prefix" id="buy-more-russia" value="7" checked></input><label for="buy-more-russia"><u>Россия</u></label></span>
                     <span><input type="radio" name="prefix" id="buy-more-ukraine" value="38"></input><label for="buy-more-ukraine"><u>Украина</u></label></span>
                   </p>
-                  <input type="number" name="" id="" placeholder="Количество…" min="30" />
+                  <input type="number" name="" id="" placeholder="Количество…" min="30" required />
                   <p class="text-center">Цена за смс: 0.03 $</p>
                   <div class="total">
                     <p class="text-center">Итого: <span class="nobr">1<span class="thinsp">&nbsp;</span>002&nbsp;$</span></p>

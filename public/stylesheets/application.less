@@ -673,89 +673,6 @@ nav#top {
             @color-stop:  darken(@color-gray, 1.5%);
             .gradient(@color-gray, @color-stop, @color-start); 
           }
-          
-          &#profile.active {
-            .rounded(0.8em 0 0 0);
-            
-            &:before, &:after {
-              .rounded(0.8em 0 0 0);
-            }
-            
-            &:hover {
-              .rounded(0.8em 0 0 0);
-              
-              & ~ .dropdown {
-                right: 1.4em;
-                min-width: -webkit-calc(~"100% - 1.4em");
-                min-width: -moz-calc(~"100% - 1.4em");
-                min-width: calc(~"100% - 1.4em");
-                
-                .white {
-                  padding-bottom: 0;
-                }
-                
-                p.total {
-                  .rounded(0 0 6px 6px);
-                }
-              }
-              
-              &:before, &:after {
-                .rounded(0.8em 0 0 0);
-              }
-            }
-            
-            + a {
-              .rounded(0 1em 1em 0);
-              color: @color-white;
-              @color-start: lighten(@color-orange, 1.5%);
-              @color-stop:  darken(@color-orange, 7.5%);
-              .gradient(@color-orange, @color-start, @color-stop);
-              .inset-text(hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30), hsla(hue(@color-white), saturation(@color-white), lightness(@color-white), 0.66));
-              box-shadow: -0.5px 2px 6px  -2px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
-                          -1px   6px 10px -4px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
-                           0     0   2px  -1px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
-                           0     0   1px   0   hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30);
-              
-              &:after {
-                background-position: 0 -86px;
-              }
-              
-              &:hover {
-                @color-start: lighten(@color-red, 1.5%);
-                @color-stop:  darken(@color-red, 7.5%);
-                .gradient(@color-red, @color-start, @color-stop);
-              }
-              
-              &:active {
-                box-shadow: inset  1px   0   6px       hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.25),
-                            inset  1px   0   2px       hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.25),
-                                  -0.5px 2px 6px  -2px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
-                                  -1px   6px 10px -4px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
-                                   0     0   2px  -1px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
-                                   0     0   1px   0   hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30);
-              }
-            }
-            
-            & ~ .dropdown {
-              right: 1.4em;
-              min-width: -webkit-calc(~"100% - 1.4em");
-              min-width: -moz-calc(~"100% - 1.4em");
-              min-width: calc(~"100% - 1.4em");
-              
-              .white {
-                padding-bottom: 0;
-              }
-              
-              p.total {
-                .rounded(0 0 6px 6px);
-              }
-              
-              input[type=text],
-              input[type=password] {
-                width: 100%;
-              }
-            }
-          }
         }
       }
       
@@ -763,43 +680,13 @@ nav#top {
         display: inline-block;
         padding: 0 0.8em;
         
-        &#buy-more, &#profile {
+        &.drop {
           
           & ~ .dropdown {
             display: none;
           }
-        }
-        
-        &:hover {
-          @color-start: lighten(@color-gray, 1.5%);
-          @color-stop:  darken(@color-gray, 7.5%);
-          .gradient(@color-gray, @color-stop, @color-start);
-          .rounded(1em);
-          .button > .shadow;
-        }
-        
-        &:active {
-          .inset-text(hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.15), @color-white);
-          .rounded(1em);
-          .button > .shadow > .pressed;
-          @color-start: darken(@color-gray, 5.5%);
-          @color-stop:  darken(@color-gray, 1.5%);
-          .gradient(@color-gray, @color-stop, @color-start);
-        }
-        
-        &.active, &.active:hover {
-          @new-color: lighten(@color-blue, 20%);
-          color: @color-white;
-          background: @new-color;
-          .inset-text(hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30), hsla(hue(@color-white), saturation(@color-white), lightness(@color-white), 0.66));
-          .rounded(1em);
-          .button > .shadow > .pressed;
           
-          u {
-            border-bottom-style: none;
-          }
-          
-          &#buy-more, &#profile {
+          &.active {
             display: inline-block;
             @color-start: lighten(@color-orange, 1.5%);
             @color-stop:  darken(@color-orange, 7.5%);
@@ -998,6 +885,7 @@ nav#top {
                   margin-bottom: 0;
                   margin-top: 0.2em;
                   opacity: 0.5;
+                  line-height: 1.6em;
                   .transition(opacity, 0.5s, ease);
                   
                   &:hover {
@@ -1012,6 +900,130 @@ nav#top {
                 }
               }
             }
+          }
+          
+          &#profile, &#login, &#register {
+            
+            & ~ .dropdown {
+              min-width: 100%;
+              
+              .white {
+                padding-bottom: 0;
+              }
+              
+              p.total {
+                .rounded(0 0 6px 6px);
+              }
+              
+              input[type=text],
+              input[type=password] {
+                width: 100%;
+                min-width: 10em;
+              }
+            }
+          }
+          
+          &#profile {
+            
+            &.active {
+              .rounded(0.8em 0 0 0);
+              
+              &:before, &:after {
+                .rounded(0.8em 0 0 0);
+              }
+              
+              &:hover {
+                .rounded(0.8em 0 0 0);
+                
+                & ~ .dropdown {
+                  right: 1.4em;
+                  min-width: -webkit-calc(~"100% - 1.4em");
+                  min-width: -moz-calc(~"100% - 1.4em");
+                  min-width: calc(~"100% - 1.4em");
+                  
+                  .white {
+                    padding-bottom: 0;
+                  }
+                  
+                  p.total {
+                    .rounded(0 0 6px 6px);
+                  }
+                }
+                
+                &:before, &:after {
+                  .rounded(0.8em 0 0 0);
+                }
+              }
+              
+              + a {
+                .rounded(0 1em 1em 0);
+                color: @color-white;
+                @color-start: lighten(@color-orange, 1.5%);
+                @color-stop:  darken(@color-orange, 7.5%);
+                .gradient(@color-orange, @color-start, @color-stop);
+                .inset-text(hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30), hsla(hue(@color-white), saturation(@color-white), lightness(@color-white), 0.66));
+                box-shadow: -0.5px 2px 6px  -2px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
+                            -1px   6px 10px -4px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
+                             0     0   2px  -1px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
+                             0     0   1px   0   hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30);
+                
+                &:after {
+                  background-position: 0 -86px;
+                }
+                
+                &:hover {
+                  @color-start: lighten(@color-red, 1.5%);
+                  @color-stop:  darken(@color-red, 7.5%);
+                  .gradient(@color-red, @color-start, @color-stop);
+                }
+                
+                &:active {
+                  box-shadow: inset  1px   0   6px       hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.25),
+                              inset  1px   0   2px       hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.25),
+                                    -0.5px 2px 6px  -2px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
+                                    -1px   6px 10px -4px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
+                                     0     0   2px  -1px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
+                                     0     0   1px   0   hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30);
+                }
+              }
+              
+              & ~ .dropdown {
+                right: 1.4em;
+                min-width: -webkit-calc(~"100% - 1.4em");
+                min-width: -moz-calc(~"100% - 1.4em");
+                min-width: calc(~"100% - 1.4em");
+              }
+            }
+          }
+        }
+        
+        &:hover {
+          @color-start: lighten(@color-gray, 1.5%);
+          @color-stop:  darken(@color-gray, 7.5%);
+          .gradient(@color-gray, @color-stop, @color-start);
+          .rounded(1em);
+          .button > .shadow;
+        }
+        
+        &:active {
+          .inset-text(hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.15), @color-white);
+          .rounded(1em);
+          .button > .shadow > .pressed;
+          @color-start: darken(@color-gray, 5.5%);
+          @color-stop:  darken(@color-gray, 1.5%);
+          .gradient(@color-gray, @color-stop, @color-start);
+        }
+        
+        &.active, &.active:hover {
+          @new-color: lighten(@color-blue, 20%);
+          color: @color-white;
+          background: @new-color;
+          .inset-text(hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30), hsla(hue(@color-white), saturation(@color-white), lightness(@color-white), 0.66));
+          .rounded(1em);
+          .button > .shadow > .pressed;
+          
+          u {
+            border-bottom-style: none;
           }
           
           &#toggleContacts {
