@@ -248,7 +248,7 @@
     }
   }
 
-  $doc.ready(function(){ setTimeout(function(){ $('.recipients input').each(function() { fixWidth(this) } ) }, 150) });
+  $win.bind('load', function(){ $('.recipients input').each(function() { fixWidth(this) } ) });
 
   $doc.ready(function()
   {
