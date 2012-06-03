@@ -358,7 +358,7 @@
     div.find('input.new').focus();
   })
 
-  $('article.message > div.recipients > input').live('keydown keyup input propertychange', function(event)
+  $('article.message > div.recipients > input:not([readonly])').live('keydown keyup input propertychange', function(event)
   {
     var input = $(this);
     var value = input.val();
