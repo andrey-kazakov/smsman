@@ -92,6 +92,8 @@
       }
     , each: each
   }
+  // FIXME: ябудучитатьдокументациюпреждечемюзатьдефолтныеметоды
+  tools.phoneRegex.test = function(s) { return !!s.match(this) }
 
   // we must have ready DOM to actually work with contacts
 
@@ -122,6 +124,7 @@
       names: [],
 
       // synchrony stuff
+      // it doesn't fucking synchronize... waaai?!
       mute: false,
       wait: function()
       {
@@ -143,6 +146,20 @@
         finally
         {
           this.mute = false;
+        }
+      },
+      delay: function(meth)
+      {
+        var th = this;
+
+        return function()
+        {
+          var args = arguments;
+
+          setTimeout(function()
+          {
+            th[meth].apply(th, args);
+          }, 1);
         }
       },
 
@@ -214,8 +231,11 @@
             this._removeIndex(old_index)
           }
 
-          var index = !name ? this.names.length : each(this.names, function(i, current_name)
+          var index = each(this.names, function(i, current_name)
           {
+            if (!name) return true;
+            if (!current_name) return false;
+
             var diff = stricmp(name, current_name);
 
             if (diff == 0)
@@ -357,14 +377,17 @@
 
       var isContact = input.hasClass('contact');
 
+      var value = input.val();
+
       switch (event.keyCode)
       {
+        case  8:
+          if (value) break;
         case 38:
           event.preventDefault();
 
           if (span.prev().length)
           {
-            input.blur();
             span.prev().find('input').focus()
           }
           else
@@ -372,12 +395,14 @@
             searchField.focus();
           }
           break;
+        case 46:
+          if (value) break;
+        case 13:
         case 40:
           event.preventDefault();
 
           if (span.next().length)
           {
-            input.blur();
             span.next().find('input').focus()
           }
           else
@@ -385,25 +410,53 @@
             addField.focus();
           }
           break;
-        case  8:
-        case 46:
-          if (!input.val())
-          {
-            event.preventDefault();
-
-            if (isContact)
-            {
-              var index = Contacts.pushContact(number);
-              contactList.children('span').eq(index).find('input').focus()
-            }
-            else
-            {
-              Contacts.dropContact(number);
-              addField.focus();
-            }
-          }
-          break;
       }
+    }).live('blur', function(event)
+    {
+      var input = $(this);
+
+      var number = tools.sanitizeNumber(input.attr('name'))
+
+      var isContact = input.hasClass('contact');
+
+      var value = input.val();
+
+      if (isContact)
+      {
+        Contacts.delay('pushContact')(number, value);
+      }
+      else
+      {
+        if (!value)
+        {
+          Contacts.delay('dropContact')(number);
+        }
+        else if (!tools.phoneRegex.test(value))
+        {
+          setTimeout(function() { input.caret({ start: 0, end: value.length }).focus() }, 1);
+        }
+        else
+        {
+          var new_number = tools.sanitizeNumber(value);
+          var old_name = Contacts.findNameByNumber(number);
+
+          if (new_number != number)
+          {
+            Contacts.dropContact(number);
+            Contacts.delay('pushContact')(new_number, old_name);
+          }
+        }
+      }
+    }).live('focus', function(event)
+    {
+      var input = $(this);
+      if (input.hasClass('contact')) return;
+
+      var number = tools.sanitizeNumber(input.attr('name'))
+
+      var value = input.val();
+
+      if (!Contacts.findNameByNumber(number)) input.removeClass('phone').addClass('contact').val('')
     });
 
     contactList.find('a.edit').live('click keydown', function(event)
