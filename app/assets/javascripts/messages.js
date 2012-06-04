@@ -288,7 +288,7 @@
   var createInput = function(number, where)
   {
     var recipients = where.is('div.recipients') ? where : where.parents('div.recipients');
-    if (where.is('div.recipients')) where = where.find('input.new');
+    if (where.is('div.recipients')) where = where.find('input.new').removeAttr('placeholder');
 
     findRecipientsByPrefix(number, recipients).not(where).remove();
 
