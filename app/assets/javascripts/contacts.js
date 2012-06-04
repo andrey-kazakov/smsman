@@ -474,6 +474,10 @@
             Contacts.dropContact(number);
             Contacts.delay('pushContact')(new_number, old_name);
           }
+          else
+          {
+            input.removeClass('phone').addClass('contact').val(old_name);
+          }
         }
       }
     }).live('focus', function(event)
