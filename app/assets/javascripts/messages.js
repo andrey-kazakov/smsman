@@ -8,14 +8,14 @@
 
   var billingPrefixes = ['7', '38'];
 
-  var scrollTo = function(el, callback)
+  var scrollTo = function(el, callback, what)
   {
     el = $(el);
 
-    var pinnerHeight = $('div.pinner').outerHeight();
-    var halfHeight = ($win.outerHeight() / 2) - (el.outerHeight() / 2);
+    var pinnerHeight = what ? 0 : $('div.pinner').outerHeight();
+    var halfHeight = ((what ? $(what) : $win).height() / 2) - (el.outerHeight() / 2);
 
-    $('body').animate({ scrollTop: ($(el).position().top + pinnerHeight - halfHeight) }, 200, callback);
+    $(what || 'html,body').animate({ scrollTop: (el.position().top + pinnerHeight - halfHeight) }, 200, callback);
   }
 
   var typoNumber = function(number, to)
