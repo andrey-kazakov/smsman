@@ -224,32 +224,39 @@
 
   // working w/ recipients
 
-  var fixWidth = function(input)
+  var fixWidth = function(obj)
   {
-    input = $(input);
-    if (!input.attr('placeholder'))
+    inputs = obj.is && obj.is('input') ? obj : $('div.recipients > input');
+
+    inputs.each(function()
     {
-      var test = $('<div></div>');
-      test.addClass('bubble');
+      var input = $(this);
 
-      test.text(input.val().toString() + (input.is(':focus') ? "—" : ''));
-      test.css({ position: 'absolute', left: -9999, top: -9999 });
+      if (!input.attr('placeholder'))
+      {
+        var test = $('<div></div>');
+        test.addClass('bubble');
 
-      $('body').append(test);
+        test.text(input.val().toString() + (input.is(':focus') ? "—" : ''));
+        test.css({ position: 'absolute', left: -9999, top: -9999 });
 
-      var targetWidth = test.outerWidth() + 2;
+        $('body').append(test);
 
-      input.css({ width: targetWidth });
+        var targetWidth = test.outerWidth() + 2;
 
-      test.remove();
-    }
-    else
-    {
-      input.css({ width: '' })
-    }
+        input.css({ width: targetWidth });
+
+        test.remove();
+      }
+      else
+      {
+        input.css({ width: '' })
+      }
+    })
   }
 
-  $win.bind('load', function(){ $('.recipients input').each(function() { fixWidth(this) } ) });
+  $win.bind('load', fixWidth);
+  $doc.bind('ready', fixWidth);
 
   $doc.ready(function()
   {
