@@ -225,6 +225,12 @@
       _dragstart: function(event, ui)
       {
         ui.helper.addClass('dragging');
+
+        var input = ui.helper.find('input:first');
+        if (!input.val())
+        {
+          input.removeClass('contact').addClass('phone').val(tools.decorateNumber(tools.sanitizeNumber(input.attr('name'))));
+        }
       },
       _dragstop: function(event, ui)
       {
