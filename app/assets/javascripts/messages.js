@@ -271,6 +271,17 @@
 
   $doc.ready(function()
   {
+    // first, push phone contacts to list as temporary ones
+    $('div.recipients > input.phone').each(function()
+    {
+      var input = $(this);
+
+      var number = tools.sanitizeNumber(input.attr('name').replace(/^mailing\[.*?\]\[recipients\]\[/, '+'));
+
+      Contacts.delay('pushContact')(number);
+    })
+
+    // ...and now we must take care about them!
     $('#contacts').bind('contact', function(event, number, name)
     {
       var makePhone = !name;
@@ -282,7 +293,7 @@
           fixWidth(this)
         })
     })
-  })
+  });
 
   var lookupContact = function(text, shift)
   {
@@ -291,32 +302,23 @@
 
     shift = shift || 0; 
 
-    if (tools.wannaBeAPhoneRegex.test(text))
-    {
-      text = tools.sanitizeNumber(text);
+    var matches = Contacts.suggestContactsByName(text);
 
-      return { name: Contacts.findNameByNumber(text), number: text }
+    shift %= matches.length;
+    if (shift < 0) shift = matches.length + shift;
+
+    var ret = matches[shift];
+    if (ret)
+    {
+      ret.suggestion_start = text.length;
+      ret.suggestion_index = shift;
+      ret.suggestions_count = matches.length;
+
+      return ret
     }
     else
     {
-      var matches = Contacts.suggestContactsByName(text);
-
-      shift %= matches.length;
-      if (shift < 0) shift = matches.length + shift;
-
-      var ret = matches[shift];
-      if (ret)
-      {
-        ret.suggestion_start = text.length;
-        ret.suggestion_index = shift;
-        ret.suggestions_count = matches.length;
-
-        return ret
-      }
-      else
-      {
-        return null
-      }
+      return null
     }
   };
 
@@ -339,6 +341,8 @@
      {
        input.val(tools.decorateNumber(number));
        input.addClass('phone');
+
+       Contacts.delay('pushContact')(number);
      }
 
      fixWidth(input);
@@ -561,27 +565,36 @@
       return;
     }
 
-    if (!input.val().trim())
+    var value = input.val().trim();
+    if (!value)
     {
       input.parent().length && input.remove()
     }
     else
     {
-      var contact;
-      if (contact = lookupContact(input.val()))
+      var isNumber = tools.phoneRegex.test(value);
+
+      if (isNumber)
       {
-        var number = contact.number;
+        var number = tools.sanitizeNumber(value);
+
+        var name = Contacts.findNameByNumber(number);
+
+        if (!name) Contacts.delay('pushContact')(number);
 
         findRecipientsByPrefix(number, input.parent('div.recipients')).not(input).remove();
 
         input.attr('name', 'mailing[][recipients][' + number + ']');
-        input.addClass('phone');
-        modifyAmount(input);
 
-        if (contact.name)
+        if (name)
         {
-          input.removeClass('phone').addClass('contact').val(contact.name)
+          input.addClass('contact').val(name)
         }
+        else
+        {
+          input.addClass('phone');
+        }
+        modifyAmount(input);
         fixWidth(input)
       }
       else if (!input.hasClass('contact'))

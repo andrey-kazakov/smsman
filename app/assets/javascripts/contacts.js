@@ -277,11 +277,14 @@
         });
       },
 
+      findIndexByNumber: function(number)
+      {
+        return this.numbers.indexOf(number);
+      },
+
       findNameByNumber: function(number)
       {
-        this.wait();
-
-        return this.names[this.numbers.indexOf(number)]
+        return this.names[this.findIndexByNumber(number)]
       },
 
       suggestContactsByName: function(text, ui)
