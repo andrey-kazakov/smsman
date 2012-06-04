@@ -210,8 +210,9 @@
       {
         var span = $(this);
         var input = span.find('input:first');
+        var caret = input.caret();
 
-        if (input.is(':focus'))
+        if (input.is(':focus') && caret.start == caret.end && input.val().length > 0)
         {
           span.draggable('option', 'cancel', 'input');
         }
@@ -224,6 +225,8 @@
       },
       _dragstart: function(event, ui)
       {
+        $(this).find('input:first:not([value=""])').blur(); // UNLIMITED CRUTCH WORKS!!!
+
         ui.helper.addClass('dragging');
 
         var input = ui.helper.find('input:first');
@@ -235,6 +238,9 @@
       _dragstop: function(event, ui)
       {
         ui.helper.removeClass('dragging');
+
+        var input = $(this).find('input:first');
+        input.caret(/$/).focus();
       },
 
       _insertIndex: function(index, number, name)
@@ -252,7 +258,7 @@
             addClass('bubble').
             addClass(name ? 'contact' : 'phone')
         );
-        span.append($('<a/>').attr('href', '#').addClass('edit'));
+        span.append($('<a/>').attr('href', 'tel:+' + number).addClass('edit'));
 
         span.bind('mousedown', this._mousedown);
         span.draggable(
