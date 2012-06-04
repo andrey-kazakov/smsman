@@ -287,7 +287,8 @@
 
   var createInput = function(number, where)
   {
-    var recipients = where.parents('div.recipients');
+    var recipients = where.is('div.recipients') ? where : where.parents('div.recipients');
+    if (where.is('div.recipients')) where = where.find('input.new');
 
     findRecipientsByPrefix(number, recipients).not(where).remove();
 
@@ -319,9 +320,11 @@
     return input
   }
 
-  $(messagesSelector).find('div.recipients:not(.readonly)').live('contact', function(event, number)
+  $(messagesSelector).find('div.recipients:not(.readonly)').live('contact', function(event, number, dontrecalc)
   {
-    modifyAmount(createInput(number, $(this).find('input.new')));
+    var input = createInput(number, $(this));
+
+    if (!dontrecalc) modifyAmount(input);
   });
 
   //
@@ -526,7 +529,7 @@
         {
           value = tools.consumeNumbers(value, function(number)
           {
-            createInput(number, input);
+            input.parents('div.recipients').trigger('contact', [number, true]);
           })
 
         }
