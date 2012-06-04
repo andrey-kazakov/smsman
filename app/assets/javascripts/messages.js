@@ -118,8 +118,9 @@
 
       var text = start == 1 && divider != 1 ? ('<' + divider) : start;
       
-      var link = $('<a/>').text(text).
+      var link = $('<a/>').append($('<u/>').text(text)).
         attr('href', '#' + start).
+        addClass('pseudolink').
         click(function(event)
             {
               event.preventDefault();
