@@ -445,6 +445,7 @@
       var input = $(this);
 
       var number = tools.sanitizeNumber(input.attr('name'))
+      var old_name = Contacts.findNameByNumber(number);
 
       var isContact = input.hasClass('contact');
 
@@ -452,7 +453,8 @@
 
       if (isContact)
       {
-        Contacts.delay('pushContact')(number, value);
+        if (!value || value != old_name)
+          Contacts.delay('pushContact')(number, value);
       }
       else
       {
@@ -462,17 +464,20 @@
         }
         else if (!tools.phoneRegex.test(value))
         {
-          setTimeout(function() { input.caret({ start: 0, end: value.length }).focus() }, 1);
+          delay(input.caret({ start: 0, end: value.length }).focus)();
         }
         else
         {
           var new_number = tools.sanitizeNumber(value);
-          var old_name = Contacts.findNameByNumber(number);
 
           if (new_number != number)
           {
             Contacts.dropContact(number);
             Contacts.delay('pushContact')(new_number, old_name);
+          }
+          else
+          {
+            input.removeClass('phone').addClass('contact').val(old_name);
           }
         }
       }
