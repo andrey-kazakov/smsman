@@ -125,11 +125,16 @@
     }
   }
 
-  $(document).ready(function()
+  var $doc = $(document);
+  var $win = $(window);
+
+  $doc.ready(function()
   {
     // necessary UI locations
 
     var aside = $('aside#contacts');
+    var scroll = aside.find('div.scroll');
+
     var searchField = aside.find('input[type="search"]');
     var contactList = aside.find('div.list');
 
@@ -332,6 +337,13 @@
       }
     });
 
+    var fixScroll = function()
+    {
+      scroll.css('max-height', $win.height() * 0.75);
+    };
+    
+    $win.resize(fixScroll);
+
     $('#toggleContacts').add(aside.find('a.close')).bind('click keydown', function(event)
     {
       if (/key/.test(event.type))
@@ -346,6 +358,8 @@
         }
       }
       var contactsLink = $('#toggleContacts');
+
+      fixScroll();
 
       contactsLink.toggleClass('active');
       aside.toggleClass('none');
