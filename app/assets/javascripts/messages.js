@@ -66,7 +66,7 @@
 
     each(billingPrefixes, function(i, prefix) { res[prefix] = 0 });
 
-    $('section.wrapper > article.message:not(.new)').each(function()
+    $(messagesSelector).each(function()
     {
       var article = $(this);
       var parts = parseInt(article.attr('data-parts-amount')) || 1;
@@ -81,7 +81,7 @@
     each(billingPrefixes, function(i, prefix) { typoNumber(res[prefix], '#sending_' + prefix) });
   }
 
-  $('section.wrapper > article.message').live('amountchange', function(event)
+  $(messagesSelector).live('amountchange', function(event)
   {
     var article = $(this);
 
@@ -220,7 +220,7 @@
     updateMessagesNavigation();
   })
   
-  $('section.wrapper > article.message:not(.new) > textarea').live('input propertychange', function(event)
+  $(messagesSelector).find('textarea').live('input propertychange', function(event)
   {
     var area = $(this);
     var article = area.parents('article.message');
@@ -268,6 +268,87 @@
 
   $win.bind('load', fixWidth);
   $doc.bind('ready', fixWidth);
+
+  var modifyAmount = function(where)
+  {
+    var recipients = where.parents('div.recipients');
+    var article = recipients.parents('article.message');
+
+    var amount = recipients.find('input.phone, input.contact').size();
+
+    // 別々にお願いします
+    each(billingPrefixes, function(i, prefix)
+    {
+      article.attr('data-recipients-amount-' + prefix, findRecipientsByPrefix(prefix, recipients).length)
+    })
+
+    article.attr('data-recipients-amount', amount).trigger('amountchange');
+  }
+
+  var createInput = function(number, where)
+  {
+    var recipients = where.parents('div.recipients');
+
+    findRecipientsByPrefix(number, recipients).not(where).remove();
+
+    var input = $('<input/>');
+    input.addClass('bubble');
+
+    input.attr('name', 'mailing[][recipients][' + number + ']');
+    input.attr('type', 'text');
+
+    var name;
+    if (name = Contacts.findNameByNumber(number))
+    {
+      input.val(name);
+      input.addClass('contact');
+    }
+    else
+    {
+      input.val(tools.decorateNumber(number));
+      input.addClass('phone');
+
+      Contacts.delay('pushContact')(number);
+    }
+
+    fixWidth(input);
+
+    // TODO: detect message ID using where`s parent article
+    where && input.insertBefore($(where));
+
+    return input
+  }
+
+  $(messagesSelector).find('div.recipients:not(.readonly)').live('contact', function(event, number)
+  {
+    modifyAmount(createInput(number, $(this).find('input.new')));
+  });
+
+  //
+  $doc.ready(function()
+  {
+    // make all messages droppable
+    // why messages? it's just simpler to handle
+    // (no need to call droppable on each clone)
+
+    $('article.message').droppable({
+      accept: 'span',
+      drop: function(event, ui)
+      {
+        var article = $(this);
+        var recipients = article.find('div.recipients:not(.readonly)');
+
+        if (recipients.length)
+        {
+          var input = ui.helper.find('input:first');
+
+          var number = tools.sanitizeNumber(input.attr('name'));
+
+          recipients.trigger('contact', [number]);
+        }
+      }
+    });
+  });
 
   $doc.ready(function()
   {
@@ -322,53 +403,7 @@
     }
   };
 
-
-  var createInput = function(number, where)
-  {
-     var input = $('<input/>');
-     input.addClass('bubble');
-
-     input.attr('name', 'mailing[][recipients][' + number + ']');
-     input.attr('type', 'text');
-
-     var name;
-     if (name = Contacts.findNameByNumber(number))
-     {
-       input.val(name);
-       input.addClass('contact');
-     }
-     else
-     {
-       input.val(tools.decorateNumber(number));
-       input.addClass('phone');
-
-       Contacts.delay('pushContact')(number);
-     }
-
-     fixWidth(input);
-
-     // TODO: detect message ID using where`s parent article
-     where && input.insertBefore($(where));
-
-     return input
-  }
-  var modifyAmount = function(where)
-  {
-    var article = where.parents('article.message');
-    var recipients = where.parents('div.recipients');
-
-    var amount = recipients.find('input.phone, input.contact').size();
-
-    // 別々にお願いします
-    each(billingPrefixes, function(i, prefix)
-    {
-      article.attr('data-recipients-amount-' + prefix, findRecipientsByPrefix(prefix, recipients).length)
-    })
-
-    article.attr('data-recipients-amount', amount).trigger('amountchange');
-  }
-
-  $('article.message > div.recipients').live('click', function(event)
+  $('article.message > div.recipients:not(.readonly)').live('click', function(event)
   {
     if (!event.target) return;
 
@@ -491,8 +526,6 @@
         {
           value = tools.consumeNumbers(value, function(number)
           {
-            findRecipientsByPrefix(number, input.parent('div.recipients')).not(input).remove();
-
             createInput(number, input);
           })
 

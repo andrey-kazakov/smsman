@@ -206,6 +206,31 @@
         contactList.children('span').eq(index).remove();
       },
 
+      _mousedown: function(event)
+      {
+        var span = $(this);
+        var input = span.find('input:first');
+
+        if (input.is(':focus'))
+        {
+          span.draggable('option', 'cancel', 'input');
+        }
+        else
+        {
+          span.draggable('option', 'cancel', '');
+        }
+
+        input.focus()
+      },
+      _dragstart: function(event, ui)
+      {
+        ui.helper.addClass('dragging');
+      },
+      _dragstop: function(event, ui)
+      {
+        ui.helper.removeClass('dragging');
+      },
+
       _insertIndex: function(index, number, name)
       {
         this.names.splice(index, 0, name);
@@ -222,6 +247,22 @@
             addClass(name ? 'contact' : 'phone')
         );
         span.append($('<a/>').attr('href', '#').addClass('edit'));
+
+        span.bind('mousedown', this._mousedown);
+        span.draggable(
+        {
+          addClasses: false,
+          appendTo: 'body',
+          helper: 'clone',
+          cancel: '',
+          distance: 5,
+          handle: 'input',
+          snap: 'div.recipients:not(.readonly)',
+          snapMode: 'inner',
+          start: this._dragstart,
+          stop: this._dragstop
+        });
+
 
         var spans = contactList.children('span');
         if (spans.length > index)
