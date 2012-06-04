@@ -151,6 +151,10 @@
 
 // Styles
 
+*:focus {
+  outline: 0;
+}
+
 body {
   padding: 0 @padding-global;
   margin: 0;
@@ -229,10 +233,10 @@ textarea {
 
 input[type=search] {
   -webkit-appearance: none;
-  min-height: 0;
   width: 100%;
-  padding: @text-padding / 2 @text-padding;
-  margin-bottom: 0.4em;
+  //min-height: 0;
+  //padding: @text-padding / 2 @text-padding;
+  //margin-bottom: 0.4em;
 }
 
 textarea {
@@ -1108,7 +1112,6 @@ nav#top {
             background-image: url("/assets/ukraine-flag.gif");
           }
         }
-        
       }
     }
   }
@@ -1139,7 +1142,7 @@ nav#top {
 
 // Total and Sender
 
-#sender, #total {
+#sender, #total, #search {
   left: -(@padding-global);
   padding: @text-padding @padding-global;
   position: relative;
@@ -1157,7 +1160,7 @@ nav#top {
   }
 }
 
-#sender {
+#sender, #search {
   background: #E1E7EB;
   
   &.set {
@@ -1204,6 +1207,11 @@ nav#top {
         }
       }
     }
+  }
+  
+  p.info {
+    margin-left: 0;
+    margin-top: -1em;
   }
   
   hr {
@@ -1279,9 +1287,9 @@ nav#top {
 
 // Article-message
 
-@color-blue-light:   #E9EEF2;
+@color-blue-light:   #E6EDF2;
 @color-red-light:     #FFEFEB;
-@color-green-light: #EEF5EB;
+@color-green-light: #DDF7D2;
 @color-gray-light:   #F2F2F2;
 
 .article() {
@@ -1309,6 +1317,10 @@ nav#top {
   @new-color: #F2F2F2;
   .message-status;
   
+  &[readonly] {
+    cursor: text;
+  }
+  
   &:not([readonly]):focus {
     .button > .shadow > .pressed;
     .message-status > .focus;
@@ -1334,7 +1346,7 @@ nav#top {
   }
   
   &.error {
-    @new-color: #FFEDC5;
+    @new-color: desaturate(darken(@color-red-light, 4.5%), 15%);
     .message-status;
     
     &:not([readonly]):focus {
@@ -1343,7 +1355,7 @@ nav#top {
   }
 
   &.pending {
-    @new-color: #B9D6EB;
+    @new-color: #C3D7E6;
     .message-status;
     
     &:not([readonly]):focus {
@@ -1352,7 +1364,7 @@ nav#top {
   }
   
   &.delivered {
-    @new-color: #D8E8D1;
+    @new-color: desaturate(darken(@color-green-light, 2.5%), 20%);
     .message-status;
     
     &:not([readonly]):focus {
@@ -1409,6 +1421,10 @@ article {
     cursor: text;
     .fix-spaces;
     .clearfixed;
+    
+    &.readonly {
+      cursor: default;
+    }
     
     .bubble, input[type=text], .placeholder {
       padding: 0 0.8em;
@@ -1474,6 +1490,125 @@ article {
     
     h1 {
       color: darken(@new-color, 7.5%);
+    }
+  }
+}
+
+section#mailings {
+  
+  .line {
+    white-space: nowrap;
+    .fix-spaces;
+    margin-bottom: 1em;
+  }
+  
+  a {
+    .fix-spaces > .child;
+    display: inline-block;
+    width: 32%;
+    vertical-align: top;
+    margin-right: 2%;
+    .transition(all, 0.25s, ease-out);
+    box-shadow: 0 4px 12px -6px @color-black,
+                0 0    4px -3px @color-black;
+                
+    &:hover {
+      -webkit-transform: scale(1.05);
+         -moz-transform: scale(1.05);
+          -ms-transform: scale(1.05);
+           -o-transform: scale(1.05);
+              transform: scale(1.05); 
+    }
+    
+    p {
+      margin-left: 0;
+      padding: 0 1em;
+      width: 100%;
+      .border-box;
+      margin: 0;
+    }
+    
+    .mini() {
+      padding: 0.5em 1em;
+      left: 0;
+      margin-bottom: 0;
+      color: @color-black;
+      white-space: normal;
+    }
+    
+    .name, .delivered,
+    .pending, .error {
+      #sender;
+      .mini;
+    }
+    
+    .delivered,
+    .pending, .error {
+      padding: 0.25em 1em;
+    }
+    
+    .info {
+      border: 3px @color-white;
+      border-top-style:    dashed;
+      border-bottom-style: dashed;
+    
+      .delivered  {
+        background: saturate(darken(@color-green-light, 15%), 5%);
+        .transition(background, 1s, ease-out);
+        
+        &:hover, .added {
+          background: saturate(darken(@color-green-light, 10%), 15%);
+        }
+      }
+      
+      .pending {
+        background: saturate(darken(@color-blue-light, 15%), 5%);
+        .transition(background, 1s, ease-out);
+        
+        &:hover, .added {
+          background: saturate(darken(@color-blue-light, 10%), 15%);
+        }
+      }
+      
+      .error {
+        background: darken(@color-red-light, 20%);
+        
+        &:hover, .added {
+          background: saturate(darken(@color-red-light, 15%), 10%);
+        }
+      }
+    }
+    
+    .total {
+      #total;
+      .mini;
+      padding: 0;
+      
+      h3 {
+        font-size: 1em;
+        padding: 0.5em 1em;
+        text-shadow: none;
+        width: 100%;
+        .border-box;
+        margin: 0.25em 0;
+        
+        span {
+          white-space: normal;
+          
+          &.countries {
+            margin-left: -3.2em;
+            padding: 0;
+            padding-left: 3.2em;
+            width: 100%;
+            .border-box;
+            
+            .russia, .ukraine {
+              width: 100%;
+              white-space: normal;
+            }
+          }
+        }
+      }
     }
   }
 }
