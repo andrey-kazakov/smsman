@@ -26,8 +26,21 @@
       }
 
       return i
-    };
+    }
+  , delay = function(meth)
+    {
+      var th = this;
 
+      return function()
+      {
+        var args = arguments;
+
+        setTimeout(function()
+        {
+          meth.apply(th, args);
+        }, 1);
+      }
+    };
 
   tools  =
   {
@@ -91,6 +104,8 @@
         return value
       }
     , each: each
+    , delay: delay
+
   }
   // FIXME: ябудучитатьдокументациюпреждечемюзатьдефолтныеметоды
   tools.phoneRegex.test = function(s) { return !!s.match(this) }
@@ -148,7 +163,7 @@
           this.mute = false;
         }
       },
-      delay: function(meth)
+      delay: function(meth) // TODO: use delay above
       {
         var th = this;
 

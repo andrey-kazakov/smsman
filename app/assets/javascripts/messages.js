@@ -104,6 +104,7 @@
     count = parseInt(count) || messages.length;
     decades = decades == undefined ? Math.floor(Math.log(count) / Math.log(10)) : decades;
     shift = shift || 0;
+    if (shift % 10) shift = Math.floor(shift / 10) * 10;
 
     var divider = Math.pow(10, decades);
     var blocks = Math.min(Math.ceil(count / divider), 10, messages.length - shift);
@@ -126,27 +127,37 @@
               event.preventDefault();
 
               var shift = parseInt(this.getAttribute('href').substr(1)) - 1;
-              scrollTo(messages.eq(shift), (decades > 0) && (messages.length - shift > 1) && function() { setTimeout(function() { updateMessagesNavigation(count, decades - 1, shift) }, 1) });
+              scrollTo(messages.eq(shift), function(){ (messages.length - shift > 1) && tools.delay(updateMessagesNavigation)(count, Math.max(decades - 1, 0), shift) });
 
               return false
             });
 
-      var firstMessage = messages.eq(start - 1);
-      var firstMessagePosition = firstMessage && firstMessage.position();
-
-      var afterLastMessage = messages.eq(end);
-      var afterLastMessagePositionTop = afterLastMessage.position() ? afterLastMessage.position().top : $doc.outerHeight();
-      
-      var halfHeight = scrollTop + ($win.outerHeight() / 2);
-
-      if (!wasActive &&
-          firstMessagePosition && 
-          halfHeight <= afterLastMessagePositionTop &&
-          halfHeight > firstMessagePosition.top
-         )
+      if (!wasActive)
       {
-        link.addClass('active');
-        wasActive = true
+        if (shift == start)
+        {
+          link.addClass('active');
+          wasActive = true
+        }
+        else
+        {
+          var firstMessage = messages.eq(start - 1);
+          var firstMessagePosition = firstMessage && firstMessage.position();
+
+          var afterLastMessage = messages.eq(end);
+          var afterLastMessagePositionTop = afterLastMessage.position() ? afterLastMessage.position().top : $doc.outerHeight();
+          
+          var halfHeight = scrollTop + ($win.outerHeight() / 2);
+
+          if (firstMessagePosition && 
+              halfHeight <= afterLastMessagePositionTop &&
+              halfHeight > firstMessagePosition.top
+             )
+          {
+            link.addClass('active');
+            wasActive = true
+          }
+        }
       }
 
       ul.append($('<li/>').append(link));
