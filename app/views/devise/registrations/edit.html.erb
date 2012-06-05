@@ -2,7 +2,7 @@
           <li>Добрый день
           <li>
             <div class="buttongroup">
-              <a id="profile" class="pseudolink drop" href="#" onclick="$(this).toggleClass('active'); return false"><u><%= resource.email %></u></a><a href="" id="delogin" class="pseudolink drop">&nbsp;</a>
+              <a id="profile" class="pseudolink drop" href="#" onclick="$(this).toggleClass('active'); return false"><u><%= resource.email %></u></a><%= link_to "\u00a0", destroy_user_session_path, method: :delete, id: "delogin", class: "pseudolink drop" %>
               <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { method: :put, class: 'dropdown' }) do |f| %>
                 <%= devise_error_messages! %>
                 <div class="white">
