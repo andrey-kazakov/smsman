@@ -1103,21 +1103,53 @@ nav#top {
 //// Logotype
 
 .logotype {
-  height: 8em; /**/
+  height: 8em;
   display: block;
   position: relative;
-  margin-top: 4em;
-  margin-bottom: 4em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
   
-  /**/ .test {
-    display: block;
-    font-size: 6em;
-    padding: 0.45em 0;
-    width: 100%;
-    height: 100%;
-    background: hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.05);
-    .border-box;
-    border: 2px dashed hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.15);
+  //.test {
+  //  display: block;
+  //  font-size: 6em;
+  //  padding: 0.45em 0;
+  //  width: 100%;
+  //  height: 100%;
+  //  background: hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.05);
+  //  .border-box;
+  //  border: 2px dashed hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.15);
+  //}
+  
+  h1 {
+    font-size: 6.6em;
+    margin: 0;
+    @color-gold-light: desaturate(lighten(@color-gold, 40%), 15%);
+    @color-gold-dark:  desaturate(darken(@color-gold,   5%), 45%);
+    
+    span, a {
+      color: @color-gold;
+      letter-spacing: -0.028em;
+      line-height: 1;
+      text-shadow: 0 -1px 0   lighten(@color-gold-dark,  5%),
+                   0  2px 0   @color-gold-light,
+                   0  1px 0   lighten(@color-gold-light, 5%),
+                   0  0   2px @color-gold,
+                   0  0  10px hsla(hue(@color-gold), saturation(@color-gold), lightness(@color-gold), 0.30);
+    }
+    
+    a {
+      .transition(all, 0.225s, ease);
+    }
+    
+    a:hover {
+      @color-gold: #FFDE21;
+      color: @color-gold;
+      text-shadow: 0 -1px 0   lighten(@color-gold-dark,  15%),
+                   0  2px 0    darken(@color-gold-light, 5%),
+                   0  1px 0   lighten(@color-gold-light, 0%),
+                   0  0   3px @color-gold,
+                   0  0  14px hsla(hue(@color-gold), saturation(@color-gold), lightness(@color-gold), 0.40);
+    }
   }
 }
 
@@ -1166,7 +1198,7 @@ nav#top {
   overflow: hidden;
   margin-bottom: 1em;
   @color-gold-light: lighten(@color-gold, 20%);
-  @color-gold-dark:  darken(@color-gold, 33%);
+  @color-gold-dark:   darken(@color-gold, 33%);
   
   h3 {
     text-shadow: 0 -1px 0 lighten(@color-gold-dark,  5%),
