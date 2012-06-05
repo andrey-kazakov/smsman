@@ -112,17 +112,8 @@
 
   // we must have ready DOM to actually work with contacts
 
-  var stubQueue = {};
   Contacts =
   {
-    parse: function(obj)
-    {
-      stubQueue = obj
-    },
-    pushContact: function(number, name)
-    {
-      stubQueue[number] = name
-    }
   }
 
   var $doc = $(document);
@@ -194,7 +185,7 @@
 
         for (var number in obj)
         {
-          this.pushContact(number, obj[number]);
+          this.pushContact(number, obj[number], true);
         }
       },
 
@@ -289,11 +280,13 @@
         {
           this._removeIndex(this.numbers.indexOf(number));
 
+          $.ajax({ url: '/contacts/' + number + '.json', type: 'DELETE' });
+
           aside.trigger('contact', [number]);
         })
       },
 
-      pushContact: function(number, name)
+      pushContact: function(number, name, dontajax)
       {
         return this.sync(function()
         {
@@ -321,6 +314,11 @@
           }, this);
 
           this._insertIndex(index, number, name);
+
+          var send = {};
+          send[number] = name;
+
+          !dontajax && name && $.ajax({ url: '/contacts.json', type: 'POST', data: send });
 
           // ...and now call event handler
           
@@ -376,8 +374,8 @@
         return matches;
       }
     }
-    Contacts.parse(stubQueue);
-    delete stubQueue;
+    $.ajax({ url: '/contacts.json', dataType: 'json', context: Contacts, success: Contacts.parse });
+
 
     // UI functions here
     searchField.bind('keyup keyrepeat change search', function()
