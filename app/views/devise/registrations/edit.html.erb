@@ -1,4 +1,38 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+          <li>Добрый день
+          <li>
+            <div class="buttongroup">
+              <a id="profile" class="pseudolink drop" href="#" onclick="$(this).toggleClass('active'); return false"><u>s3rious.ls@gmail.com</u></a><a href="" id="delogin" class="pseudolink drop">&nbsp;</a>
+              <form class="dropdown">
+                <div class="white">
+                  <p>
+                    <label>
+                      Новый логин
+                      <input type="text" name="user_login" id="user_login" />
+                    </label>
+                  </p>
+                  <p>
+                    <label>
+                       Новый пароль
+                      <input type="password" name="user_password" id="user_password" />
+                    </label>
+                  </p>
+                  <p>
+                    <label>
+                      Текущий пароль
+                      <input type="password" name="user_current_password" id="user_current_password" placeholder="Обязательное поле" required />
+                    </label>
+                  </p>
+                  <p class="total">
+                    <button>Сохранить изменения</button>
+                  </p>
+                </div>
+              </form>
+            </div>
+
+
+
+
+<!-- <h2>Edit <%= resource_name.to_s.humanize %></h2>
 
 <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
   <%= devise_error_messages! %>
@@ -22,4 +56,4 @@
 
 <p>Unhappy? <%= link_to "Cancel my account", registration_path(resource_name), :confirm => "Are you sure?", :method => :delete %>.</p>
 
-<%= link_to "Back", :back %>
+<%= link_to "Back", :back %> -->
