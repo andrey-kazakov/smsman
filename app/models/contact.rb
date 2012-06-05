@@ -9,19 +9,17 @@ class Contact
 
   field :n, as: :name, type: String
 
-  validates_presence_of :user, :number
+  validates_presence_of :user, :number, :name
   
   before_validation do
-    write_attribute :_id, u: user.id, n: @number
+    write_attribute :_id, u: user.id, n: number.to_i
   end
 
   belongs_to :user
   
-  def number= number
-    @number = number.to_i
-  end
+  attr_writer :number
 
   def number
-    "%.0f" % (@number || _id['n'])
+    "%d" % (@number || _id['n'] || _id[:n] || read_attribute('_id.n'))
   end
 end
