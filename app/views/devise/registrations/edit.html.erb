@@ -1,5 +1,5 @@
           <% resource = current_user; resource_name = :user %>
-          <li>Добрый день
+          <li><%= ['Доброй ночи', 'Доброе утро', 'Добрый день', 'Добрый вечер'][Time.now.hour / 4] %>
           <li>
             <div class="buttongroup">
               <a id="profile" class="pseudolink drop" href="#" onclick="$(this).toggleClass('active'); return false"><u><%= resource.email %></u></a><%= link_to "\u00a0", destroy_user_session_path, method: :delete, id: "delogin", class: "pseudolink drop" %>
