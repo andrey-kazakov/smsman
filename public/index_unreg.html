@@ -1,0 +1,139 @@
+<!DOCTYPE HTML>
+<!--[if IE 8]><html id="ie8" lang="ru"><![endif]-->
+<!--[if !IE]><!--><html lang="ru"><!--<![endif]-->
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="UTF-8">
+  <title></title>
+  <link rel="stylesheet/less" type="text/css" href="/stylesheets/application.less" media="all" />
+  <script type="text/javascript" src="/assets/application.js"></script>
+  <script>
+      Contacts.parse({
+        "79067473526":  "Андрей К.",
+        "389618663451": "Армяне",
+        "79616546651":  "Аркадий",
+        "79655165475":  "Аники",
+        "79174269927":  "Евангелина Козлова",
+        "71451654546":  "Аркадий Папин-Сибиряк",
+        "389964154155": "Павел Евтушенко",
+        "79655285840":  "Иосиф Козёнов",
+        "79115615665":  "Пронин Андрей",
+        "79655285839":  "Адольф Семёнов",
+        "389199597466": "Пира",
+        "79651151656":  "Александр Сергеевич Пушкин",
+        "79122643565":  "Аникей Скайуокер",
+        "79651331586":  "Передовые Интернет Технологии",
+        "79116546567":  "Полевое Рудуправление",
+        "79655285833":  "Сириус Блэк",
+        "79655285838":  "Сириус"
+      });
+	</script>
+  <!--[if lt IE 9]>
+  <script>
+    document.createElement('header');
+    document.createElement('nav');
+    document.createElement('section');
+    document.createElement('article');
+    document.createElement('aside');
+    document.createElement('footer');
+    document.createElement('hgroup');
+  </script>
+  <![endif]-->
+</head>
+<body>
+  <nav id="top">
+    <div class="wrapper clearfix">
+      <div class="pinner">
+        <div class="wrapper clearfix">
+          <ul class="float-left">
+            <li><a href=""><u>Как это работает?</u></a>
+            <li><a href=""><u>Сколько стоит?</u></a>
+            <li><a href=""><u>Какие гарантии?</u></a>
+            <li><a href=""><u>Все остальные вопросы</u></a>
+          </ul>
+          <ul class="float-right">
+            <li>
+              <a id="login" class="pseudolink drop" href="#" onclick="$(this).toggleClass('active'); return false"><u>Войти</u></a>
+              <form class="dropdown">
+                <div class="white">
+                  <p>
+                    <label>
+                      Логин
+                      <input type="text" name="login_login" id="login_login" placeholder="Обязательное поле" required />
+                    </label>
+                  </p>
+                  <p>
+                    <label>
+                      Пароль
+                      <input type="password" name="login_password" id="login_password" placeholder="Обязательное поле" required />
+                    </label>
+                  </p>
+                  <p class="total">
+                    <button>Войти</button>
+                  </p>
+                </div>
+              </form>
+            <li><em>или</em>
+            <li>
+              <a id="register" class="pseudolink drop" href="#" onclick="$(this).toggleClass('active'); return false"><u>Зарегистрироваться</u></a>
+              <form class="dropdown">
+                <div class="white">
+                  <p>
+                    <label>
+                      Адрес эл. почты
+                      <input type="text" name="register_login" id="register_login" placeholder="Обязательное поле" required />
+                    </label>
+                  </p>
+                  <p>
+                    <label>
+                      Пароль
+                      <input type="password" name="register_password" id="register_password" placeholder="Обязательное поле" required />
+                    </label>
+                  </p>
+                  <p class="total">
+                    <button>Зарегистрироваться</button>
+                  </p>
+                </div>
+              </form>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <span class="logotype wrapper text-center">
+    <span class="test narrow">Logotype Placeholder</span>
+    <!-- <img src="" alt="" /> -->
+  </span>
+  <section class="wrapper">
+  </section>
+  <footer class="wrapper">
+    <div>
+      <ul>
+        <li><a href=""><u>Как это работает?</u></a></li>
+        <li><a href=""><u>Сколько стоит?</u></a></li>
+        <li><a href=""><u>Какие гарантии?</u></a></li>
+        <li><a href=""><u>Все остальные вопросы</u></a></li>
+      </ul>
+      <p class="copyright float-right">
+        <!-- Первое число — год старта, второе, текущий год. Однако если года совпадают, то нужно показывать только один (сейчас только прикидка) -->
+        © 2012-2012 <a href=""><u>Hot Spot</u></a>
+      </p>
+    </div>
+  </footer>
+  <aside id="contacts" class="none">
+    <div>
+      <p>Контакты</p><a href="" class="close"></a>
+      <div class="white scroll" style="max-height: 500px">
+        <div class="pinner">
+          <input type="search" name="" id="" placeholder="Поиск…" />
+        </div>
+        <div class="list">
+        </div>
+        <div class="add">
+          <span><input type="text" class="bubble" placeholder="Добавить номер…" /></span>
+        </div>
+      </div>
+    </div>
+  </aside>
+</body>
+</html>
