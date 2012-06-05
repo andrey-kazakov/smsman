@@ -1,4 +1,4 @@
-          <% resource = User.new %>
+          <% resource = User.new; resource_name = :user %>
           <li>
             <a id="login" class="pseudolink drop" href="#" onclick="$(this).toggleClass('active'); return false"><u>Войти</u></a>
             <%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { class: 'dropdown' }) do |f| %>
