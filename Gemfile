@@ -12,6 +12,8 @@ gem 'ruby-smpp'
 gem 'bson_ext'
 gem 'mongoid'
 
+gem 'devise'
+
 
 
 # Gems used only for assets and not required
