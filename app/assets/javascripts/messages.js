@@ -57,7 +57,7 @@
 
   var findRecipientsByPrefix = function(prefix, where)
   {
-    return $(where || $(messagesSelector).find('div.recipients')).find('input.bubble.contact, input.bubble.phone').filter(function() { return this.getAttribute('name').indexOf('][recipients][' + prefix) >= 'mailing['.length })
+    return $(where || $(messagesSelector).find('div.recipients')).find('input.bubble.contact, input.bubble.phone').filter(function() { return this.getAttribute('name').indexOf('][recipients][' + prefix) >= 'mailing[messages]['.length })
   }
 
   var setSendingCounts = function()
@@ -295,7 +295,7 @@
     var input = $('<input/>');
     input.addClass('bubble');
 
-    input.attr('name', 'mailing[][recipients][' + number + ']');
+    input.attr('name', 'mailing[messages][][recipients][' + number + ']');
     input.attr('type', 'text');
 
     var name;
@@ -355,17 +355,6 @@
 
   $doc.ready(function()
   {
-    // first, push phone contacts to list as temporary ones
-    $('div.recipients > input.phone').each(function()
-    {
-      var input = $(this);
-
-      var number = tools.sanitizeNumber(input.attr('name').replace(/^mailing\[.*?\]\[recipients\]\[/, '+'));
-
-      Contacts.delay('pushContact')(number);
-    })
-
-    // ...and now we must take care about them!
     $('#contacts').bind('contact', function(event, number, name)
     {
       var makePhone = !name;
@@ -377,6 +366,17 @@
           fixWidth(this)
         })
     })
+    
+    $('div.recipients > input.phone').each(function()
+    {
+      var input = $(this);
+
+      var number = tools.sanitizeNumber(input.attr('name').replace(/^.*?\]\[recipients\]\[/, '+'));
+
+      if (!Contacts.findNameByNumber(number)) Contacts.pushContact(number);
+    })
+
+
   });
 
   var lookupContact = function(text, shift)
@@ -447,7 +447,8 @@
       var data = lookupContact(value, shift);
       if (!data) return;
 
-      input.attr('name', 'mailing[][recipients][' + data.number + ']').
+      // TODO: message id
+      input.attr('name', 'mailing[messages][][recipients][' + data.number + ']').
 
         val(data.name).
 
@@ -585,7 +586,7 @@
     }
 
     input.removeClass().addClass('bubble');
-    input.val(tools.decorateValue(input.attr('name') ? input.attr('name').replace(/^mailing\[.*?\]\[recipients\]\[/, '+') : input.val()));
+    input.val(tools.decorateValue(input.attr('name') ? input.attr('name').replace(/^.*?\]\[recipients\]\[/, '+') : input.val()));
 
     fixWidth(input);
     modifyAmount(input);
@@ -620,7 +621,7 @@
 
         findRecipientsByPrefix(number, input.parent('div.recipients')).not(input).remove();
 
-        input.attr('name', 'mailing[][recipients][' + number + ']');
+        input.attr('name', 'mailing[messages][][recipients][' + number + ']');
 
         if (name)
         {
