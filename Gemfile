@@ -9,6 +9,8 @@ gem 'rails', '3.2.3'
 
 gem 'ruby-smpp'
 
+gem 'russian'
+
 gem 'bson_ext'
 gem 'mongoid'
 
