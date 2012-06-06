@@ -2,7 +2,7 @@
     <div id="sender">
       <div class="wrapper">
         <div>
-          <input type="text" name="mailing[sender]" placeholder="Отправитель…" />
+          <%= f.text_field :sender, placeholder: "Отправитель…" %>
         </div>
       </div>
     </div>
@@ -34,15 +34,15 @@
           <h3>
             <span>Итого:&nbsp;</span>
             <span class="countries">
-              <span class="russia">по России — <span id="sending_7">7</span>,</span>
-              <span class="ukraine">по Украине — <span id="sending_38">2</span></span>
+              <span id="country_7">по России — <span id="sending_7">7</span>,</span>
+              <span id="country_38">по Украине — <span id="sending_38">2</span></span>
             </span>
           </h3>
           <hr />
           <div class="actions">
-            <button type="button">Отправить</button>
+            <button type="submit" name="commit" value="send">Отправить</button>
             <span class="draft">
-              или <a href="" class="pseudolink"><u>сохранить в черновик</u></a>
+              или <a href="#" onclick="$(this).parents('form').submit(); return false" class="pseudolink"><u>сохранить в черновик</u></a>
             </span>
           </div>
         </div>

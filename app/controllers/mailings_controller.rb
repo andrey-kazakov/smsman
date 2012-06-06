@@ -3,5 +3,6 @@ class MailingsController < ApplicationController
 
   def new
     @mailing = Mailing.new
+    warn [@mailing.inspect, @mailing.summary.inspect]
   end
 end

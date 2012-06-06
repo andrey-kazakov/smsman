@@ -43,4 +43,6 @@ class User
   # field :authentication_token, :type => String
 
   has_many :contacts
+
+  has_many :mailings
 end
