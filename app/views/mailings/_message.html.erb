@@ -1,4 +1,4 @@
-<article id="<%= message._id %>" class="message" data-parts-amount="<%= message.parts %>" data-recipients-amount="<%= message.summary.total %>">
+<article id="<%= message._id %>" class="message" data-parts-amount="<%= message.parts %>" data-recipients-amount="<!-- %= message.summary.total % -->">
   <h1 class="bold number"><%= message_counter.next %></h1>
   <%= text_area "mailing[messages][#{ message._id }]", 'text', placeholder: 'Текст сообщения…', value: message.text %>
   <div class="recipients">
@@ -7,5 +7,5 @@
     <% end %>
     <input class="new" type="text" />
   </div>
-  <h1 class="bold amount"><%= message.summary.total.to_s + (message.parts > 1 ? "×#{message.parts}" : '') %></h1>
+  <h1 class="bold amount"><%= (1 || message.summary.total).to_s + (message.parts > 1 ? "×#{message.parts}" : '') %></h1>
 </article>

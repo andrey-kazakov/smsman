@@ -7,17 +7,7 @@
   var each = tools.each;
 
   var billingPrefixes = [];
-  for (var prefix in messagesLocale.prefixes) { billingPrefixes.push(prefix) }
-
-  var scrollTo = function(el, callback, what)
-  {
-    el = $(el);
-
-    var pinnerHeight = what ? 0 : $('div.pinner').outerHeight();
-    var halfHeight = ((what ? $(what) : $win).height() / 2) - (el.outerHeight() / 2);
-
-    $(what || 'html,body').animate({ scrollTop: (el.position().top + pinnerHeight - halfHeight) }, 200, callback);
-  }
+  if (window['messagesLocale']) for (var prefix in messagesLocale.prefixes) { billingPrefixes.push(prefix) }
 
   var typoNumber = function(number, to)
   {
@@ -30,7 +20,7 @@
       number = number.substr(0, number.length - 3);
 
       to.prepend(part);
-      if (number) to.prepend($('<span/>').addClass('thinsp').text(' '))
+      if (number) to.prepend($('<span/>').addClass('thinsp'))
     }
 
     return to
@@ -126,76 +116,6 @@
     setMailingSummary();
   });
 
-  var updateMessagesNavigation = function(count, decades, shift, undefined)
-  {
-    var messages = $(messagesSelector);
-    var scrollTop = $doc.scrollTop() - $('div.pinner').outerHeight();
-
-    count = parseInt(count) || messages.length;
-    decades = decades == undefined ? Math.floor(Math.log(count) / Math.log(10)) : decades;
-    shift = shift || 0;
-    if (shift % 10) shift = Math.floor(shift / 10) * 10;
-
-    var divider = Math.pow(10, decades);
-    var blocks = Math.min(Math.ceil(count / divider), 10, messages.length - shift);
-
-    var ul = $('div.pinner div.wrapper ul.float-left').empty();
-      
-    for (var k = 0, wasActive; k < blocks; k++)
-    {
-      var
-        start = shift + k*divider + 1,
-        end = Math.min(shift + (k+1)*divider, messages.length);
-
-      var text = start == 1 && divider != 1 ? ('<' + divider) : start;
-      
-      var link = $('<a/>').append($('<u/>').text(text)).
-        attr('href', '#' + start).
-        addClass('pseudolink').
-        click(function(event)
-            {
-              event.preventDefault();
-
-              var shift = parseInt(this.getAttribute('href').substr(1)) - 1;
-              scrollTo(messages.eq(shift), function(){ (messages.length - shift > 1) && tools.delay(updateMessagesNavigation)(count, Math.max(decades - 1, 0), shift) });
-
-              return false
-            });
-
-      if (!wasActive)
-      {
-        if (shift == start)
-        {
-          link.addClass('active');
-          wasActive = true
-        }
-        else
-        {
-          var firstMessage = messages.eq(start - 1);
-          var firstMessagePosition = firstMessage && firstMessage.position();
-
-          var afterLastMessage = messages.eq(end);
-          var afterLastMessagePositionTop = afterLastMessage.position() ? afterLastMessage.position().top : $doc.outerHeight();
-          
-          var halfHeight = scrollTop + ($win.outerHeight() / 2);
-
-          if (firstMessagePosition && 
-              halfHeight <= afterLastMessagePositionTop &&
-              halfHeight > firstMessagePosition.top
-             )
-          {
-            link.addClass('active');
-            wasActive = true
-          }
-        }
-      }
-
-      ul.append($('<li/>').append(link));
-    }
-
-
-  }
-
   $doc.bind('change click', function(event)
   {
     var i = 0, wasRemoval;
@@ -219,9 +139,9 @@
 
     // `i' is last message number now, so it's equal to their count
 
-    if (wasRemoval) updateMessagesNavigation(i);
+    if (wasRemoval) updateTopNavigation(i);
 
-  }).bind('ready scroll', updateMessagesNavigation);
+  });
 
   var makeDroppable = function(what)
   {
@@ -275,7 +195,7 @@
 
     makeDroppable(article);
 
-    updateMessagesNavigation();
+    updateTopNavigation();
   })
   
   $(messagesSelector).find('textarea').live('input propertychange', function(event)
