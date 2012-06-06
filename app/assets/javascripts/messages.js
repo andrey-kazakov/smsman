@@ -6,7 +6,8 @@
 
   var each = tools.each;
 
-  var billingPrefixes = ['7', '38'];
+  var billingPrefixes = [];
+  for (var prefix in messagesLocale.prefixes) { billingPrefixes.push(prefix) }
 
   var scrollTo = function(el, callback, what)
   {
@@ -31,6 +32,8 @@
       to.prepend(part);
       if (number) to.prepend($('<span/>').addClass('thinsp').text(' '))
     }
+
+    return to
   }
 
   // working w/ whole messages
@@ -60,7 +63,7 @@
     return $(where || $(messagesSelector).find('div.recipients')).find('input.bubble.contact, input.bubble.phone').filter(function() { return this.getAttribute('name').indexOf('][recipients][' + prefix) >= 'mailing[messages]['.length })
   }
 
-  var setSendingCounts = function()
+  var setMailingSummary = function()
   {
     var res = {};
 
@@ -78,7 +81,34 @@
       })
     })
 
-    each(billingPrefixes, function(i, prefix) { typoNumber(res[prefix], '#sending_' + prefix) });
+    var availPrefixes = [];
+    for (var prefix in res) { if (res[prefix]) availPrefixes.push(prefix) }
+
+    var total = $('#total');
+    var text = total.find('h3:first').empty();
+
+    text.append($('<span/>').text(messagesLocale.total + ":\u00a0")).append("\u00a0");
+    
+    var countries = $('<span/>').addClass('countries');
+
+    each(billingPrefixes, function(i, prefix)
+    {
+      var country = $('<span/>').text(messagesLocale.prefixes[prefix] + "\u00a0—\u00a0");
+      if (res[prefix])
+      {
+        countries.append(country.append(typoNumber(res[prefix], '<span/>')));
+        if (i < availPrefixes.length - 1) country.append(",\u00a0");
+      }
+    })
+
+    if (countries.children().length)
+    {
+      text.append(countries);
+
+      total.removeClass('none').slideDown('fast');
+    }
+    else
+      total.slideUp('fast', function(){ $(this).addClass('none') });
   }
 
   $(messagesSelector).live('amountchange', function(event)
@@ -93,7 +123,7 @@
 
     article.find('h1.amount').text(text);
 
-    setSendingCounts();
+    setMailingSummary();
   });
 
   var updateMessagesNavigation = function(count, decades, shift, undefined)
@@ -193,6 +223,32 @@
 
   }).bind('ready scroll', updateMessagesNavigation);
 
+  var makeDroppable = function(what)
+  {
+    return $(what).droppable({
+      accept: 'span',
+      drop: function(event, ui)
+      {
+        var article = $(this);
+        var recipients = article.find('div.recipients:not(.readonly)');
+
+        if (recipients.length)
+        {
+          var input = ui.helper.find('input:first');
+
+          var number = tools.sanitizeNumber(input.attr('name'));
+
+          recipients.trigger('contact', [number]);
+        }
+      }
+    });
+  };
+
+  $doc.ready(function()
+  {
+    makeDroppable(messagesSelector);
+  });
+
   $('section.wrapper > article.message.new > textarea').live('focus', function(event)
   {
     // try to find some empty message first
@@ -204,7 +260,7 @@
     }
 
     var area = $(this);
-    var article = area.parent('article');
+    var article = area.parents('article');
 
     article.clone().hide().insertAfter(article).slideDown('fast');
 
@@ -216,6 +272,8 @@
     $('<h1 class="bold amount">0</h1>').appendTo(article);
 
     $('<h1 class="bold number"></h1>').text(countMessages()).insertBefore(area);
+
+    makeDroppable(article);
 
     updateMessagesNavigation();
   })
@@ -325,32 +383,6 @@
     var input = createInput(number, $(this));
 
     if (!dontrecalc) modifyAmount(input);
-  });
-
-  //
-  $doc.ready(function()
-  {
-    // make all messages droppable
-    // why messages? it's just simpler to handle
-    // (no need to call droppable on each clone)
-
-    $('article.message').droppable({
-      accept: 'span',
-      drop: function(event, ui)
-      {
-        var article = $(this);
-        var recipients = article.find('div.recipients:not(.readonly)');
-
-        if (recipients.length)
-        {
-          var input = ui.helper.find('input:first');
-
-          var number = tools.sanitizeNumber(input.attr('name'));
-
-          recipients.trigger('contact', [number]);
-        }
-      }
-    });
   });
 
   $doc.ready(function()
