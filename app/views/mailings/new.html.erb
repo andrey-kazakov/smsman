@@ -7,23 +7,7 @@
       </div>
     </div>
     <section class="wrapper">
-      <article class="message" data-parts-amount="0" data-recipients-amount="9" data-recipients-amount-7="7" data-recipients-amount-38="2">
-        <h1 class="bold number">1</h1>
-        <textarea name="mailing[messages][][text]" placeholder="Текст сообщения…"></textarea>
-        <div class="recipients">
-          <input type="text" name="mailing[messages][][recipients][79651331586]" value="Передовые Интернет Технологии" class="bubble contact" />
-          <input type="text" name="mailing[messages][][recipients][79655285838]" value="Сириус" class="bubble contact" />
-          <input type="text" name="mailing[messages][][recipients][79174269927]" value="Евангелина Козлова" class="bubble contact" />
-          <input type="text" name="mailing[messages][][recipients][79655285839]" value="Адольф Семёнов" class="bubble contact" />
-          <input type="text" name="mailing[messages][][recipients][389618663451]" value="Армяне" class="bubble contact" />
-          <input type="text" name="mailing[messages][][recipients][79655285837]" value="+7 (965) 528-58-37" class="bubble phone" />
-          <input type="text" name="mailing[messages][][recipients][79115615665]" value="Пронин Андрей" class="bubble contact" />
-          <input type="text" name="mailing[messages][][recipients][79655285840]" value="Иосиф Козёнов" class="bubble contact" />
-          <input type="text" name="mailing[messages][][recipients][389964154155]" value="Павел Евтушенко" class="bubble contact" />
-          <input class="new" type="text" />
-        </div>
-        <h1 class="bold amount">9</h1>
-      </article>
+      <%= render partial: 'message', collection: @mailing.messages %>
       <article class="message new" data-parts-amount="0" data-recipients-amount="0">
         <textarea placeholder="Ещё одно сообщение…"></textarea>
       </article>

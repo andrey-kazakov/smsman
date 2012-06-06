@@ -8,10 +8,10 @@ class ContactTest < ActiveSupport::TestCase
   test "check contact for integrity" do
     u = User.create(email: Faker::Internet.email, password: Faker::Internet.user_name)
 
-    phone = ['7', '38'][rand.round] + ("%010d" % (rand(10 ** 10)-1)) # Faker is useless here %(
+    phone = Summary::PREFIXES[rand.round].to_s + ("%010d" % (rand(10 ** 10)-1)) # Faker is useless here %(
     name = Faker::Name.name
 
-    c = Contact.create(user: u, number: phone, name: name)
+    c = u.contacts.create(number: phone, name: name)
 
     assert_equal u._id, c.user._id
     assert_equal phone, c.number
@@ -21,8 +21,9 @@ class ContactTest < ActiveSupport::TestCase
 
     #puts prev_id
 
-    c = Contact.find(c._id)
     u.reload
+
+    c = Contact.find(c._id)
 
     #assert_equal prev_id, c._id
 
