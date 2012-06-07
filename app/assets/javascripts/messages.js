@@ -167,9 +167,10 @@
 
     article.clone().hide().insertAfter(article).slideDown('fast');
 
-    article.removeClass('new').attr('id', 'message_' + (new Date()).getTime().toString());
+    var message_id = (new Date()).getTime().toString();
+    article.removeClass('new').attr('id', 'message_' + message_id);
 
-    area.attr('placeholder', 'Текст сообщения…');
+    area.attr('placeholder', 'Текст сообщения…').attr('name', 'mailing[messages][' + message_id + '][text]');
 
     $('<div class="recipients"><input class="new" type="text" placeholder="Получатели…" /></div>').appendTo(article);
     $('<h1 class="bold amount">0</h1>').appendTo(article);

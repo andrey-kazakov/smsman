@@ -2,13 +2,13 @@ class Summary < ActiveSupport::HashWithIndifferentAccess
   include Mongoid::Fields::Serializable
 
   prefixes_locale = I18n.t('messages.prefixes')
-  PREFIXES = (prefixes_locale.kind_of?(Hash) ? prefixes_locale : {}).keys.sort.freeze
+  PREFIXES = (prefixes_locale.kind_of?(Hash) ? prefixes_locale : {}).keys.freeze
   STATES = [nil, :delivered, :pending, :failed].freeze
 
   MERGER = proc{ |k,v1,v2| v1 + v2 }.freeze
 
   def initialize hash = {}
-    self[:total_by_prefixes] = Hash[self.class::PREFIXES.map{ |prefix| [prefix, 0] }]
+    self[:total_by_prefixes] = ActiveSupport::HashWithIndifferentAccess[self.class::PREFIXES.map{ |prefix| [prefix, 0] }]
 
     self[:total_by_prefixes].instance_eval do
       def + obj
@@ -16,7 +16,7 @@ class Summary < ActiveSupport::HashWithIndifferentAccess
       end
     end
 
-    self.class::STATES.each{ |state| self[state] = 0 }
+    self.class::STATES.each{ |state| self[state] = 0 unless state.nil? }
 
     add(hash || {})
   end
@@ -30,7 +30,9 @@ class Summary < ActiveSupport::HashWithIndifferentAccess
   end
 
   def serialize(object)
-    self.class.new(object)
+    obj = self.class.new(object)
+    obj.delete nil
+    obj
   end
 
   def total

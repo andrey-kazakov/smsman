@@ -2,38 +2,72 @@
 class MailingsController < ApplicationController
   before_filter :authenticate_user!, :except => [:new]
 
-  def new
-    return redirect_to welcome_pages_path unless user_signed_in?
-
-    @mailing = Mailing.new
-
-    render 'show'
+  def new_init
+    @mailing = current_user.mailings.new
   end
 
-  def show
-    @mailing = current_user.mailings.find(params[:mailing_id])
-
-    return render :head => :not_found unless @mailing
+  def show_init
+    @mailing = current_user.mailings.find(params[:id])
   end
 
   def create
-    new
+    new_init
     do_update
   end
 
   def update
-    show
+    show_init
     do_update
   end
 
-protected
-  def do_update
-    messages = params[:mailing].delete :messages
-    @mailing.update_attributes(params[:mailing])
+  def new
+    return redirect_to welcome_pages_path unless user_signed_in?
 
+    new_init
+    do_render
+  end
+
+  def show
+    show_init
+    do_render
+  end
+
+protected
+  def do_render
+    return render :head => :not_found unless @mailing
+
+    render 'show'
+  end
+
+  def do_update
+    return render :head => :not_found unless @mailing
+
+    @mailing.sender = params[:mailing][:sender]
+
+    @mailing.messages.destroy_all
+
+    params[:mailing][:messages].each_pair do |id, msg_data|
+      message = @mailing.messages.new
+
+      message.text = msg_data[:text]
+
+      message.recipients = []
+
+      msg_data[:recipients].each_pair do |number, name|
+        message.recipients << number.to_i
+      end
+
+      warn message.attributes
+      message.save || warn(message.errors.messages)
+    end
+
+    @mailing.valid?
+    warn @mailing.attributes
+    warn @mailing.errors.messages
     if @mailing.save
-      redirect_to show_mailing_path(@mailing)
+      redirect_to mailing_path(@mailing)
     else
+      warn @mailing.errors.messages
       redirect_to mailings_path
     end
   end

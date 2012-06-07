@@ -8,8 +8,6 @@ class SummaryTest < ActiveSupport::TestCase
   test "summary must calculate summary but anything else :)" do
     states = [nil, :pending, :delivered, :failed]
 
-    assert_equal Summary::PREFIXES, [7, 38]
-
     s1 = Summary.new
 
     times1 = Hash[Summary::PREFIXES.map{ |prefix| [prefix, rand(1000) * 4] }]

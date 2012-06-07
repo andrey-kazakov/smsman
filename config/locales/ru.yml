@@ -3,8 +3,8 @@ ru:
   messages:
     total: Итого 
     prefixes:
-      7: по России
-      38: по Украине
+      "7": по России
+      "38": по Украине
     count:
       delivered: доставлено
       pending: отправлено

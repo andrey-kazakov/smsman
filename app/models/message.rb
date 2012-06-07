@@ -3,13 +3,14 @@ class Message
 
   belongs_to :mailing
 
-  field :text, type: String
+  field :text, type: String, default: ''
   validates_presence_of :text
 
-  field :recipients, type: Array # TODO
+  field :recipients, type: Array, default: [] # TODO
   validates_presence_of :recipients
 
   field :summary, type: Summary
+  attr_protected :summary
   after_initialize :calc_summary
   after_validation :calc_summary
 
