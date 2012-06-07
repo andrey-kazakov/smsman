@@ -9,23 +9,6 @@
   var billingPrefixes = [];
   if (window['messagesLocale']) for (var prefix in messagesLocale.prefixes) { billingPrefixes.push(prefix) }
 
-  var typoNumber = function(number, to)
-  {
-    to = $(to).empty();
-    number = number.toString();
-
-    while (number)
-    {
-      var part = number.substr(-3);
-      number = number.substr(0, number.length - 3);
-
-      to.prepend(part);
-      if (number) to.prepend($('<span/>').addClass('thinsp'))
-    }
-
-    return to
-  }
-
   // working w/ whole messages
 
   var messagesSelector = 'section.wrapper > article.message:not(.new)'

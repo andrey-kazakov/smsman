@@ -22,12 +22,21 @@
     </div>
   </article>
   <% per_second = 10 %>
-  <div id="sended">
+  <div id="sended"><!-- FIXME: sent, blya! -->
     <div class="number">
-      <span style="height: 72px; line-height: 72px; ">3<span class="thinsp">&nbsp;</span>410</span>
+      <span><%= typo_number(per_second) %></span>
       <p><small>Именно столько сообщений мы&nbsp;уже успели отправить пока вы&nbsp;находитесь на&nbsp;этой странице</small></p>
     </div>
   </div>
+  <script type="text/javascript">
+    setInterval(function()
+    {
+      var el = $('#sended span:first');
+      typoNumber(parseInt(el.text()) + 1, el);
+      var h = el.width();
+      el.css({ 'height': h + 'px', 'line-height': h + 'px' })
+    }, 1000 / <%= per_second %>)
+  </script>
   <article id="how_much_is_it">
     <h1 title="Сколько это стоит?">
       Не бесплатно,<br />
