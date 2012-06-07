@@ -26,6 +26,7 @@
     var blocks = Math.min(Math.ceil(count / divider), 10, articles.length - shift);
 
     var ul = $('div.pinner div.wrapper ul.float-left').empty();
+    ul.prev()[articles.length ? 'removeClass' : 'addClass']('none');
       
     for (var k = 0, wasActive; k < blocks; k++)
     {
