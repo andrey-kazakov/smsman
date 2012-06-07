@@ -27,81 +27,36 @@
   <![endif]-->
 </head>
 <body>
-  <nav id="top">
-    <div class="wrapper clearfix">
-      <div class="topline clearfix">
-        <ul class="float-left">
-          <li><a class="active" href="<%= root_path  %>"><u>Новая рассылка</u></a>
-          <li><a href="/mailings"><u>Рассылки</u>
-          <li><a href=""><u>Черновики</u></a>
-          <li><a id="toggleContacts" class="pseudolink" href="#"><u>Контакты</u></a>
-        </ul>
-        <ul class="float-right">
-          <%= render :template => (user_signed_in? ? 'devise/registrations/edit' : 'devise/sessions/new') %>
-        </ul>
-      </div>
-      <div class="pinner">
-        <div class="wrapper clearfix">
-          <span class="text float-left">Сообщения:</span>
-          <ul class="float-left">
-          </ul>
-          <ul class="float-right">
-            <li><span id="amount_7" class="russia country">9<span class="thinsp">&nbsp;</span>763</span> и <span id="amount_38" class="ukraine country">100<span class="thinsp">&nbsp;</span>500</span> смс</li>
-            <li>
-              <a id="buy-more" class="pseudolink drop" href="#" onclick="$(this).toggleClass('active'); return false"><u>Купить ещё</u></a>
-              <form class="dropdown">
-                <div class="white">
-                  <p class="radioholder">
-                    <span><input type="radio" name="prefix" id="buy-more-russia" value="7" checked></input><label for="buy-more-russia"><u>Россия</u></label></span>
-                    <span><input type="radio" name="prefix" id="buy-more-ukraine" value="38"></input><label for="buy-more-ukraine"><u>Украина</u></label></span>
-                  </p>
-                  <input type="number" name="" id="" placeholder="Количество…" min="30" required />
-                  <p class="text-center">Цена за смс: 0.03 $</p>
-                  <div class="total">
-                    <p class="text-center">Итого: <span class="nobr">1<span class="thinsp">&nbsp;</span>002&nbsp;$</span></p>
-                    <hr />
-                    <button>Купить</button>
-                  </div>
-                  <p class="footer text-center small">или <a href=""><u>заключить договор</u></a></p>
-                </div>
-              </form>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </nav>
-  <span class="logotype wrapper text-center">
-    <h1><span>smsman</span></h1>
-  </span>
-<%= yield %>
+  <%= render :template => 'shared/top' %>
+  <%= yield %>
   <footer class="wrapper">
     <div>
       <ul>
-        <li><a href=""><u>Как это работает?</u></a></li>
-        <li><a href=""><u>Сколько стоит?</u></a></li>
-        <li><a href=""><u>Какие гарантии?</u></a></li>
-        <li><a href=""><u>Все остальные вопросы</u></a></li>
+        <li><a href="<%= welcome_pages_path %>"><u>Что это?</u></a></li>
+        <li><a href="<%= welcome_pages_path %>#how_much_is_it"><u>Сколько стоит?</u></a></li>
+        <li><a href="<%= welcome_pages_path %>#is_there_any_questions"><u>Все остальные вопросы</u></a></li>
       </ul>
       <p class="copyright float-right">
-        <!-- Первое число — год старта, второе, текущий год. Однако если года совпадают, то нужно показывать только один (сейчас только прикидка) -->
-        © 2012-2012 <a href=""><u>Hot Spot</u></a>
+        © 2012-<%= Time.now.year %> <a href="http://myhotspot.ru/"><u>Hot Spot</u></a>
       </p>
     </div>
   </footer>
-  <aside id="contacts" class="none">
-    <div>
-      <p>Контакты</p><a href="" class="close"></a>
-      <div class="white scroll" style="max-height: 500px">
-        <div class="pinner">
-          <input type="search" name="" id="" placeholder="Поиск…" />
-        </div>
-        <div class="list">
-        </div>
-        <div class="add">
-          <span><input type="text" class="bubble" placeholder="Добавить номер…" /></span>
+  <% if user_signed_in? %>
+    <aside id="contacts" class="none">
+      <div>
+        <p>Контакты</p><a href="" class="close"></a>
+        <div class="white scroll">
+          <div class="pinner">
+            <input type="search" name="" id="" placeholder="Поиск…" />
+          </div>
+          <div class="list">
+          </div>
+          <div class="add">
+            <span><input type="text" class="bubble" placeholder="Добавить номер…" /></span>
+          </div>
         </div>
       </div>
-    </div>
-  </aside>
+    </aside>
+  <% end %>
 </body>
 </html>

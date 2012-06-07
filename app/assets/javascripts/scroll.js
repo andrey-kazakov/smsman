@@ -48,7 +48,7 @@
 
               var id = this.getAttribute('href').substr(1);
               var el, shift = 0;
-              if (shift = parseInt(id)) { shift--; el = articles.eq(shift) }
+              if (/^\d+$/.test(id) && (shift = parseInt(id))) { shift--; el = articles.eq(shift) }
               else { el = $('#' + id) }
 
               scrollTo(el, function(){ (articles.length - shift > 0) && tools.delay(updateTopNavigation)(count, Math.max(decades - 1, 0), shift) });

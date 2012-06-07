@@ -1,0 +1,57 @@
+<nav id="top">
+  <div class="wrapper clearfix">
+    <% if user_signed_in? %>
+      <div class="topline clearfix">
+        <ul class="float-left">
+          <li><a class="active" href="<%= root_path  %>"><u>Новая рассылка</u></a>
+          <li><a href="<%= mailings_path %>"><u>Рассылки</u>
+          <li><a href="<%= drafts_mailings_path %>"><u>Черновики</u></a>
+          <li><a id="toggleContacts" class="pseudolink" href="#"><u>Контакты</u></a>
+        </ul>
+        <ul class="float-right">
+          <%= render template: 'devise/registrations/edit' %>
+        </ul>
+      </div>
+    <% end %>
+    <div class="pinner">
+      <div class="wrapper clearfix">
+        <% if params[:controller] == 'mailings' and ['new', 'show'].include? params[:action] %>
+          <span class="text float-left">Сообщения:</span>
+        <% end %>
+        <ul class="float-left"></ul>
+        <ul class="float-right">
+          <% if user_signed_in? %>
+            <li><span id="amount_7" class="russia country">9<span class="thinsp">&nbsp;</span>763</span> и <span id="amount_38" class="ukraine country">100<span class="thinsp">&nbsp;</span>500</span> смс</li>
+            <li>
+              <a id="buy-more" class="pseudolink drop" href="#" onclick="$(this).toggleClass('active'); return false"><u>Купить ещё</u></a>
+              <form class="dropdown">
+                <div class="white">
+                  <p class="radioholder">
+                    <span><input type="radio" name="prefix" id="buy-more-russia" value="7" checked></input><label for="buy-more-russia"><u>Россия</u></label></span>
+                    <span><input type="radio" name="prefix" id="buy-more-ukraine" value="38"></input><label for="buy-more-ukraine"><u>Украина</u></label></span>
+                  </p>
+                  <input type="number" name="" id="" placeholder="Количество…" min="30" required />
+                  <p class="text-center">Цена за смс: 0.03 $</p>
+                  <div class="total">
+                    <p class="text-center">Итого: <span class="nobr">1<span class="thinsp">&nbsp;</span>002&nbsp;$</span></p>
+                    <hr />
+                    <button>Купить</button>
+                  </div>
+                  <p class="footer text-center small">или <a href=""><u>заключить договор</u></a></p>
+                </div>
+              </form>
+          <% else %>
+            <%= render template: 'devise/sessions/new' %>
+            <li><em>или</em>
+            <%= render template: 'devise/registrations/new' %>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+<% if params[:controller] != 'pages' %>
+  <span id="logotype">
+    <h1><span>smsman</span></h1>
+  </span>
+<% end %>

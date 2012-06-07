@@ -1,7 +1,8 @@
 class Summary < ActiveSupport::HashWithIndifferentAccess
   include Mongoid::Fields::Serializable
 
-  PREFIXES = I18n.t('messages.prefixes').map{ |prefix, t| prefix }.sort.freeze
+  prefixes_locale = I18n.t('messages.prefixes')
+  PREFIXES = (prefixes_locale.kind_of?(Hash) ? prefixes_locale : {}).map{ |prefix, t| prefix }.sort.freeze
   STATES = [nil, :delivered, :pending, :failed].freeze
 
   def initialize hash = {}
