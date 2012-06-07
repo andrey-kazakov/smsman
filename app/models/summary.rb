@@ -5,8 +5,16 @@ class Summary < ActiveSupport::HashWithIndifferentAccess
   PREFIXES = (prefixes_locale.kind_of?(Hash) ? prefixes_locale : {}).keys.sort.freeze
   STATES = [nil, :delivered, :pending, :failed].freeze
 
+  MERGER = proc{ |k,v1,v2| v1 + v2 }.freeze
+
   def initialize hash = {}
     self[:total_by_prefixes] = Hash[self.class::PREFIXES.map{ |prefix| [prefix, 0] }]
+
+    self[:total_by_prefixes].instance_eval do
+      def + obj
+        self.merge!(obj, &Summary::MERGER)
+      end
+    end
 
     self.class::STATES.each{ |state| self[state] = 0 }
 
@@ -27,6 +35,8 @@ class Summary < ActiveSupport::HashWithIndifferentAccess
 
   def total
     self[:total_by_prefixes].map{ |prefix, amount| amount }.inject(:+) || 0
+  rescue
+    0
   end
 
   def empty?
@@ -35,8 +45,7 @@ class Summary < ActiveSupport::HashWithIndifferentAccess
 
   def add obj, state = nil
     if obj.kind_of? Summary
-      merger = proc{ |k,v1,v2| v1.kind_of?(Hash) ? v1.merge(v2, &merger) : (v1 + v2) }
-      merge!(obj, &merger)
+      merge!(obj, &Summary::MERGER)
     else
       raise ArgumentError unless self.class::STATES.include? state
 

@@ -5,9 +5,9 @@ class Contact
 
   field :_id, type: Hash
 
-  field '_id.u', as: :user_id, type: BSON::ObjectId
-
   field :n, as: :name, type: String
+
+  #field '_id.u', as: :user_id, type: BSON::ObjectId TODO
 
   validates_presence_of :user, :number, :name
   
@@ -15,8 +15,8 @@ class Contact
     write_attribute :_id, u: user.id, n: number.to_i
   end
 
-  belongs_to :user
-  
+  belongs_to :user #, foreign_key: '_id.u' TODO
+
   attr_writer :number
 
   def number
