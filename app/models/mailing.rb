@@ -6,7 +6,7 @@ class Mailing
   field :sender, type: String
   validates_format_of :sender, with: /\A(?:[[:alpha:]]{,11}|\+\d{,15})\Z/
 
-  embeds_one :summary
+  field :summary, type: Summary
   after_initialize :calc_summary
   after_validation :calc_summary
 
@@ -15,8 +15,8 @@ class Mailing
 
 protected
   def calc_summary
-    summary ||= Summary.new
+    self[:summary] = Summary.new
 
-    messages.each{ |message| summary.add(message.summary) }
+    messages.each{ |message| self[:summary].add(message.summary) }
   end
 end

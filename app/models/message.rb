@@ -9,7 +9,7 @@ class Message
   field :recipients, type: Array # TODO
   validates_presence_of :recipients
 
-  embeds_one :summary
+  field :summary, type: Summary
   after_initialize :calc_summary
   after_validation :calc_summary
 
@@ -28,7 +28,7 @@ protected
   def calc_summary
     self[:summary] = Summary.new
 
-    recipients.each{ |r| parts.times{ warn self[:summary].add(r).inspect } }
+    recipients.each{ |r| parts.times{ self[:summary].add(r) } }
 
   end
 end
