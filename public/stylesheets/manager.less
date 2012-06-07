@@ -74,7 +74,7 @@
 
 .placeholder {
   font-style: italic;
-  color: darken(@color-gray, 33%);
+  color: darken(@color-black, 50%);
 }
 
 .button() {
@@ -84,16 +84,16 @@
   font-family: @font-family;
   
   .shadow() {
-    box-shadow: 0  1px 3px rgba(0, 0, 0, 0.15),
-          inset 0 -1px 0px rgba(0, 0, 0, 0.1),
-          inset 0  2px 0   rgba(255, 255, 255, 0.15),
-          inset 0  1px 0   rgba(255, 255, 255, 0.45);
+    box-shadow: 0  1px 3px rgba(0, 0, 0, 0.45),
+          inset 0 -1px 0px rgba(0, 0, 0, 0.45),
+          inset 0  2px 0   rgba(255, 255, 255, 0.1),
+          inset 0  1px 0   rgba(255, 255, 255, 0.1);
     
     .pressed() {
-      box-shadow: inset 0 1px 0px rgba(0, 0, 0, 0.15),
-                  inset 0 1px 3px rgba(0, 0, 0, 0.25),
-                        0 2px 0   rgba(255, 255, 255, 0.15),
-                        0 1px 0   rgba(255, 255, 255, 0.45);
+      box-shadow: inset 0 1px 0px rgba(0, 0, 0, 0.45),
+                  inset 0 1px 3px rgba(0, 0, 0, 0.45),
+                        0 2px 0   rgba(255, 255, 255, 0.1),
+                        0 1px 0   rgba(255, 255, 255, 0.1);
     }
   }
   
@@ -136,14 +136,14 @@
 
 @width-all: 60em;
 
-@color-black: #1F1F1F;
+@color-white: #1F1F1F;
 @color-black-solid: #000;
-@color-white: #FFF;
-@color-gray: #F3F3F3;
-@color-blue: #0073CD;
-@color-green: #41D800;
-@color-orange: #FF3C00;
-@color-gold: #FFD700;
+@color-black: #FFF;
+@color-gray: #1F1F1F;
+@color-gold: #EB001E;
+@color-green: #FFD700;
+@color-orange: #FFD700;
+@color-blue: #FFD700;
 @color-red: #EB001E;
 
 @text-padding: 0.4em;
@@ -158,7 +158,7 @@
 body {
   padding: 0 @padding-global;
   margin: 0;
-  background: url("/assets/background.gif") center center @color-gray;
+  background: center center @color-gray;
   font-size: @font-size;
   line-height: @line-height;
   font-family: @font-family;
@@ -190,6 +190,7 @@ body {
   margin: 0;
   font-size: 100%;
   line-height: 1.6em;
+  color: @color-black;
 }
 
 input[type=text],
@@ -645,7 +646,7 @@ nav#top {
           }
           
           &:active {
-            .inset-text(hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.15), @color-white);
+            .inset-text(hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.15), @color-white);
             .button > .shadow > .pressed;
             @color-start: darken(@color-gray, 5.5%);
             @color-stop:  darken(@color-gray, 1.5%);
@@ -669,8 +670,44 @@ nav#top {
             @color-start: lighten(@color-orange, 1.5%);
             @color-stop:  darken(@color-orange, 7.5%);
             .gradient(@color-orange, @color-start, @color-stop);
-            .inset-text(hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30), hsla(hue(@color-white), saturation(@color-white), lightness(@color-white), 0.66));
+            .inset-text(hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.30), hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.66));
             position: relative;
+            
+            &#manage {
+              
+              & ~ .dropdown {
+                
+                .white {
+                  
+                  button {
+                    font-size: 1.2em;
+                    white-space: nowrap;
+                    color: @color-black;
+                    @color-start: lighten(@color-gold, 1.5%);
+                    @color-stop:   darken(@color-gold, 7.5%);
+                    .gradient(@color-gold, @color-stop, @color-start);
+                    @color-inset-top:     darken(@color-gold, 22%);
+                    @color-inset-bottom: lighten(@color-gold, 22%);
+                    .inset-text(@color-inset-top, @color-inset-bottom);
+                    
+                    &:hover {
+                      @color-start: lighten(@color-gold, 7.5%);
+                      @color-stop:   darken(@color-gold, 10%);
+                      .gradient(@color-orange, @color-stop, @color-start);
+                    }
+                    
+                    &:active {
+                      @color-inset-top:   lighten(@color-gold, 22%);
+                      @color-inset-bottom: darken(@color-gold, 22%);
+                      .inset-text(@color-inset-top, @color-inset-bottom);
+                      @color-start: darken(@color-gold, 3%);
+                      @color-stop:  darken(@color-gold, 10%);
+                      .gradient(@color-gold, @color-start, @color-stop);
+                    }
+                  }
+                }
+              }
+            }
             
             &:before, &:after {
               content: "";
@@ -685,10 +722,10 @@ nav#top {
             
             &:before {
               z-index: 5;
-              box-shadow: -0.5px 2px 6px  -2px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
-                          -1px   6px 10px -4px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
-                           0     0   2px  -1px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
-                           0     0   1px   0   hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30);
+              box-shadow: -0.5px 2px 6px  -2px hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.30),
+                          -1px   6px 10px -4px hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.30),
+                           0     0   2px  -1px hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.30),
+                           0     0   1px   0   hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.30);
             }
             
             &:after {
@@ -714,12 +751,12 @@ nav#top {
               right: 0;
               z-index: 10;
               .rounded(12px 0 12px 12px);
-              box-shadow: -0.5px 2px 6px  -2px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
-                          -1px   6px 10px -4px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
-                           0     0   2px  -1px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
-                           0     0   1px   0   hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30);
+              box-shadow: -0.5px 2px 6px  -2px hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.30),
+                          -1px   6px 10px -4px hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.30),
+                           0     0   2px  -1px hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.30),
+                           0     0   1px   0   hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.30);
               
-              .white, .black {
+              .white {
                 background: @color-white;
                 padding: 6px;
                 .rounded(6px 0 6px 6px);
@@ -806,9 +843,10 @@ nav#top {
                 
                 .total {
                   #total;
-                  padding: 0.4em;
-                  left: -0.4em;
+                  padding: 6px;
+                  left: -6px;
                   margin-bottom: 0;
+                  .rounded(0 0 6px 6px);
                   
                   @color-gold-light: lighten(@color-gold, 20%);
                   @color-gold-dark:  darken(@color-gold, 33%);
@@ -885,7 +923,7 @@ nav#top {
             }
           }
           
-          &#profile, &#login, &#register {
+          &#profile, &#login, &#register, &#buy-more {
             
             & ~ .dropdown {
               min-width: 100%;
@@ -903,6 +941,16 @@ nav#top {
               input[type=password] {
                 width: 100%;
                 min-width: 10em;
+              }
+            }
+          }
+          
+          &#buy-more {
+          
+            & ~ .dropdown {
+            
+              input[type=text] {
+                margin-bottom: 0.6em;
               }
             }
           }
@@ -945,29 +993,29 @@ nav#top {
                 @color-start: lighten(@color-orange, 1.5%);
                 @color-stop:  darken(@color-orange, 7.5%);
                 .gradient(@color-orange, @color-start, @color-stop);
-                .inset-text(hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30), hsla(hue(@color-white), saturation(@color-white), lightness(@color-white), 0.66));
-                box-shadow: -0.5px 2px 6px  -2px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
-                            -1px   6px 10px -4px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
-                             0     0   2px  -1px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
-                             0     0   1px   0   hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30);
+                .inset-text(hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.30), hsla(hue(@color-white), saturation(@color-white), lightness(@color-white), 0.66));
+                box-shadow: -0.5px 2px 6px  -2px hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.30),
+                            -1px   6px 10px -4px hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.30),
+                             0     0   2px  -1px hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.30),
+                             0     0   1px   0   hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.30);
                 
                 &:after {
                   background-position: 0 -86px;
                 }
                 
                 &:hover {
-                  @color-start: lighten(@color-red, 1.5%);
-                  @color-stop:  darken(@color-red, 7.5%);
-                  .gradient(@color-red, @color-start, @color-stop);
+                  @color-start: saturate(lighten(@color-orange, 2.5%), 20%);
+                  @color-stop:  saturate(darken(@color-orange, 2.5%), 20%);
+                  .gradient(@color-orange, @color-start, @color-stop);
                 }
                 
                 &:active {
-                  box-shadow: inset  1px   0   6px       hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.25),
-                              inset  1px   0   2px       hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.25),
-                                    -0.5px 2px 6px  -2px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
-                                    -1px   6px 10px -4px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
-                                     0     0   2px  -1px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
-                                     0     0   1px   0   hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30);
+                  box-shadow: inset  1px   0   6px       hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.25),
+                              inset  1px   0   2px       hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.25),
+                                    -0.5px 2px 6px  -2px hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.30),
+                                    -1px   6px 10px -4px hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.30),
+                                     0     0   2px  -1px hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.30),
+                                     0     0   1px   0   hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.30);
                 }
               }
               
@@ -990,7 +1038,7 @@ nav#top {
         }
         
         &:active {
-          .inset-text(hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.15), @color-white);
+          .inset-text(hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.15), @color-white);
           .rounded(1em);
           .button > .shadow > .pressed;
           @color-start: darken(@color-gray, 5.5%);
@@ -1002,7 +1050,7 @@ nav#top {
           @new-color: lighten(@color-blue, 20%);
           color: @color-white;
           background: @new-color;
-          .inset-text(hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30), hsla(hue(@color-white), saturation(@color-white), lightness(@color-white), 0.66));
+          .inset-text(hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.30), hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.66));
           .rounded(1em);
           .button > .shadow > .pressed;
           
@@ -1019,7 +1067,7 @@ nav#top {
             
             &.active {
               color: @color-blue;
-              .inset-text(hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.15), @color-white);
+              .inset-text(hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.15), @color-white);
               
               &:hover {
                 color: @color-orange;
@@ -1111,18 +1159,18 @@ nav#top {
   h1 {
     font-size: 6.6em;
     margin: 0;
-    @color-gold-light: desaturate(lighten(@color-gold, 40%), 15%);
-    @color-gold-dark:  desaturate(darken(@color-gold,   5%), 45%);
+    @color-blue-light: desaturate(lighten(@color-blue, 40%), 15%);
+    @color-blue-dark:  desaturate(darken(@color-blue,   5%), 45%);
     
     span, a {
-      color: @color-gold;
+      color: @color-blue;
       letter-spacing: -0.028em;
       line-height: 1;
-      text-shadow: 0 -1px 0   lighten(@color-gold-dark,  5%),
-                   0  2px 0   @color-gold-light,
-                   0  1px 0   lighten(@color-gold-light, 5%),
-                   0  0   2px @color-gold,
-                   0  0  10px hsla(hue(@color-gold), saturation(@color-gold), lightness(@color-gold), 0.30);
+      text-shadow: 0 -1px 0   lighten(@color-blue-dark,  5%),
+                   0  2px 0   @color-blue-light,
+                   0  1px 0   lighten(@color-blue-light, 5%),
+                   0  0   2px @color-blue,
+                   0  0  10px hsla(hue(@color-blue), saturation(@color-blue), lightness(@color-blue), 0.30);
     }
     
     a {
@@ -1130,13 +1178,13 @@ nav#top {
     }
     
     a:hover {
-      @color-gold: #FFDE21;
-      color: @color-gold;
-      text-shadow: 0 -1px 0   lighten(@color-gold-dark,  15%),
-                   0  2px 0    darken(@color-gold-light, 5%),
-                   0  1px 0   lighten(@color-gold-light, 0%),
-                   0  0   3px @color-gold,
-                   0  0  14px hsla(hue(@color-gold), saturation(@color-gold), lightness(@color-gold), 0.40);
+      @color-blue: #FFDE21;
+      color: @color-blue;
+      text-shadow: 0 -1px 0   lighten(@color-blue-dark,  15%),
+                   0  2px 0    darken(@color-blue-light, 5%),
+                   0  1px 0   lighten(@color-blue-light, 0%),
+                   0  0   3px @color-blue,
+                   0  0  14px hsla(hue(@color-blue), saturation(@color-blue), lightness(@color-blue), 0.40);
     }
   }
 }
@@ -1164,10 +1212,11 @@ nav#top {
 }
 
 #sender, #search {
-  background: #E1E7EB;
+  background: #383838;
   
   &.set {
-    background: lighten(@color-green, 20%);
+    background: @color-green;
+    color: @color-white;
   }
   
   &.error {
@@ -1513,8 +1562,8 @@ section#users {
     vertical-align: top;
     margin-right: 2%;
     .transition(all, 0.25s, ease-out);
-    box-shadow: 0 4px 12px -6px @color-black,
-                0 0    4px -3px @color-black;
+    box-shadow: 0 4px 12px -6px @color-black-solid,
+                0 0    4px -3px @color-black-solid;
                 
     &:hover {
       -webkit-transform: scale(1.05);
@@ -1587,7 +1636,7 @@ section#users {
       }
     }
     
-    .total {
+    .total, .bill {
       #total;
       .mini;
       padding: 0;
@@ -1642,17 +1691,17 @@ section#users {
   padding: 6px;
   z-index: 10;
   .rounded(12px);
-  box-shadow: 0 2px 6px  -2px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
-              0 6px 10px -4px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
-              0 0   2px  -1px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
-              0 0   1px   0   hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30);
+  box-shadow: 0 2px 6px  -2px hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.30),
+              0 6px 10px -4px hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.30),
+              0 0   2px  -1px hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.30),
+              0 0   1px   0   hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.30);
   
   &.dragging {
     opacity: 0.65;
-    box-shadow: 0 3px 9px  -2px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.45),
-                0 6px 12px -4px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.45),
-                0 0   3px  -1px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.45),
-                0 0   1px   0   hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.45);
+    box-shadow: 0 3px 9px  -2px hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.45),
+                0 6px 12px -4px hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.45),
+                0 0   3px  -1px hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.45),
+                0 0   1px   0   hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.45);
   }
   
   > div {
@@ -1777,9 +1826,9 @@ section#users {
       .pinner {
         width: 13.95em;
         background: hsla(hue(@color-white), saturation(@color-white), lightness(@color-white), 0.75);
-        box-shadow: 0 2px  4px -2px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.05),
-                    0 1px  2px  0px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.05),
-                    0 2px 12px -6px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.25);
+        box-shadow: 0 2px  4px -2px hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.05),
+                    0 1px  2px  0px hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.05),
+                    0 2px 12px -6px hsla(hue(@color-black-solid), saturation(@color-black-solid), lightness(@color-black-solid), 0.25);
       }
     }
   }

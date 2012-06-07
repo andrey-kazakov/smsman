@@ -1,0 +1,179 @@
+<!DOCTYPE HTML>
+<!--[if IE 8]><html id="ie8" lang="ru"><![endif]-->
+<!--[if !IE]><!--><html lang="ru"><!--<![endif]-->
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="UTF-8">
+  <title></title>
+  <link rel="stylesheet/less" type="text/css" href="/stylesheets/manager.less" media="all" />
+  <script type="text/javascript" src="/assets/application.js"></script>
+  <!--[if lt IE 9]>
+  <script>
+    document.createElement('header');
+    document.createElement('nav');
+    document.createElement('section');
+    document.createElement('article');
+    document.createElement('aside');
+    document.createElement('footer');
+    document.createElement('hgroup');
+  </script>
+  <![endif]-->
+</head>
+<body>
+  <nav id="top">
+    <div class="wrapper clearfix">
+      <div class="topline clearfix">
+        <ul class="float-left">
+          <li><a class="active" href="/manage/users"><u>Пользователи</u></a>
+        </ul>
+        <ul class="float-right">
+          <li>Доброй ночи менеджер
+          <li>
+            <div class="buttongroup">
+              <a id="profile" class="pseudolink drop" href="#" onclick="$(this).toggleClass('active'); return false"><u>s3rious.ls@gmail.com</u></a><a href="" id="delogin" class="pseudolink drop">&nbsp;</a>
+              <form class="dropdown">
+                <div class="white">
+                  <p>
+                    <label>
+                      Новый логин
+                      <input type="text" name="user_login" id="user_login" />
+                    </label>
+                  </p>
+                  <p>
+                    <label>
+                       Новый пароль
+                      <input type="password" name="user_password" id="user_password" />
+                    </label>
+                  </p>
+                  <p>
+                    <label>
+                      Текущий пароль
+                      <input type="password" name="user_current_password" id="user_current_password" placeholder="Обязательное поле" required />
+                    </label>
+                  </p>
+                  <p class="total">
+                    <button>Сохранить изменения</button>
+                  </p>
+                </div>
+              </form>
+            </div>
+            <li>
+              <a id="manage" class="pseudolink drop" href="#" onclick="$(this).toggleClass('active'); return false"><u>Управление</u></a>
+              <form class="dropdown">
+                <div class="white">
+                  <p><button>Сохранить изменения</button></p>
+                  <p><button>Сохранить изменения</button></p>
+                  <p><button>Сохранить изменения</button></p>
+                  <p><button>Сохранить изменения</button></p>
+                </div>
+              </form>
+        </ul>
+      </div>
+      <div class="pinner">
+        <div class="wrapper clearfix">
+          <ul class="float-right">
+            <li><span id="amount_7" class="russia country">9<span class="thinsp">&nbsp;</span>763</span> и <span id="amount_38" class="ukraine country">100<span class="thinsp">&nbsp;</span>500</span> смс</li>
+            <li>
+              <a id="buy-more" class="pseudolink drop" href="#" onclick="$(this).toggleClass('active'); return false"><u>Начислить ещё</u></a>
+              <form class="dropdown">
+                <div class="white">
+                  <p class="radioholder">
+                    <span><input type="radio" name="prefix" id="buy-more-russia" value="7" checked></input><label for="buy-more-russia"><u>Россия</u></label></span>
+                    <span><input type="radio" name="prefix" id="buy-more-ukraine" value="38"></input><label for="buy-more-ukraine"><u>Украина</u></label></span>
+                  </p>
+                  <input type="text" name="" id="" placeholder="Номер договора…" required />
+                  <input type="number" name="" id="" placeholder="Количество…" min="30" required />
+                  <p class="text-center">Цена за смс: 0.03 $</p>
+                  <div class="total">
+                    <p class="text-center">На сумму: <span class="nobr">1<span class="thinsp">&nbsp;</span>002&nbsp;$</span></p>
+                    <hr />
+                    <button>Начислить</button>
+                  </div>
+                </div>
+              </form>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <a href="" id="logotype">
+    <h1><span>smsman</span></h1>
+  </a>
+  <div id="search">
+    <div class="wrapper">
+      <div>
+        <input type="search" placeholder="Поиск…" />
+      </div>
+    </div>
+  </div>
+  <section id="users" class="wrapper">
+    <div class="line">
+      <a href="/users/s3rious-dot-ls-at-gmail-com">
+        <p class="name manager">s3rious.ls@gmail.com</p>
+        <div class="info">
+        </div>
+        <div class="bill">
+          <h3>
+            <span>На счету:&nbsp;</span>
+            <span class="countries">
+              <span class="russia">по России — <span id="sending_7">124</span>,</span>
+              <span class="russia">по Украине — <span id="sending_38">0</span></span>
+            </span>
+          </h3>
+        </div>
+      </a>
+      <a href="/users/andrewpronin-at-gmail-com">
+        <p class="name">andrewpronin@gmail.com</p>
+        <div class="info">
+        </div>
+        <div class="bill">
+          <h3>
+            <span>На счету:&nbsp;</span>
+            <span class="countries">
+              <span class="russia">по России — <span id="sending_7">30</span>,</span>
+              <span class="russia">по Украине — <span id="sending_38">0</span></span>
+            </span>
+          </h3>
+        </div>
+      </a>
+      <a href="/users/andrewpronin-at-gmail-com">
+        <p class="name">tema@tema.ru</p>
+        <div class="info">
+        </div>
+        <div class="bill">
+          <h3>
+            <span>На счету:&nbsp;</span>
+            <span class="countries">
+              <span class="russia">по России — <span id="sending_7">0</span>,</span>
+              <span class="russia">по Украине — <span id="sending_38">0</span></span>
+            </span>
+          </h3>
+        </div>
+      </a>
+    </div>
+  </section>
+  <footer class="wrapper">
+    <div>
+      <p class="copyright float-right">
+        <!-- Первое число — год старта, второе, текущий год. Однако если года совпадают, то нужно показывать только один (сейчас только прикидка) -->
+        © 2012-2012 <a href=""><u>Hot Spot</u></a>
+      </p>
+    </div>
+  </footer>
+  <aside id="contacts" class="none">
+    <div>
+      <p>Контакты</p><a href="" class="close"></a>
+      <div class="white">
+        <div class="pinner">
+          <input type="search" name="" id="" placeholder="Поиск…" />
+        </div>
+        <div class="list">
+        </div>
+        <div class="add">
+          <span><input type="text" class="bubble" placeholder="Добавить номер…" /></span>
+        </div>
+      </div>
+    </div>
+  </aside>
+</body>
+</html>
