@@ -14,7 +14,6 @@
   var updateTopNavigation = function(count, decades, shift, undefined)
   {
     var articles = $('section.wrapper > article:not(.new)');
-    if (!articles.length) return;
 
     var scrollTop = $doc.scrollTop() - $('div.pinner').outerHeight();
 
@@ -40,16 +39,14 @@
       var text = firstArticleHeading.attr('title') || (start == 1 && divider != 1 ? ('<' + divider) : start);
       
       var link = $('<a/>').append($('<u/>').text(text)).
-        attr('href', '#' + (firstArticle.attr('id') || start)).
+        attr('href', '#' + firstArticle.attr('id')).
+        attr('data-start', start).
         addClass('pseudolink').
         click(function(event)
             {
               event.preventDefault();
 
-              var id = this.getAttribute('href').substr(1);
-              var el, shift = 0;
-              if (/^\d+$/.test(id) && (shift = parseInt(id))) { shift--; el = articles.eq(shift) }
-              else { el = $('#' + id) }
+              var el = $(this.getAttribute('href')), shift = parseInt(this.getAttribute('data-start'))
 
               scrollTo(el, function(){ (articles.length - shift > 0) && tools.delay(updateTopNavigation)(count, Math.max(decades - 1, 0), shift) });
 

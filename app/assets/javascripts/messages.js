@@ -184,7 +184,7 @@
 
     article.clone().hide().insertAfter(article).slideDown('fast');
 
-    article.removeClass('new')
+    article.removeClass('new').attr('id', 'message_' + (new Date()).getTime().toString());
 
     area.attr('placeholder', 'Текст сообщения…');
 
@@ -263,6 +263,11 @@
     article.attr('data-recipients-amount', amount).trigger('amountchange');
   }
 
+  var lookupMessageId = function(el)
+  {
+    return $(el).parents('article.message').attr('id').replace(/^message_/, '')
+  }
+
   var createInput = function(number, where)
   {
     var recipients = where.is('div.recipients') ? where : where.parents('div.recipients');
@@ -273,7 +278,7 @@
     var input = $('<input/>');
     input.addClass('bubble');
 
-    input.attr('name', 'mailing[messages][][recipients][' + number + ']');
+    input.attr('name', 'mailing[messages][' + lookupMessageId(where) + '][recipients][' + number + ']');
     input.attr('type', 'text');
 
     var name;
@@ -292,8 +297,7 @@
 
     fixWidth(input);
 
-    // TODO: detect message ID using where`s parent article
-    where && input.insertBefore($(where));
+    input.insertBefore(where);
 
     return input
   }
@@ -399,8 +403,7 @@
       var data = lookupContact(value, shift);
       if (!data) return;
 
-      // TODO: message id
-      input.attr('name', 'mailing[messages][][recipients][' + data.number + ']').
+      input.attr('name', 'mailing[messages][' + lookupMessageId(input) + '][recipients][' + data.number + ']').
 
         val(data.name).
 
@@ -573,7 +576,7 @@
 
         findRecipientsByPrefix(number, input.parent('div.recipients')).not(input).remove();
 
-        input.attr('name', 'mailing[messages][][recipients][' + number + ']');
+        input.attr('name', 'mailing[messages][' + lookupMessageId(input) + '][recipients][' + number + ']');
 
         if (name)
         {
