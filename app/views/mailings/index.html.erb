@@ -6,7 +6,11 @@
   </div>
 </div>
 <section id="mailings" class="wrapper">
-  <div class="line">
-    <%= render partial: 'mailing', collection: @mailings %>
-  </div>
+  <% if @mailings.empty? %>
+    <h1>Пусто!</h1>
+  <% else %>
+    <div class="line">
+      <%= render partial: 'mailing', collection: @mailings %>
+    </div>
+  <% end %>
 </section>

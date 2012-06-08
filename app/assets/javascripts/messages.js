@@ -106,6 +106,8 @@
     $(messagesSelector).each(function()
     {
       i++;
+      if (i == 1) return;
+
       var article = $(this) //.parents('article');
       if (wasRemoval) article.find('h1.number').text(i);
 

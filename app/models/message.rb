@@ -15,7 +15,7 @@ class Message
   after_validation :calc_summary
 
   def parts
-    return 0 if text.presence.length < 1
+    #return 0 if text.length < 1
 
     is_septets = text =~ /\A[\u0000-\u007f]*\Z/
     # establish real message length in octets

@@ -7,7 +7,11 @@
       </div>
     </div>
     <section class="wrapper">
-      <%= render partial: 'message', collection: @mailing.messages %>
+      <% if @mailing.messages.empty? %>
+        <%= render partial: 'message', locals: { message: Message.new, message_counter: 0 } %>
+      <% else %>
+        <%= render partial: 'message', collection: @mailing.messages %>
+      <% end %>
       <article class="message new" data-parts-amount="0" data-recipients-amount="0">
         <textarea placeholder="Ещё одно сообщение…"></textarea>
       </article>

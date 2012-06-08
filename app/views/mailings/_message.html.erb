@@ -5,7 +5,7 @@
     <% message.recipients.each do |recipient| %>
       <%= text_field "mailing[messages][#{ message._id }][recipients]", recipient, class: 'bubble phone' %>
     <% end %>
-    <input class="new" type="text" />
+    <input class="new" type="text"<%= raw(message.recipients.empty? ? ' placeholder="Получатели…"' : '') %> />
   </div>
   <h1 class="bold amount"><%= (message.summary.total / message.parts).to_s + (message.parts > 1 ? "×#{message.parts}" : '') %></h1>
 </article>
