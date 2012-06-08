@@ -27,9 +27,10 @@ class Message
 
 protected
   def calc_summary
-    self[:summary] = Summary.new
+    summary = Summary.new
 
-    recipients.each{ |r| parts.times{ self[:summary].add(r) } }
+    recipients.each{ |r| parts.times{ summary.add(r) } }
 
+    write_attribute :summary, summary.serialize(summary)
   end
 end

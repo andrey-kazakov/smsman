@@ -16,8 +16,10 @@ class Mailing
 
 protected
   def calc_summary
-    self[:summary] = Summary.new
+    summary = Summary.new
 
-    messages.each{ |message| self[:summary].add(message.summary) }
+    messages.each{ |message| summary.add(message.summary) }
+
+    write_attribute :summary, summary.serialize(summary)
   end
 end

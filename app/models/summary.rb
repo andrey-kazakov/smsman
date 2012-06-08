@@ -12,7 +12,9 @@ class Summary
 
   STATES.each{ |s| attr_accessor s }
 
-  def initialize object = {}
+  def initialize object = nil
+    object ||= {}
+
     @total_by_prefixes = Hash[self.class::PREFIXES.map{ |prefix| [prefix, (object[:total_by_prefixes] && object[:total_by_prefixes][prefix]) || 0] }]
 
     @total_by_prefixes.instance_eval do
@@ -33,7 +35,7 @@ class Summary
   end
 
   def serialize(object)
-    ret = { total_by_prefixes: object.total_by_prefixes }
+    ret = { total_by_prefixes: object[:total_by_prefixes] }
 
     self.class::STATES.each{ |s| ret[s] = object[s] }
 

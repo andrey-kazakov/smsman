@@ -18,7 +18,7 @@
           <h3>
             <span><%= t('messages.total') %>:&nbsp;</span>
             <span class="countries">
-            <% total_by_prefixes = @mailing.summary.total_by_prefixes %>
+            <% total_by_prefixes = @mailing.summary.total_by_prefixes.reject{ |k,v| v < 1 } %>
             <% total_by_prefixes.keys.each_with_index do |prefix, index| %>
             <span><%= t('messages.prefixes')[prefix] %>&nbsp;—
               <span><%= total_by_prefixes[prefix] %></span><%= index < (total_by_prefixes.size - 1) ? "," : '' %></span>

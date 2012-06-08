@@ -64,7 +64,7 @@
     
     var countries = $('<span/>').addClass('countries');
 
-    each(billingPrefixes, function(i, prefix)
+    each(availPrefixes, function(i, prefix)
     {
       var country = $('<span/>').text(messagesLocale.prefixes[prefix] + "\u00a0—\u00a0");
       if (res[prefix])
