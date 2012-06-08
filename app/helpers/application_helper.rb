@@ -11,4 +11,16 @@ module ApplicationHelper
 
     raw ret
   end
+
+  def nav_link text, page
+    ret  = "<li><a "
+
+    ret << %<class="active" > if current_page? page
+
+    ret << %<href="#{h(page)}">
+
+    ret << "><u>#{h(text)}</u></a>"
+
+    raw ret
+  end
 end

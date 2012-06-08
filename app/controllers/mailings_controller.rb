@@ -2,8 +2,20 @@
 class MailingsController < ApplicationController
   before_filter :authenticate_user!, :except => [:new]
 
+  def sent
+    @mailings = current_user.mailings.sent.order(id: :desc).all
+
+    index
+  end
+
+  def drafts
+    @mailings = current_user.mailings.drafts.order(id: :desc).all
+
+    index
+  end
+
   def index
-    @mailings = current_user.mailings.order(id: :desc).all
+    render 'index'
   end
 
   def new_init
@@ -61,18 +73,19 @@ protected
         message.recipients << number.to_i
       end
 
-      warn message.attributes
-      message.save || warn(message.errors.messages)
+      message.save
     end
 
-    @mailing.valid?
-    warn @mailing.attributes
-    warn @mailing.errors.messages
+    if @mailing.valid? and params[:commit] == 'send'
+      @mailing.sent_at = Time.now
+
+      # TODO
+    end
+
     if @mailing.save
       redirect_to mailing_path(@mailing)
     else
-      warn @mailing.errors.messages
-      redirect_to mailings_path
+      redirect_to @mailing.draft ? drafts_mailings_path : sent_mailings_path
     end
   end
 end

@@ -14,9 +14,20 @@ class Mailing
   has_many :messages
   attr_protected :messages
 
+  field :sent_at, type: Time
+  index :sent_at
+
+  scope :sent, ->{ where(:sent_at.ne => nil) }
+  scope :drafts, ->{ where(:sent_at => nil) }
+
   def created_at
     _id.generation_time
   end
+
+  def draft?
+    sent_at.nil?
+  end
+
 
 protected
   def calc_summary

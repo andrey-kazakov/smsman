@@ -3,9 +3,9 @@
     <% if user_signed_in? %>
       <div class="topline clearfix">
         <ul class="float-left">
-          <li><a class="active" href="<%= root_path  %>"><u>Новая рассылка</u></a>
-          <li><a href="<%= mailings_path %>"><u>Рассылки</u>
-          <li><a href="<%= drafts_mailings_path %>"><u>Черновики</u></a>
+          <%= nav_link 'Новая рассылка', root_path %>
+          <%= nav_link 'Рассылки', sent_mailings_path %>
+          <%= nav_link 'Черновики', drafts_mailings_path %>
           <li><a id="toggleContacts" class="pseudolink" href="#"><u>Контакты</u></a>
         </ul>
         <ul class="float-right">
