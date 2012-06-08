@@ -17,14 +17,9 @@ class ContactTest < ActiveSupport::TestCase
     assert_equal phone, c.number
     assert_equal name, c.name
 
-    prev_id = c._id.dup
-
-    #puts prev_id
-    
-    u.save :validate => false
     u.reload
 
-    c = Contact.find(c._id)
+    c = u.contacts.first #.find(c._id)
 
     #assert_equal prev_id, c._id
 

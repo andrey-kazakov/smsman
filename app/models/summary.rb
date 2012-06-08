@@ -1,24 +1,27 @@
-class Summary < ActiveSupport::HashWithIndifferentAccess
+class Summary
   include Mongoid::Fields::Serializable
 
   prefixes_locale = I18n.t('messages.prefixes')
-  PREFIXES = (prefixes_locale.kind_of?(Hash) ? prefixes_locale : {}).keys.freeze
-  STATES = [nil, :delivered, :pending, :failed].freeze
+  PREFIXES = (prefixes_locale.kind_of?(Hash) ? prefixes_locale : {}).keys.map(&:to_sym).freeze
+
+  STATES = [:delivered, :pending, :failed].freeze
 
   MERGER = proc{ |k,v1,v2| v1 + v2 }.freeze
 
-  def initialize hash = {}
-    self[:total_by_prefixes] = ActiveSupport::HashWithIndifferentAccess[self.class::PREFIXES.map{ |prefix| [prefix, 0] }]
+  attr_accessor :total_by_prefixes
 
-    self[:total_by_prefixes].instance_eval do
+  STATES.each{ |s| attr_accessor s }
+
+  def initialize hash = {}
+    @total_by_prefixes = Hash[self.class::PREFIXES.map{ |prefix| [prefix, 0] }]
+
+    @total_by_prefixes.instance_eval do
       def + obj
-        self.merge!(obj, &Summary::MERGER)
+        merge!(obj, &Summary::MERGER)
       end
     end
 
     self.class::STATES.each{ |state| self[state] = 0 unless state.nil? }
-
-    add(hash || {})
   end
 
   def method_missing meth
@@ -26,17 +29,33 @@ class Summary < ActiveSupport::HashWithIndifferentAccess
   end
 
   def deserialize(object)
-    self.class.new(object)
+    object.each_pair do |key, value|
+      self[key] = value
+    end
   end
 
   def serialize(object)
-    obj = self.class.new(object)
-    obj.delete nil
-    obj
+    ret = { total_by_prefixes: total_by_prefixes }
+
+    self.class::STATES.each{ |s| ret[s] = self[s] }
+
+    ret
+  end
+
+  def [] key
+    send key if respond_to? key
+  end
+
+  def []= key, value, &block
+    value = self.class::MERGER.call(key, self[key], value) if self[key]
+
+    key = :"#{key}="
+
+    send key, value if respond_to? key
   end
 
   def total
-    self[:total_by_prefixes].map{ |prefix, amount| amount }.inject(:+) || 0
+    @total_by_prefixes.map{ |prefix, amount| amount }.inject(:+) || 0
   rescue
     0
   end
@@ -47,17 +66,19 @@ class Summary < ActiveSupport::HashWithIndifferentAccess
 
   def add obj, state = nil
     if obj.kind_of? Summary
-      merge!(obj, &Summary::MERGER)
+      self[:total_by_prefixes] = obj.total_by_prefixes
+
+      self.class::STATES.each{ |s| self[s] = obj[s] }
     else
-      raise ArgumentError unless self.class::STATES.include? state
+      raise ArgumentError unless ([nil] + self.class::STATES).include? state
 
       obj = obj.to_s
       
-      self[state] += 1 unless state.nil?
+      self[state] = 1 unless state.nil?
 
       self.class::PREFIXES.each do |prefix|
         if obj =~ /^#{prefix}/
-          self[:total_by_prefixes][prefix] += 1
+          @total_by_prefixes[prefix.to_sym] += 1
         end
       end
     end
