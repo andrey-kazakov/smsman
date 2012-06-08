@@ -15,7 +15,7 @@
     <div id="total"<%= raw(@mailing.summary.empty? ? ' class="none"' : '') %>>
       <div class="wrapper">
         <div>
-          <h3><%= summary(@mailing) %></h3>
+          <h3><%= total_by_prefixes(@mailing) %></h3>
           <hr />
           <div class="actions">
             <button type="submit" name="commit" value="send">Отправить</button>

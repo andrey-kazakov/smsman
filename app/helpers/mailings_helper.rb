@@ -14,7 +14,7 @@ module MailingsHelper
     raw ret.map{ |k,v| %<#{k}="#{v}"> }.join ' '
   end
 
-  def summary of
+  def total_by_prefixes of
     ret  = %<<span>#{t('messages.total')}:\u00a0</span> >
 
     ret << %<<span class="countries">>
@@ -25,7 +25,7 @@ module MailingsHelper
 
       ret << %<<span>#{t('messages.prefixes')[prefix]}\u00a0— >
 
-      ret << %<<span>#{total_by_prefixes[prefix]}</span>>
+      ret << %<<span>#{typo_number(total_by_prefixes[prefix])}</span>>
       ret << (index < (total_by_prefixes.size - 1) ? ",\u00a0" : '')
 
       ret << %<</span>>
