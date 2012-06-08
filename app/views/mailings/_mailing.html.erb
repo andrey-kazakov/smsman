@@ -1,0 +1,14 @@
+<a href="<%= mailing_path(mailing) %>">
+  <p class="name set"><%= mailing.sender %>&nbsp;</p>
+  <div class="info">
+    <% Summary::STATES.each do |state| %>
+      <% if mailing.summary[state] > 0 %>
+        <p class="<%= state %>"><%= typo_number(mailing.summary[state]) + "\u00a0" + t("messages.count.#{state}", :count => mailing.summary[state]) %></p>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="total">
+    <h3><%= total_by_prefixes(mailing) %></h3>
+    <div class="info"><%= l mailing.created_at, format: :short %></div>
+  </div>
+</a>

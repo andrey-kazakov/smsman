@@ -14,6 +14,10 @@ class Mailing
   has_many :messages
   attr_protected :messages
 
+  def created_at
+    _id.generation_time
+  end
+
 protected
   def calc_summary
     summary = Summary.new

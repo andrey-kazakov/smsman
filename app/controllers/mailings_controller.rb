@@ -2,6 +2,10 @@
 class MailingsController < ApplicationController
   before_filter :authenticate_user!, :except => [:new]
 
+  def index
+    @mailings = current_user.mailings.order(id: :desc).all
+  end
+
   def new_init
     @mailing = current_user.mailings.new
   end
