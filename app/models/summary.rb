@@ -12,8 +12,8 @@ class Summary
 
   STATES.each{ |s| attr_accessor s }
 
-  def initialize hash = {}
-    @total_by_prefixes = Hash[self.class::PREFIXES.map{ |prefix| [prefix, 0] }]
+  def initialize object = {}
+    @total_by_prefixes = Hash[self.class::PREFIXES.map{ |prefix| [prefix, (object[:total_by_prefixes] && object[:total_by_prefixes][prefix]) || 0] }]
 
     @total_by_prefixes.instance_eval do
       def + obj
@@ -21,7 +21,7 @@ class Summary
       end
     end
 
-    self.class::STATES.each{ |state| self[state] = 0 unless state.nil? }
+    self.class::STATES.each{ |state| self.null(state, object[state] || 0) }
   end
 
   def method_missing meth
@@ -29,17 +29,21 @@ class Summary
   end
 
   def deserialize(object)
-    object.each_pair do |key, value|
-      self[key] = value
-    end
+    self.class.new(object)
   end
 
   def serialize(object)
-    ret = { total_by_prefixes: total_by_prefixes }
+    ret = { total_by_prefixes: object.total_by_prefixes }
 
-    self.class::STATES.each{ |s| ret[s] = self[s] }
+    self.class::STATES.each{ |s| ret[s] = object[s] }
 
     ret
+  end
+
+  def null key, with = 0
+    key = :"#{key}="
+
+    send key, with if respond_to? key
   end
 
   def [] key
@@ -64,8 +68,12 @@ class Summary
     total.zero?
   end
 
+  def == obj
+    obj.total == total && self.class::STATES.map{ |s| self[s] == obj[s]  }.inject(:&)
+  end
+
   def add obj, state = nil
-    if obj.kind_of? Summary
+    if obj.kind_of? self.class
       self[:total_by_prefixes] = obj.total_by_prefixes
 
       self.class::STATES.each{ |s| self[s] = obj[s] }
