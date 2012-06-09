@@ -9,6 +9,47 @@
   var billingPrefixes = [];
   if (window['messagesLocale']) for (var prefix in messagesLocale.prefixes) { billingPrefixes.push(prefix) }
 
+  $doc.ready(function()
+  {
+    // sender field transliterator
+    // from Russian rubygem
+    $('#mailing_sender').bind('keyup input propertychange', function(event)
+    {
+      if (!window['translitLocale']) return;
+
+      var input = $(this);
+      var value = input.val();
+
+      var ret = '';
+      with (translitLocale)
+      {
+        var matches = value.match(new RegExp(multi_keys.join('|') + '|\w|.', 'g'));
+
+        each(matches, function(index, match)
+        {
+          if (upper[match] && lower[matches[index + 1]])
+          {
+            ret += upper[match].charAt(0) + upper[match].chatAt(1).toLowerCase();
+          }
+          else if (upper[match])
+          {
+            ret += upper[match]
+          }
+          else if (lower[match])
+          {
+            ret += lower[match]
+          }
+            else
+          {
+            ret += match
+          }
+        });
+      }
+
+      input.caret(/$/).val(ret);
+    });
+  });
+
   // working w/ whole messages
 
   var messagesSelector = 'section.wrapper > article.message:not(.new)'
