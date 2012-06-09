@@ -85,7 +85,7 @@ protected
     if @mailing.save
       redirect_to mailing_path(@mailing)
     else
-      redirect_to @mailing.draft ? drafts_mailings_path : sent_mailings_path
+      redirect_to @mailing.draft? ? drafts_mailings_path : sent_mailings_path
     end
   end
 end
