@@ -1,20 +1,19 @@
 <% unless @mailings.empty? %>
-<div id="search">
-  <div class="wrapper">
-    <div>
-      <input type="search" placeholder="Поиск…" />
+  <div id="search">
+    <div class="wrapper">
+      <div>
+        <input type="search" placeholder="Поиск…" />
+      </div>
     </div>
   </div>
-</div>
 <% end %>
 <section id="mailings" class="wrapper">
   <% if @mailings.empty? %>
-    <% if current_page?('/mailings/sent') %>
-    <h1>Не единой рассылки</h1>
-    <p><small>Пока ещё ничего не отправлено, но это можно <a href="/"><u>исправить</u></a></small></p>
-    <% end %>
-    <% if current_page?('/mailings/drafts') %>
-      <h1>Не единого черновика</h1>
+    <% if current_page? sent_mailings_path %>
+      <h1>Ни одной рассылки</h1>
+      <p><small>Пока ещё ничего не отправлено, но это можно <a href="/"><u>исправить</u></a></small></p>
+    <% elsif current_page? drafts_mailings_path %>
+      <h1>Ни одного черновика</h1>
       <p><small>И может и хорошо что хвостов нет, но, если что, в черновики можно добавить любую <a href="/"><u>новую рассылку</u></a></small></p>
     <% end %>
   <% else %>
