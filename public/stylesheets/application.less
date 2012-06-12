@@ -719,7 +719,7 @@ nav#top {
                            0     0   2px  -1px hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30),
                            0     0   1px   0   hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30);
               
-              .white, .black {
+              .white {
                 background: @color-white;
                 padding: 6px;
                 .rounded(6px 0 6px 6px);
@@ -804,7 +804,7 @@ nav#top {
                   }
                 }
                 
-                .total {
+                .total, .error {
                   #total;
                   padding: 6px;
                   left: -6px;
@@ -853,6 +853,12 @@ nav#top {
                       .gradient(@color-orange, @color-start, @color-stop);
                     }
                   }
+                }
+                
+                .error {
+                  background: darken(@color-red, 5%);
+                  color: @color-white;
+                  line-height: 1.2em;
                 }
                 
                 & > p {
@@ -1170,7 +1176,7 @@ nav#top {
     background: lighten(@color-green, 20%);
   }
   
-  &.error {
+  &.failed {
     background: lighten(@color-red, 20%);
   }
   
@@ -1348,7 +1354,7 @@ nav#top {
     }
   }
   
-  &.error {
+  &.failed {
     @new-color: desaturate(darken(@color-red-light, 4.5%), 15%);
     .message-status;
     
@@ -1513,7 +1519,7 @@ article {
     }
   }
   
-  &.error {
+  &.failed {
     @new-color: @color-red-light;
     .article;
     
@@ -1600,7 +1606,7 @@ section#users {
     }
     
     .name, .delivered,
-    .pending, .error {
+    .pending, .failed {
       #sender;
       .mini;
     }
@@ -1610,7 +1616,7 @@ section#users {
     }
     
     .delivered,
-    .pending, .error {
+    .pending, .failed {
       padding: 0.25em 1em;
     }
     
@@ -1637,7 +1643,7 @@ section#users {
         }
       }
       
-      .error {
+      .failed {
         background: darken(@color-red-light, 20%);
         
         .added {

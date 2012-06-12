@@ -8,6 +8,7 @@
         <%= f.email_field :email %>
       </label>
     </p>
+    <p class="error">Этот адрес электронной почты уже кем-то занят</p>
     <p>
       <label>
         Новый пароль
@@ -20,6 +21,7 @@
         <%= f.password_field :current_password, placeholder: 'Обязательное поле', required: 'required' %>
       </label>
     </p>
+    <p class="error">Текущий пароль введён неверно</p>
     <p class="total">
       <button>Сохранить изменения</button>
     </p>
