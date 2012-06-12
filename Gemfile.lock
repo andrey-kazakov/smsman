@@ -33,6 +33,7 @@ GEM
     autotest-rails (4.1.2)
       ZenTest (~> 4.5)
     bcrypt-ruby (3.0.1)
+    bcrypt-ruby (3.0.1-x86-mingw32)
     bson (1.6.4)
     bson_ext (1.6.4)
       bson (~> 1.6.4)
@@ -44,6 +45,7 @@ GEM
       warden (~> 1.1.1)
     erubis (2.7.0)
     eventmachine (1.0.0.beta.4)
+    eventmachine (1.0.0.beta.4-x86-mingw32)
     faker (1.0.1)
       i18n (~> 0.4)
     hike (1.2.1)
@@ -111,6 +113,7 @@ GEM
 
 PLATFORMS
   ruby
+  x86-mingw32
 
 DEPENDENCIES
   autotest-rails

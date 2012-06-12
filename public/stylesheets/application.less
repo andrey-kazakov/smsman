@@ -806,8 +806,8 @@ nav#top {
                 
                 .total {
                   #total;
-                  padding: 0.4em;
-                  left: -0.4em;
+                  padding: 6px;
+                  left: -6px;
                   margin-bottom: 0;
                   
                   @color-gold-light: lighten(@color-gold, 20%);
@@ -1499,6 +1499,38 @@ article {
 
 section#mailings,
 section#users {
+
+  > h1 {
+    color: darken(@color-gray, 7.5%);
+    .inset-text(darken(@color-gray, 22.5%), @color-white);
+    text-align: center;
+    width: 85%;
+    margin: 0.5em auto 0.25em;
+    line-height: 1em;
+    
+    & + p {
+      text-align: center;
+      width: 85%;
+      margin: 0 auto;
+      margin-bottom: 2em;
+      
+      a {
+        display: inline;
+        width: auto;
+        vertical-align: baseline;
+        margin-right: 0;
+        box-shadow: none;
+        
+        &:hover {
+          -webkit-transform: none;
+             -moz-transform: none;
+              -ms-transform: none;
+               -o-transform: none;
+                  transform: none; 
+        }
+      }
+    }
+  }
   
   .line {
     white-space: nowrap;
