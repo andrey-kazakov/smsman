@@ -1424,12 +1424,15 @@ article {
     cursor: text;
     .fix-spaces;
     .clearfix;
+    position: relative;
     
     &.readonly {
       cursor: default;
     }
     
-    .bubble, input[type=text], .placeholder {
+    .bubble, input[type=text],
+    input[type=text].new  + span.new,
+    span.list {
       padding: 0 0.8em;
       display: block;
       float: left;
@@ -1440,19 +1443,42 @@ article {
       width: 0;
       .fix-spaces > .child;
     }
-    
-    .placeholder {
-      padding-left: 0;
-    }
 
-    input[type=text].new {
+    input[type=text].new,
+    input[type=text].new,
+    span.list {
       border: 0;
       padding: 0.1em 0;
       background: transparent;
       
       &[placeholder] {
         width: 100%;
+        
+        & + span.new {
+          display: block;
+        }
       }
+    
+      & + span.new {
+        .fix-spaces > .child;
+        white-space: nowrap;
+        position: absolute;
+        right: 0.2em;
+        top:   0;
+        width: auto;
+        display: none;
+        
+        > a {
+          line-height: 1.6em;
+          font-style: italic;
+        }
+      }
+    }
+    
+    span.list {
+      .fix-spaces > .child;
+      width: 100%;
+      line-height: 1.6em;
     }
   }
   
@@ -1520,6 +1546,7 @@ section#users {
         vertical-align: baseline;
         margin-right: 0;
         box-shadow: none;
+        .transition(none);
         
         &:hover {
           -webkit-transform: none;

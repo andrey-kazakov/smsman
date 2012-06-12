@@ -5,7 +5,11 @@
     <% message.recipients.each do |recipient| %>
       <%= text_field "mailing[messages][#{ message._id }][recipients]", recipient, class: 'bubble phone' %>
     <% end %>
-    <input class="new" type="text"<%= raw(message.recipients.empty? ? ' placeholder="Получатели…"' : '') %> />
+    <input class="new" type="text"<%= raw(message.recipients.empty? ? ' placeholder="Введите получателей или…"' : '') %> />
+    <span class="new"><a href="" class="pseudolink"><u>загрузите их файлом</u></a></span>
+    <input class="none" type="file" name="" id="" />
+    <!-- <span class="list"><a href=""><u>1<span class="thinsp">&nbsp;</span>055<span class="thinsp">&nbsp;</span>541 получателя</u></a>. Из них <a href=""><u>680<span class="thinsp">&nbsp;</span>024 доставлено</u></a>, 365<span class="thinsp">&nbsp;</span>153 отправлется, <a href=""><u>10<span class="thinsp">&nbsp;</span>364 не дошли до адресата</u></a>. -->
+    </span>
   </div>
   <h1 class="bold amount"><%= (message.summary.total / message.parts).to_s + (message.parts > 1 ? "×#{message.parts}" : '') %></h1>
 </article>
