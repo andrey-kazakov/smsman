@@ -37,6 +37,32 @@ class MailingsController < ApplicationController
   end
 
   def new
+    # bit of strange behaviour, but register user here
+
+    if params[:user] and params[:user][:email].present?
+      email = params[:user][:email].presence
+
+      if User.where(email: email).count > 0
+
+        redirect_to welcome_pages_path
+
+      else
+        generated_password = Devise.friendly_token.first(6)
+
+        user = User.create!(:email => email, 
+                            :password => generated_password)
+
+        #RegistrationMailer.welcome(user, generated_password).deliver
+
+        sign_in(:user, user)
+
+        redirect_to root_path
+      end
+
+      return
+    end
+
+    #####
     return redirect_to welcome_pages_path unless user_signed_in?
 
     new_init
