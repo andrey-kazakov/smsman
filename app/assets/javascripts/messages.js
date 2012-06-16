@@ -58,7 +58,7 @@
   {
     if (!text.length) return 0;
 
-    var isSeptets = /^[\u0000-\u007f]*$/.test(text);
+    var isSeptets = /^[\u0000-Z_-z]*$/.test(text);
 
     var octets = Math.ceil(isSeptets ? (7/8) * text.length : text.length * 2);
 

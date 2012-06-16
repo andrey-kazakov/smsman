@@ -17,7 +17,7 @@ class Message
   def parts
     #return 0 if text.length < 1
 
-    is_septets = text =~ /\A[\u0000-\u007f]*\Z/
+    is_septets = text =~ /\A[\u0000-Z_-z]*\Z/
     # establish real message length in octets
     octets = (is_septets ? (7.0/8)*text.length : text.length*2).ceil
     
