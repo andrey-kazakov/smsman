@@ -1176,7 +1176,7 @@ nav#top {
     background: lighten(@color-green, 20%);
   }
   
-  &.failed {
+  &.error {
     background: lighten(@color-red, 20%);
   }
   
@@ -1531,6 +1531,8 @@ article {
 
 section#mailings,
 section#users {
+  //white-space: nowrap;
+  .fix-spaces;
 
   > h1 {
     color: darken(@color-gray, 7.5%);
@@ -1565,18 +1567,14 @@ section#users {
     }
   }
   
-  .line {
-    white-space: nowrap;
-    .fix-spaces;
-    margin-bottom: 1em;
-  }
-  
   a {
     .fix-spaces > .child;
     display: inline-block;
     width: 32%;
     vertical-align: top;
     margin-right: 2%;
+    margin-bottom: 3em;
+    position: relative;
     .transition(all, 0.25s, ease-out);
     box-shadow: 0 4px 12px -6px @color-black,
                 0 0    4px -3px @color-black;
@@ -1587,6 +1585,10 @@ section#users {
           -ms-transform: scale(1.05);
            -o-transform: scale(1.05);
               transform: scale(1.05); 
+    }
+	
+    &:nth-child(3n+3) {
+      margin-right: 0;
     }
     
     p {
@@ -1681,6 +1683,27 @@ section#users {
             }
           }
         }
+      }
+    }
+    
+    .date {
+      position: absolute;
+      left: 0;
+      bottom: -2em;
+      text-align: center;
+      width: 100%;
+      color: darken(@color-gray, 33%);
+      .transition(all, 0.25s, ease-out);
+    }
+    
+    &:hover {
+      
+      .date {
+        -webkit-transform: scale(0.95);
+           -moz-transform: scale(0.95);
+            -ms-transform: scale(0.95);
+             -o-transform: scale(0.95);
+                transform: scale(0.95); 
       }
     }
   }

@@ -17,8 +17,6 @@
       <p><small>И может и хорошо что хвостов нет, но, если что, в черновики можно добавить любую <a href="/"><u>новую рассылку</u></a></small></p>
     <% end %>
   <% else %>
-    <div class="line">
-      <%= render partial: 'mailing', collection: @mailings %>
-    </div>
+    <%= render partial: 'mailing', collection: @mailings %>
   <% end %>
 </section>
