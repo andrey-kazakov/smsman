@@ -8,7 +8,11 @@
         <%= f.email_field :email, placeholder: 'Единственное поле', required: 'required' %>
       </label>
     </p>
-    <p class="error">Этот адрес электронной почты уже кем-то занят</p>
+    <div class="flash">
+      <a href="#" class="error">
+        Этот адрес электронной почты уже кем-то занят
+      </a>
+    </div>
     <!-- %= <p>
       <label>
         Пароль

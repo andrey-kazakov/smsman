@@ -115,10 +115,16 @@ $(document).bind('ready scroll load', function()
   if (scrollTop > offset)
   {
     navtop.addClass('fixed').css('padding-bottom', pinner.outerHeight());
+  //if ( $('nav#top > .flash').size() >= 1 ) {
+  //  $('nav#top > .flash').prependTo($('nav#top .pinner'));
+  //}
   }
   else
   {
     navtop.removeClass('fixed').css('padding-bottom', '');
+  //if ( $('div.pinner > .flash').size() >= 1 ) {
+  //  $('div.pinner > .flash').prependTo($('nav#top'));
+  //}
   }
 
   updateTopNavigation()

@@ -535,6 +535,39 @@ label {
   cursor: pointer;
 }
 
+//// Flash messages
+
+.flash {
+  text-align: center;
+  
+  > a {
+    #sender;
+    display: block;
+    line-height: 1.2em;
+    padding: 0.4em; 
+    margin: 0;
+    color: @color-white;
+    .transition(all, 0.225s, ease-in-out);
+
+    &.error {
+      background: darken(@color-red, 5%);
+      
+      &:hover {
+        background: darken(@color-red, 2.5%);
+      }
+    }
+    
+    &.notice {
+      @color: #596E80;
+      background: @color;
+      
+      &:hover {
+        background: lighten(@color, 2.5%);
+      }
+    }
+  }
+}
+
 //// Top Navigation
 
 nav#top {
@@ -553,6 +586,13 @@ nav#top {
       background: @new-color;
       padding: 0 @padding-global;
       .border-box;
+    }
+  }
+  
+  .flash {
+    
+    .notice, .error {
+      padding: 0.4em 6em; 
     }
   }
   
@@ -804,7 +844,7 @@ nav#top {
                   }
                 }
                 
-                .total, .error {
+                .total {
                   #total;
                   padding: 6px;
                   left: -6px;
@@ -855,10 +895,37 @@ nav#top {
                   }
                 }
                 
-                .error {
-                  background: darken(@color-red, 5%);
-                  color: @color-white;
-                  line-height: 1.2em;
+                .flash {
+                  
+                  > a {
+                    #sender;
+                    margin: 0;
+                    position: static;
+                    padding: 0.4em 6px;
+                    margin-left: -6px;
+                    .rounded(0);
+                    
+                    &.error {
+                      background: darken(@color-red, 5%);
+                      
+                      &:hover {
+                        background: darken(@color-red, 2.5%);
+                      }
+                    }
+                    
+                    &.notice {
+                      @color: #596E80;
+                      background: @color;
+                      
+                      &:hover {
+                        background: lighten(@color, 2.5%);
+                      }
+                    }
+                    
+                    &:active {
+                      text-shadow: none;
+                    }
+                  }
                 }
                 
                 & > p {
@@ -1470,6 +1537,7 @@ article {
         white-space: nowrap;
         position: absolute;
         right: 0.2em;
+        padding-right: 0.2em;
         top:   0;
         width: auto;
         display: none;
@@ -1982,10 +2050,9 @@ html#ie8 nav#top ul li a.active:hover#buy-more + .dropdown .white
       }
     }
   }
-  
 }
 
-#sended {
+#sent {
   text-align: center;
   margin-bottom: 80px;
   
