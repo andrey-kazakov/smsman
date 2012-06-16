@@ -122,9 +122,16 @@ $(document).bind('ready scroll load', function()
   else
   {
     navtop.removeClass('fixed').css('padding-bottom', '');
-  //if ( $('div.pinner > .flash').size() >= 1 ) {
-  //  $('div.pinner > .flash').prependTo($('nav#top'));
-  //}
+    if ( $('div.pinner > .flash').size() >= 1 ) {
+    //var offset = navtop.position().top + navtop.outerHeight() - pinner.outerHeight() - $('div.pinner > .flash').outerHeight();
+      if ( $('nav#top > .flash').size() >= 1 ) {
+        $('div.pinner > .flash').insertAfter('nav#top > .flash').last();
+      }
+      else
+      {
+        $('div.pinner > .flash').prependTo($('nav#top'));
+      }
+    }
   }
 
   updateTopNavigation()

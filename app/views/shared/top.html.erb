@@ -3,10 +3,7 @@
     <a href="#" class="error">
       Чему-то пришёл пиздец, и его привели именно <em>ВЫ!</em>
     </a>
-    <a href="#" class="notice">
-      Сообщаем вам что вы милая няша, однако мы не хуже и имеем право послать вас нахуй
-    </a>
-  </div>    
+  </div>
   <div class="wrapper clearfix">
     <% if user_signed_in? %>
       <div class="topline clearfix">
@@ -26,6 +23,11 @@
       </div>
     <% end %>
     <div class="pinner">
+      <div class="flash">
+        <a href="#" class="notice">
+          Сообщаем вам что вы милая няша, однако мы не хуже и имеем право послать вас нахуй
+        </a>
+      </div>
       <div class="wrapper clearfix">
         <% if params[:controller] == 'mailings' and ['new', 'show'].include? params[:action] %>
           <span class="text float-left none">Сообщения:</span>
@@ -53,12 +55,6 @@
 </nav>
 <% if params[:controller] != 'pages' %>
   <span id="logotype">
-    <h1>
-      <% if current_page? root_path %>
-        <span>smsman</span>
-      <% else %>
-        <%= link_to 'smsman', root_path %>
-      <% end %>
-    </h1>
+    <h1><span>smsman</span></h1>
   </span>
 <% end %>
