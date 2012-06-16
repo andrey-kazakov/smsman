@@ -53,6 +53,12 @@
 </nav>
 <% if params[:controller] != 'pages' %>
   <span id="logotype">
-    <h1><span>smsman</span></h1>
+    <h1>
+      <% if current_page? root_path %>
+        <span>smsman</span>
+      <% else %>
+        <%= link_to 'smsman', root_path %>
+      <% end %>
+    </h1>
   </span>
 <% end %>
