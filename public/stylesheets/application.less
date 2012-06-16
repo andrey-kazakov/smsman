@@ -1335,8 +1335,25 @@ nav#top {
             inset 0  4px 0   rgba(255, 255, 255, 0.15),
             inset 0  2px 0   rgba(255, 255, 255, 0.45);
       .button > .size;
-
-      &:hover {
+      
+      &[disabled] {
+        cursor: default;
+        cursor: not-allowed;
+        @color-start: desaturate(lighten(@color-blue, 20%), 40%);
+        @color-stop:  @color-start;
+        .gradient(@color-start, @color-stop, @color-start);
+        @color-inset-top:    @color-start;
+        @color-inset-bottom: @color-start;
+        .inset-text(@color-inset-top, @color-inset-bottom);
+        box-shadow: inset 0  1px 3px rgba(0, 0, 0, 0.075),
+                    inset 0  1px 2px rgba(0, 0, 0, 0.075),
+                    inset 0  1px 1px rgba(0, 0, 0, 0.075),
+                          0 -1px 0   rgba(0, 0, 0, 0.05),
+                          0  4px 0   rgba(255, 255, 255, 0.075),
+                          0  2px 0   rgba(255, 255, 255, 0.2);
+      }
+      
+      &:not([disabled]):hover {
         @color-start: lighten(@color-blue, 25%);
         @color-stop:  darken(@color-blue, 15%);
         .gradient(#2378B9, @color-stop, @color-start);
@@ -1348,7 +1365,7 @@ nav#top {
               inset 0  2px 0   rgba(255, 255, 255, 0.45);
       }
       
-      &:active {
+      &:not([disabled]):active {
         @color-start: lighten(@color-blue, 10%);
         @color-stop:  darken(@color-blue, 10%);
         .gradient(#2873B9, @color-start, @color-stop);
