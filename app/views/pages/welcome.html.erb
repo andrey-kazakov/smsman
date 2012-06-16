@@ -1,6 +1,12 @@
 <section id="main" class="wrapper">
   <span id="logotype">
-    <h1><span>smsman</span></h1>
+    <h1>
+      <% if user_signed_in? %>
+        <%= link_to 'smsman', root_path %>
+      <% else %>
+        <span>smsman</span>
+      <% end %>
+    </h1>
   </span>
   <article id="what_is_it">
     <h1 title="Что это?">
@@ -22,7 +28,7 @@
     </div>
   </article>
   <% per_second = 10 %>
-  <div id="sended"><!-- FIXME: sent, blya! -->
+  <div id="sent">
     <div class="number">
       <span><%= typo_number(per_second) %></span>
       <p><small>Именно столько сообщений мы&nbsp;уже успели отправить пока вы&nbsp;находитесь на&nbsp;этой странице</small></p>
@@ -31,7 +37,7 @@
   <script type="text/javascript">
     setInterval(function()
     {
-      var el = $('#sended span:first');
+      var el = $('#sent span:first');
       typoNumber(parseInt(el.text()) + 1, el);
       var h = el.width();
       el.css({ 'height': h + 'px', 'line-height': h + 'px' })
