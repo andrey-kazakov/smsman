@@ -107,30 +107,25 @@
 
 $(document).bind('ready scroll load', function()
 {
-  var pinner = $('div.pinner'), navtop = $('nav#top');
+  var pinner = $('div.pinner'),
+      navtop = $('nav#top'),
+      flash  = $('nav#top > .flash');
 
-  var offset = navtop.position().top + navtop.outerHeight() - pinner.outerHeight();
   var scrollTop = $(document).scrollTop();
-
-  if (scrollTop > offset)
-  {
-    navtop.addClass('fixed').css('padding-bottom', pinner.outerHeight());
-  //if ( $('nav#top > .flash').size() >= 1 ) {
-  //  $('nav#top > .flash').prependTo($('nav#top .pinner'));
-  //}
+  if ( flash.size >= 1 ) {
+    navtop.addClass('fixed').css('padding-bottom', pinner.outerHeight()).css('padding-top', flash.outerHeight());
+    pinner.css('top', flash.outerHeight()).css('padding-top', navtop.height());
   }
   else
   {
-    navtop.removeClass('fixed').css('padding-bottom', '');
-    if ( $('div.pinner > .flash').size() >= 1 ) {
-    //var offset = navtop.position().top + navtop.outerHeight() - pinner.outerHeight() - $('div.pinner > .flash').outerHeight();
-      if ( $('nav#top > .flash').size() >= 1 ) {
-        $('div.pinner > .flash').insertAfter('nav#top > .flash').last();
-      }
-      else
-      {
-        $('div.pinner > .flash').prependTo($('nav#top'));
-      }
+    var offset = navtop.position().top + navtop.outerHeight() - pinner.outerHeight();
+    if (scrollTop > offset)
+    {
+      navtop.addClass('fixed').css('padding-bottom', pinner.outerHeight());
+    }
+    else
+    {
+      navtop.removeClass('fixed').css('padding-bottom', '');
     }
   }
 
