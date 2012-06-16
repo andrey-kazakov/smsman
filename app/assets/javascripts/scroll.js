@@ -112,22 +112,22 @@ $(document).bind('ready scroll load', function()
       flash  = $('nav#top > .flash');
 
   var scrollTop = $(document).scrollTop();
-  if ( flash.size >= 1 ) {
+  //if ( flash.size >= 1 ) {
     navtop.addClass('fixed').css('padding-bottom', pinner.outerHeight()).css('padding-top', flash.outerHeight());
     pinner.css('top', flash.outerHeight()).css('padding-top', navtop.height());
-  }
-  else
-  {
-    var offset = navtop.position().top + navtop.outerHeight() - pinner.outerHeight();
-    if (scrollTop > offset)
-    {
-      navtop.addClass('fixed').css('padding-bottom', pinner.outerHeight());
-    }
-    else
-    {
-      navtop.removeClass('fixed').css('padding-bottom', '');
-    }
-  }
+  //}
+//else
+//{
+//  var offset = navtop.position().top + navtop.outerHeight() - pinner.outerHeight();
+//  if (scrollTop > offset)
+//  {
+//    navtop.addClass('fixed').css('padding-bottom', pinner.outerHeight());
+//  }
+//  else
+//  {
+//    navtop.removeClass('fixed').css('padding-bottom', '');
+//  }
+//}
 
   updateTopNavigation()
 });
