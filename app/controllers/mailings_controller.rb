@@ -3,13 +3,13 @@ class MailingsController < ApplicationController
   before_filter :authenticate_user!, :except => [:new]
 
   def sent
-    @mailings = current_user.mailings.sent.order(id: :desc).all
+    @mailings = current_user.mailings.sent.order(_id: :desc).all
 
     index
   end
 
   def drafts
-    @mailings = current_user.mailings.drafts.order(id: :desc).all
+    @mailings = current_user.mailings.drafts.order(_id: :desc).all
 
     index
   end
