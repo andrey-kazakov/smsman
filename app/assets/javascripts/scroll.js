@@ -109,12 +109,12 @@ $(document).bind('ready scroll load', function()
 {
   var pinner = $('nav#top div.pinner'),
       navtop = $('nav#top'),
-      flash  = $('nav#top > .flash');
+      report  = $('nav#top > .report');
 
   var scrollTop = $(document).scrollTop();
-  //if ( flash.size >= 1 ) {
-    navtop.addClass('fixed').css('padding-bottom', pinner.outerHeight()).css('padding-top', flash.outerHeight());
-    pinner.css('top', flash.outerHeight()).css('padding-top', navtop.height());
+  //if ( report.size >= 1 ) {
+    navtop.addClass('fixed').css('padding-bottom', pinner.outerHeight()).css('padding-top', report.outerHeight());
+    pinner.css('top', report.outerHeight()).css('padding-top', navtop.height());
   //}
 //else
 //{
