@@ -25,7 +25,7 @@
         {
           if (upper[match] && lower[matches[index + 1]])
           {
-            ret += upper[match].charAt(0) + upper[match].chatAt(1).toLowerCase();
+            ret += upper[match].charAt(0) + upper[match].charAt(1).toLowerCase();
           }
           else if (upper[match])
           {
@@ -45,16 +45,7 @@
       return ret.replace(/[^\u0000-\u007f]/g, '');
     }
 
-    $('#sender input:first').bind('keyup input propertychange', function(event)
-    {
-      var input = $(this);
-      var value = input.val();
-
-      var lastLetter = value.substr(-1);
-      var firstChunk = translit(value.substr(0, value.length - 1));
-
-      input.val(firstChunk + lastLetter).caret(/$/);
-    }).bind('blur', function(event)
+    $('#sender input:first').bind('blur', function(event)
     {
       var input = $(this);
       var value = input.val();
