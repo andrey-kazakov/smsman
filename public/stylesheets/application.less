@@ -141,7 +141,7 @@
 @color-white: #FFF;
 @color-gray: #F3F3F3;
 @color-blue: #0073CD;
-@color-green: #41D800;
+@color-green: #82E000;
 @color-orange: #FF3C00;
 @color-gold: #FFD700;
 @color-red: #EB001E;
@@ -1256,7 +1256,7 @@ nav#top {
   background: #E1E7EB;
   
   &.set {
-    background: lighten(@color-green, 20%);
+    background: lighten(@color-green, 25%);
   }
   
   &.error {
@@ -1578,6 +1578,7 @@ article {
         > a {
           line-height: 1.6em;
           font-style: italic;
+          display: block;
         }
         
         > input[type=file] {
@@ -1585,6 +1586,13 @@ article {
           width: 1px;
           height: 1px
         }
+      }
+    }
+    
+    input[type=text].bubble {
+      
+      & + span.new {
+        display: none;
       }
     }
     
@@ -1722,8 +1730,9 @@ section#users {
       .mini;
     }
     
-    .name.manager {
-      #sender.set;
+    .name.manager,
+    .name.set {
+      background: lighten(@color-green, 10%);
     }
     
     .delivered,
