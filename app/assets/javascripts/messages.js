@@ -45,6 +45,8 @@
       return ret.replace(/[^\u0000-\u007f]/g, '');
     }
 
+    var button = $('#total button:first');
+
     $('#sender input:first').bind('blur', function(event)
     {
       var input = $(this);
@@ -63,11 +65,13 @@
 
       if (symbolsOk && hasLatin)
       {
-        div.removeClass('error').addClass('set')
+        div.removeClass('error').addClass('set');
+        button.removeAttr('disabled');
       }
       else
       {
-        div.addClass('error').removeClass('set')
+        div.addClass('error').removeClass('set');
+        button.attr('disabled', true);
       }
     });
 
