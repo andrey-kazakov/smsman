@@ -107,7 +107,7 @@
 
 $(document).bind('ready scroll load', function()
 {
-  var pinner = $('div.pinner'),
+  var pinner = $('nav#top div.pinner'),
       navtop = $('nav#top'),
       flash  = $('nav#top > .flash');
 
