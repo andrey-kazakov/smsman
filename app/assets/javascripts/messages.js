@@ -11,21 +11,17 @@
 
   $doc.ready(function()
   {
-    // sender field transliterator
     // from Russian rubygem
-    $('#mailing_sender').bind('keyup input propertychange', function(event)
+    var translit = function(value)
     {
-      if (!window['translitLocale']) return;
-
-      var input = $(this);
-      var value = input.val();
+      if (!window['translitLocale']) return value;
 
       var ret = '';
       with (translitLocale)
       {
-        var matches = value.match(new RegExp(multi_keys.join('|') + '|\w|.', 'g'));
+        var matches = value.match(new RegExp(multi_keys.join('|') + '|.', 'g'));
 
-        each(matches, function(index, match)
+        matches && each(matches, function(index, match)
         {
           if (upper[match] && lower[matches[index + 1]])
           {
@@ -46,8 +42,44 @@
         });
       }
 
-      input.caret(/$/).val(ret);
+      return ret.replace(/[^\u0000-\u007f]/g, '');
+    }
+
+    $('#sender input:first').bind('keyup input propertychange', function(event)
+    {
+      var input = $(this);
+      var value = input.val();
+
+      var lastLetter = value.substr(-1);
+      var firstChunk = translit(value.substr(0, value.length - 1));
+
+      input.val(firstChunk + lastLetter).caret(/$/);
+    }).bind('blur', function(event)
+    {
+      var input = $(this);
+      var value = input.val();
+
+      input.val(translit(value));
+    }).bind('blur keyup input propertychange', function()
+    {
+      var input = $(this);
+      var value = translit(input.val());
+
+      var div = input.parents('#sender');
+
+      var symbolsOk = /^[ -:@-Z_a-z]{1,11}$/.test(value),
+          hasLatin  = /[a-z]/i.test(value);
+
+      if (symbolsOk && hasLatin)
+      {
+        div.removeClass('error').addClass('set')
+      }
+      else
+      {
+        div.addClass('error').removeClass('set')
+      }
     });
+
   });
 
   // working w/ whole messages
