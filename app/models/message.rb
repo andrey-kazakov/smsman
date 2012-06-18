@@ -25,6 +25,14 @@ class Message
     octets <= 140 ? 1 : (octets / 134.0).ceil
   end
 
+  def recipients
+    recipients_list.present? ? recipients_list.list : []
+  end
+
+  def self.parse recipients
+    new(recipients_list: RecipientsList.parse(recipients))
+  end
+
 protected
   def calc_summary
     summary = Summary.new

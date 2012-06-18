@@ -4,7 +4,7 @@ class Mailing
   belongs_to :user
 
   field :sender, type: String
-  validates_format_of :sender, with: /\A(?:[[:alpha:]]{,11}|\+\d{,15})\Z/
+  validates_format_of :sender, with: /\A[ -:@-Z_a-z]{1,11}\Z/
 
   field :summary, type: Summary
   attr_protected :summary

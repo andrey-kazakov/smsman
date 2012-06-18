@@ -15,11 +15,14 @@ class RecipientsList
   after_validation :calc_summary
 
   def << recipient
-    #
+    list << { n: recipient, s: nil, i: nil }
   end
 
   def self.parse recipients
-    #
+    if recipients.kind_of? Array
+      list = recipients.map{ |n| { n: n, s: nil, i: nil } }
+      new(list: list)
+    end
   end
 
 protected
