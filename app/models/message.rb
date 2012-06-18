@@ -6,8 +6,8 @@ class Message
   field :text, type: String, default: ''
   validates_presence_of :text
 
-  field :recipients, type: Array, default: [] # TODO
-  validates_presence_of :recipients
+  has_one :recipients_list
+  validates_presence_of :recipients_list
 
   field :summary, type: Summary
   attr_protected :summary
@@ -29,7 +29,7 @@ protected
   def calc_summary
     summary = Summary.new
 
-    recipients.each{ |r| parts.times{ summary.add(r) } }
+    parts.times{ summary.add(recipients_list.summary) } if recipients_list.present?
 
     write_attribute :summary, summary.serialize(summary)
   end
