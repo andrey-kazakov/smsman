@@ -6,7 +6,7 @@ class RecipientsList
   belongs_to :user
   validates_presence_of :user # to allow recipients upload into new mailing
 
-  # [ { n: number, s: state, i: api_id } ]
+  # [ { 'n' => number, 's' => state, 'i' => api_id } ]
   field :list, type: Array, default: []
 
   field :summary, type: Summary
@@ -14,14 +14,14 @@ class RecipientsList
   after_initialize :calc_summary
   after_validation :calc_summary
 
-  def << recipient
-    list << { n: recipient, s: nil, i: nil }
+  def method_missing meth, *args, &blk
+    list.send meth, *args, &blk
   end
 
-  def self.parse recipients
+  def self.parse recipients, options = {}
     if recipients.kind_of? Array
       list = recipients.map{ |n| { n: n, s: nil, i: nil } }
-      new(list: list)
+      new(options.merge list: list)
     end
   end
 
@@ -30,7 +30,7 @@ protected
     summary = Summary.new
 
     list.each do |recipient|
-      summary.add(recipient[:n], recipient[:s])
+      summary.add(recipient['n'], recipient['s'])
     end
 
     write_attribute :summary, summary.serialize(summary)

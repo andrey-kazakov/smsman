@@ -6,7 +6,7 @@ class Message
   field :text, type: String, default: ''
   validates_presence_of :text
 
-  has_one :recipients_list
+  has_one :recipients_list, autosave: true
   validates_presence_of :recipients_list
 
   field :summary, type: Summary
@@ -25,12 +25,8 @@ class Message
     octets <= 140 ? 1 : (octets / 134.0).ceil
   end
 
-  def recipients
-    recipients_list.present? ? recipients_list.list : []
-  end
-
-  def self.parse recipients
-    new(recipients_list: RecipientsList.parse(recipients))
+  def recipients_list
+    read_attribute(:recipients_list) || RecipientsList.new
   end
 
 protected
@@ -40,5 +36,7 @@ protected
     parts.times{ summary.add(recipients_list.summary) } if recipients_list.present?
 
     write_attribute :summary, summary.serialize(summary)
+
+    #warn errors.full_messages
   end
 end

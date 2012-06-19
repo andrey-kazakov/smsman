@@ -2,10 +2,10 @@
   <h1 class="bold number"><%= message_counter.next %></h1>
   <%= text_area "mailing[messages][#{ message._id }]", 'text', placeholder: 'Текст сообщения…', value: message.text %>
   <div class="recipients">
-    <% message.recipients.each do |recipient| %>
-      <%= text_field "mailing[messages][#{ message._id }][recipients]", recipient[:n], class: "bubble #{recipient[:s].presence || 'phone'}" %>
+    <% message.recipients_list.each do |recipient| %>
+      <%= text_field "mailing[messages][#{ message._id }][recipients]", recipient['n'], class: "bubble #{recipient['s'].presence || 'phone'}" %>
     <% end %>
-    <% if message.recipients.empty? %>
+    <% if message.recipients_list.empty? %>
       <input class="new" type="text" placeholder="Введите получателей или…" />
     <% else %>
       <input class="new" type="text" />

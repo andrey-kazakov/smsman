@@ -11,8 +11,7 @@ class Mailing
   after_initialize :calc_summary
   after_validation :calc_summary
 
-  has_many :messages
-  attr_protected :messages
+  has_many :messages, autosave: true
 
   field :sent_at, type: Time
   index :sent_at

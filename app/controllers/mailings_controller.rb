@@ -89,8 +89,7 @@ protected
     @mailing.messages.destroy_all
 
     params[:mailing][:messages].each_pair do |id, msg_data|
-      # TODO
-      @mailing.messages.parse(msg_data[:recipients].map{ |number, name| number }).save
+      @mailing.messages.new(text: msg_data[:text], recipients_list: RecipientsList.parse(msg_data[:recipients].map{ |number, name| number }, user: current_user))
     end
 
     if @mailing.valid? and params[:commit] == 'send'
@@ -102,6 +101,7 @@ protected
     if @mailing.save
       redirect_to mailing_path(@mailing)
     else
+      #warn @mailing.errors.full_messages
       redirect_to @mailing.draft? ? drafts_mailings_path : sent_mailings_path
     end
   end
