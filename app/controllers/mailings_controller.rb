@@ -96,14 +96,15 @@ protected
       @mailing.sent_at = Time.now
     end
 
-    if @mailing.save validate: !@mailing.draft?
+    if @mailing.save
       @mailing.enqueue! unless @mailing.draft?
 
       redirect_to mailing_path(@mailing)
     else
-      #warn @mailing.errors.full_messages
-      #
+      warn @mailing.errors.full_messages
+
       redirect_to @mailing.draft? ? drafts_mailings_path : sent_mailings_path
     end
+
   end
 end
