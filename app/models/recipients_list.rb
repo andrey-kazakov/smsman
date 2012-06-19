@@ -45,5 +45,7 @@ protected
     end
 
     write_attribute :summary, summary.serialize(summary)
+
+    warn errors.full_messages
   end
 end
