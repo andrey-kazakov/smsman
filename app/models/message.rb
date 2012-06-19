@@ -14,12 +14,15 @@ class Message
   after_initialize :calc_summary
   after_validation :calc_summary
 
+  def unicode?
+    text =~ /[^\u0000-Z_-z]/
+  end
+
   def parts
     #return 0 if text.length < 1
 
-    is_septets = text =~ /\A[\u0000-Z_-z]*\Z/
     # establish real message length in octets
-    octets = (is_septets ? (7.0/8)*text.length : text.length*2).ceil
+    octets = (unicode? ? text.length * 2 : (7.0/8)*text.length).ceil
     
     # 140 octets for whole message, 134 for each part of partial one
     octets <= 140 ? 1 : (octets / 134.0).ceil
