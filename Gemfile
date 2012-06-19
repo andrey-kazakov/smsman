@@ -7,7 +7,7 @@ gem 'rails', '3.2.3'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 
-gem 'ruby-smpp'
+gem 'ruby-smpp', require: 'smpp'
 
 gem 'russian'
 
