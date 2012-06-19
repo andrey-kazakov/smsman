@@ -98,7 +98,7 @@ protected
       # TODO
     end
 
-    if @mailing.save
+    if @mailing.save validate: !@mailing.draft?
       redirect_to mailing_path(@mailing)
     else
       #warn @mailing.errors.full_messages
