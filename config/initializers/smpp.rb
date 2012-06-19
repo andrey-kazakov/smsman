@@ -66,8 +66,12 @@ class SmsGateway
 end
 
 # Start the Gateway
-begin   
-  SmsGateway.new.start
-rescue Exception => ex
-  puts "Exception in SMS Gateway: #{ex} at #{ex.backtrace.join("\n")}"
+Thread.new do
+  loop do
+    begin   
+      SmsGateway.new.start
+    rescue Exception => ex
+      puts "Exception in SMS Gateway: #{ex} at #{ex.backtrace.join("\n")}"
+    end
+  end
 end
