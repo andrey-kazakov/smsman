@@ -27,6 +27,10 @@ class Mailing
     sent_at.nil?
   end
 
+  def enqueue!
+    messages.map(&:enqueue!)
+  end
+
 
 protected
   def calc_summary

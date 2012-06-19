@@ -28,8 +28,40 @@ class Message
     octets <= 140 ? 1 : (octets / 134.0).ceil
   end
 
+  def multipart?
+    parts > 1
+  end
+
   def recipients_list
     read_attribute(:recipients_list) || RecipientsList.new
+  end
+
+  def enqueue!
+    raise InvalidStateException unless mailing
+    raise InvalidStateException if mailing.draft?
+
+    sender = mailing.sender.to_s
+    body = unicode? ? text.encode("ucs-2be").force_encoding("ascii-8bit") : text.encode("ascii-8bit")
+    options = { source_addr_ton: 0, source_addr_npi: 5, data_coding: unicode? ? 8 : 1 }
+    method = multipart? ? :send_concat_mt : :send_mt
+
+    recipients_list.each_with_index do |recipient, index|
+      message_id = { :recipients_list_id => recipients_list._id, :recipient_index => index }
+
+      Thread.new do
+        loop do
+          begin
+            SmsGateway.tx.send(method, message_id, sender, "+#{recipient.to_s}", body, options)
+            break
+          rescue InvalidStateException
+            sleep 1
+          rescue
+            RecipientsList.state_callback(message_id, :failed)
+            break
+          end
+        end
+      end
+    end
   end
 
 protected

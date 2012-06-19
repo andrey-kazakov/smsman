@@ -20,9 +20,20 @@ class RecipientsList
 
   def self.parse recipients, options = {}
     if recipients.kind_of? Array
-      list = recipients.map{ |n| { 'n' => n, 's' => nil, 'i' => nil } }
+      list = recipients.map{ |n| { 'n' => n.to_i, 's' => nil, 'i' => nil } }
       new(options.merge list: list)
     end
+  end
+
+  # { :recipients_list_id => recipients_list._id, :recipient_index => index }
+  def self.state_callback message_id, state, reference = nil
+    object = find(message_id[:recipients_list_id])
+    list = object.list
+
+    list[message_id[:recipient_index]]['s'] = state
+    list[message_id[:recipient_index]]['i'] = reference.to_i
+
+    object.save
   end
 
 protected

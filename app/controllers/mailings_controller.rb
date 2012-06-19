@@ -94,14 +94,15 @@ protected
 
     if @mailing.valid? and params[:commit] == 'send'
       @mailing.sent_at = Time.now
-
-      # TODO
     end
 
     if @mailing.save validate: !@mailing.draft?
+      @mailing.enqueue! unless @mailing.draft?
+
       redirect_to mailing_path(@mailing)
     else
       #warn @mailing.errors.full_messages
+      #
       redirect_to @mailing.draft? ? drafts_mailings_path : sent_mailings_path
     end
   end
