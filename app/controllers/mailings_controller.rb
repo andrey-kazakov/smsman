@@ -89,7 +89,7 @@ protected
     @mailing.messages.destroy_all
 
     params[:mailing][:messages].each_pair do |id, msg_data|
-      @mailing.messages.new(text: msg_data[:text], recipients_list: RecipientsList.parse(current_user, msg_data[:recipients].map{ |number, name| number }))
+      RecipientsList.parse(@mailing.messages.new(text: msg_data[:text]), current_user, msg_data[:recipients].map{ |number, name| number })
     end
 
     if @mailing.valid? and params[:commit] == 'send'

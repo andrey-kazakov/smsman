@@ -14,6 +14,10 @@ class Message
   after_initialize :calc_summary
   after_validation :calc_summary
 
+  def has_recipients?
+    recipients_list.present? and !recipients_list.list.empty?
+  end
+
   def unicode?
     text =~ /[^\u0000-Z_-z]/
   end
@@ -32,10 +36,6 @@ class Message
     parts > 1
   end
 
-  def recipients_list
-    read_attribute(:recipients_list) || RecipientsList.new
-  end
-
   def enqueue!
     raise InvalidStateException unless mailing
     raise InvalidStateException if mailing.draft?
@@ -51,7 +51,7 @@ class Message
       Thread.new do
         loop do
           begin
-            SmsGateway.tx.send(method, message_id, sender, "+#{recipient.to_s}", body, options)
+            SmsGateway.tx.send(method, message_id, sender, "+#{recipient['n'].to_s}", body, options)
             break
           rescue InvalidStateException
             sleep 1

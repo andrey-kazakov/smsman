@@ -4,11 +4,15 @@ module MailingsHelper
     ret = { 
       'id' => "message_#{message._id}",
       'data-parts-amount' => message.parts,
-      'data-recipients-amount' => message.recipients_list.summary.total
+      'data-recipients-amount' => 0
     }
 
-    message.recipients_list.summary.total_by_prefixes.each_pair do |prefix, count|
-      ret["data-recipients-amount-#{prefix}"] = count
+    if message.recipients_list and message.recipients_list.summary
+      ret['data-recipients-amount'] = message.recipients_list.summary.total
+
+      message.recipients_list.summary.total_by_prefixes.each_pair do |prefix, count|
+        ret["data-recipients-amount-#{prefix}"] = count
+      end
     end
 
     raw ret.map{ |k,v| %<#{k}="#{v}"> }.join ' '

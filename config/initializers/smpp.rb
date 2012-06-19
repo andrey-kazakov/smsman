@@ -61,7 +61,7 @@ class SmsGateway
   def unbound(transceiver)  
     logger.info "Delegate: transceiver unbound"
     sleep 1
-    @@tx.reconnect @config[:host], @config[:port]
+    start
   end
   
 end

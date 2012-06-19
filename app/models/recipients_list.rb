@@ -8,6 +8,7 @@ class RecipientsList
 
   # [ { 'n' => number, 's' => state, 'i' => api_id } ]
   field :list, type: Array, default: []
+  validates_presence_of :list
 
   field :summary, type: Summary
   attr_protected :summary
@@ -18,10 +19,18 @@ class RecipientsList
     list.send meth, *args, &blk
   end
 
-  def self.parse current_user, recipients
+  def self.parse message, user, recipients
     if recipients.kind_of? Array
       list = recipients.map{ |n| { 'n' => n.to_i, 's' => nil, 'i' => nil } }
-      current_user.recipients_lists.create(list: list)
+
+      recipients_list = new
+      recipients_list.message = message
+      recipients_list.list = list
+      recipients_list.user = user
+
+      recipients_list.save
+
+      recipients_list
     end
   end
 
@@ -46,6 +55,7 @@ protected
 
     write_attribute :summary, summary.serialize(summary)
 
+    warn [list, user]
     warn errors.full_messages
   end
 end
