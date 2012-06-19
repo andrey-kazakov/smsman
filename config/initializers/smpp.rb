@@ -11,7 +11,7 @@ class SmsGateway
   def start
     @config = 
     {
-      :host => 'smpp.qtelecom.ru',
+      :host => '93.188.44.12', # 'smpp.qtelecom.ru',
       :port => 8056,
       :system_id => '17896',
       :password => '67048010',
