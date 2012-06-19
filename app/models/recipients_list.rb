@@ -20,7 +20,7 @@ class RecipientsList
 
   def self.parse recipients, options = {}
     if recipients.kind_of? Array
-      list = recipients.map{ |n| { n: n, s: nil, i: nil } }
+      list = recipients.map{ |n| { 'n' => n, 's' => nil, 'i' => nil } }
       new(options.merge list: list)
     end
   end
