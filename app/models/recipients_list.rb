@@ -4,7 +4,7 @@ class RecipientsList
   belongs_to :message
 
   belongs_to :user
-  validates_presence_of :user # to allow recipients upload into new mailing
+  #validates_presence_of :user # to allow recipients upload into new mailing
 
   # [ { 'n' => number, 's' => state, 'i' => api_id } ]
   field :list, type: Array, default: []
@@ -18,10 +18,10 @@ class RecipientsList
     list.send meth, *args, &blk
   end
 
-  def self.parse recipients, options = {}
+  def self.parse current_user, recipients
     if recipients.kind_of? Array
       list = recipients.map{ |n| { 'n' => n.to_i, 's' => nil, 'i' => nil } }
-      new(options.merge list: list)
+      current_user.recipients_lists.create(list: list)
     end
   end
 
