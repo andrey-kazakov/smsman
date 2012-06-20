@@ -10,5 +10,5 @@
   <div class="total">
     <h3><%= total_by_prefixes(mailing) %></h3>
   </div>
-  <div class="date"><%= l mailing.created_at, format: :short %></div>
+  <div class="date"><%= l(mailing.draft? ? mailing.created_at : mailing.sent_at, format: :short) %></div>
 </a>

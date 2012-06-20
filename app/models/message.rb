@@ -4,7 +4,6 @@ class Message
   belongs_to :mailing
 
   field :text, type: String, default: ''
-  validates_presence_of :text
 
   has_one :recipients_list, autosave: true
   validates_presence_of :recipients_list
@@ -16,6 +15,10 @@ class Message
 
   def has_recipients?
     recipients_list.present? and !recipients_list.list.empty?
+  end
+
+  def draft?
+    mailing.present? ? mailing.draft? : true
   end
 
   def unicode?

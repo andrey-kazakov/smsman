@@ -1,8 +1,8 @@
   <%= form_for @mailing do |f| %>
-    <div id="sender">
+    <div id="sender"<%= raw(@mailing.draft? ? '' : ' class="set"') %>>
       <div class="wrapper">
         <div>
-          <%= f.text_field :sender, placeholder: "Отправитель…" %>
+          <%= f.text_field :sender, placeholder: "Отправитель…", readonly: !@mailing.draft? %>
         </div>
       </div>
     </div>
@@ -12,21 +12,25 @@
       <% else %>
         <%= render partial: 'message', collection: @mailing.messages %>
       <% end %>
-      <article class="message new" data-parts-amount="0" data-recipients-amount="0">
-        <textarea placeholder="Ещё одно сообщение…"></textarea>
-      </article>
+      <% if @mailing.draft? %>
+        <article class="message new" data-parts-amount="0" data-recipients-amount="0">
+          <textarea placeholder="Ещё одно сообщение…"></textarea>
+        </article>
+      <% end %>
     </section>
     <div id="total"<%= raw(@mailing.summary.empty? ? ' class="none"' : '') %>>
       <div class="wrapper">
         <div>
           <h3><%= total_by_prefixes(@mailing) %></h3>
           <hr />
-          <div class="actions">
-            <button type="submit" name="commit" value="send"<%= raw(@mailing.sender.present? ? '' : ' disabled') %>>Отправить</button>
-            <span class="draft">
-              или <a href="#" onclick="$(this).parents('form').submit(); return false" class="pseudolink"><u>сохранить в черновик</u></a>
-            </span>
-          </div>
+          <% if @mailing.draft? %>
+            <div class="actions">
+              <button type="submit" name="commit" value="send"<%= raw(@mailing.sender.present? ? '' : ' disabled') %>>Отправить</button>
+              <span class="draft">
+                или <a href="#" onclick="$(this).parents('form').submit(); return false" class="pseudolink"><u>сохранить в черновик</u></a>
+              </span>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>

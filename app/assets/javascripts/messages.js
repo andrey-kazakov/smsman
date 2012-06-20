@@ -160,7 +160,7 @@
     var parts = article.attr('data-parts-amount');
     var recipients = article.attr('data-recipients-amount');
 
-    var text = recipients == 0 ? '0' : (recipients + (parts > 1 ? ('×' + parts) : ''))
+    var text = (recipients + (parts > 1 ? ('×' + parts) : ''))
 
     article.find('h1.amount').text(text);
 
@@ -429,7 +429,7 @@
     div.find('input.new').focus();
   })
 
-  $('article.message > div.recipients > input:not([readonly])').live('keydown keyup input propertychange', function(event)
+  $('article.message > div.recipients:not(.readonly) > input').live('keydown keyup input propertychange', function(event)
   {
     var input = $(this);
     var value = input.val();
