@@ -160,7 +160,7 @@
     var parts = article.attr('data-parts-amount');
     var recipients = article.attr('data-recipients-amount');
 
-    var text = recipients == 0 ? '0' : (recipients + (parts > 1 ? ('×' + parts) : ''))
+    var text = (recipients + (parts > 1 ? ('×' + parts) : ''))
 
     article.find('h1.amount').text(text);
 
@@ -242,7 +242,7 @@
 
     area.attr('placeholder', 'Текст сообщения…').attr('name', 'mailing[messages][' + message_id + '][text]');
 
-    $('<div class="recipients"><input class="new" type="text" placeholder="Получатели…" /></div>').appendTo(article);
+    $('<div class="recipients"><input class="new" type="text" placeholder="Введите получателей или…" /><span class="new"><a href="#" onclick="$(this).next().click(); return false" class="pseudolink"><u>загрузите их файлом</u></a><input type="file" accept="text/plain" name="" id="" /></span></div>').appendTo(article);
     $('<h1 class="bold amount">0</h1>').appendTo(article);
 
     $('<h1 class="bold number"></h1>').text(countMessages()).insertBefore(area);
@@ -429,7 +429,7 @@
     div.find('input.new').focus();
   })
 
-  $('article.message > div.recipients > input:not([readonly])').live('keydown keyup input propertychange', function(event)
+  $('article.message > div.recipients:not(.readonly) > input').live('keydown keyup input propertychange', function(event)
   {
     var input = $(this);
     var value = input.val();
@@ -506,7 +506,7 @@
         if (caretAtEnd && !allSelected && down)
         {
           event.preventDefault();
-          (input.next().length ? input.next() : input.parent('div').find('input:first')).focus().caret({ start: 0, end: 0 });
+          (input.next('input').length ? input.next() : input.parent('div').find('input:first')).focus().caret({ start: 0, end: 0 });
           input.blur()
         }
         break;
@@ -571,8 +571,8 @@
 
     if (input.hasClass('new'))
     {
-      if (!input.val().trim() && !input.prev().length && !input.next().length)
-        input.attr('placeholder', 'Получатели…');
+      if (!input.val().trim() && !input.prev().length && !input.next('input').length)
+        input.attr('placeholder', 'Введите получателей или…');
       else
         input.removeAttr('placeholder');
     }
@@ -587,8 +587,8 @@
     var input = $(this);
     if (!input.hasClass('bubble'))
     {
-      if (!input.val().trim() && !input.prev().length && !input.next().length)
-        input.attr('placeholder', 'Получатели…');
+      if (!input.val().trim() && !input.prev().length && !input.next('input').length)
+        input.attr('placeholder', 'Введите получателей или…');
       else
         input.removeAttr('placeholder');
       return;
@@ -604,9 +604,9 @@
     var input = $(this);
     if (!input.hasClass('bubble'))
     {
-      if (!input.val().trim() && !input.prev().length && !input.next().length)
+      if (!input.val().trim() && !input.prev().length && !input.next('input').length)
       {
-        input.attr('placeholder', 'Получатели…');
+        input.attr('placeholder', 'Введите получателей или…');
       }
       return;
     }

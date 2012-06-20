@@ -4,15 +4,14 @@ class Mailing
   belongs_to :user
 
   field :sender, type: String
-  validates_format_of :sender, with: /\A(?:[[:alpha:]]{,11}|\+\d{,15})\Z/
+  #validates_format_of :sender, with: /\A[ -:@-Z_a-z]{1,11}\Z/ - TODO: check this only on send
 
   field :summary, type: Summary
   attr_protected :summary
   after_initialize :calc_summary
   after_validation :calc_summary
 
-  has_many :messages
-  attr_protected :messages
+  has_many :messages, autosave: true
 
   field :sent_at, type: Time
   index :sent_at
@@ -26,6 +25,10 @@ class Mailing
 
   def draft?
     sent_at.nil?
+  end
+
+  def enqueue!
+    messages.map(&:enqueue!)
   end
 
 

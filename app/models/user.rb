@@ -45,4 +45,6 @@ class User
   has_many :contacts
 
   has_many :mailings
+
+  has_many :recipients_lists
 end

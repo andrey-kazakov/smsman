@@ -89,29 +89,22 @@ protected
     @mailing.messages.destroy_all
 
     params[:mailing][:messages].each_pair do |id, msg_data|
-      message = @mailing.messages.new
-
-      message.text = msg_data[:text]
-
-      message.recipients = []
-
-      msg_data[:recipients].each_pair do |number, name|
-        message.recipients << number.to_i
-      end
-
-      message.save
+      RecipientsList.parse(@mailing.messages.new(text: msg_data[:text]), current_user, msg_data[:recipients].map{ |number, name| number })
     end
 
     if @mailing.valid? and params[:commit] == 'send'
       @mailing.sent_at = Time.now
-
-      # TODO
     end
 
     if @mailing.save
+      @mailing.enqueue! unless @mailing.draft?
+
       redirect_to mailing_path(@mailing)
     else
+      warn @mailing.errors.full_messages
+
       redirect_to @mailing.draft? ? drafts_mailings_path : sent_mailings_path
     end
+
   end
 end

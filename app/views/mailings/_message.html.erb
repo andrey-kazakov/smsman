@@ -1,21 +1,23 @@
 <article class="message" <%= message_attributes(message) %>>
   <h1 class="bold number"><%= message_counter.next %></h1>
-  <%= text_area "mailing[messages][#{ message._id }]", 'text', placeholder: 'Текст сообщения…', value: message.text %>
-  <div class="recipients">
-    <% message.recipients.each do |recipient| %>
-      <%= text_field "mailing[messages][#{ message._id }][recipients]", recipient, class: 'bubble phone' %>
+  <%= text_area "mailing[messages][#{ message._id }]", 'text', placeholder: 'Текст сообщения…', value: message.text, readonly: !message.draft? %>
+  <div class="recipients<%= message.draft? ? '' : ' readonly' %>">
+    <% message.has_recipients? &&  message.recipients_list.each do |recipient| %>
+      <%= text_field "mailing[messages][#{ message._id }][recipients]", recipient['n'], class: "bubble phone #{recipient['s'].presence}", readonly: !message.draft? %>
     <% end %>
-    <% if message.recipients.empty? %>
-      <input class="new" type="text" placeholder="Введите получателей или…" />
+    <% if message.draft? %>
+      <% unless message.has_recipients? %>
+        <input class="new" type="text" placeholder="Введите получателей или…" />
+      <% else %>
+        <input class="new" type="text" />
+      <% end %>
       <span class="new">
         <a href="#" onclick="$(this).next().click(); return false" class="pseudolink"><u>загрузите их файлом</u></a>
         <input type="file" accept="text/plain" name="" id="" />
       </span>
-    <% else %>
-      <input class="new" type="text" />
     <% end %>
     <!-- <span class="list"><a href=""><u>1<span class="thinsp">&nbsp;</span>055<span class="thinsp">&nbsp;</span>541 получателя</u></a>. Из них <a href=""><u>680<span class="thinsp">&nbsp;</span>024 доставлено</u></a>, 365<span class="thinsp">&nbsp;</span>153 отправлется, <a href=""><u>10<span class="thinsp">&nbsp;</span>364 не дошли до адресата</u></a>. -->
     </span>
   </div>
-  <h1 class="bold amount"><%= (message.summary.total / message.parts).to_s + (message.parts > 1 ? "×#{message.parts}" : '') %></h1>
+  <h1 class="bold amount"><%= (message.has_recipients? ? message.recipients_list.summary.total : 0).to_s + (message.parts > 1 ? "×#{message.parts}" : '') %></h1>
 </article>
