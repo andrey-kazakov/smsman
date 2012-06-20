@@ -43,8 +43,7 @@ class RecipientsList
                find(message_id[:recipients_list_id])
              else
                # find message by reference
-               object = where('list.i' => reference).first
-               warn [reference, object]
+               object = where('list.i' => reference.to_i).first
 
                recipient_index = -1
                object.list.each_with_index do |recipient, index|
@@ -58,6 +57,8 @@ class RecipientsList
                  recipients_list_id: object._id,
                  recipient_index: recipient_index
                }
+
+               object
              end
 
     list = object.list
