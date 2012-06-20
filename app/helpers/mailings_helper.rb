@@ -1,5 +1,23 @@
 # encoding: utf-8
 module MailingsHelper
+  def span content, attributes = {}
+    ret  = '<span'
+
+    unless attributes.empty?
+      ret << ' '
+
+      ret << attributes.map{ |attribute, value| h(attribute) + '=' + h(value) }.join(' ')
+    end
+
+    ret << '>'
+
+    ret << content
+
+    ret << '</span>'
+
+    raw ret
+  end
+
   def message_attributes message
     ret = { 
       'id' => "message_#{message._id}",
@@ -37,5 +55,11 @@ module MailingsHelper
     end
 
     raw ret
+  end
+
+  def states_summary of
+    states = Summary::STATES.reject{ |state| of.summary[state] < 1 }.map{ |state| span(typo_number(of.summary[state]) + "\u00a0" + t("messages.count.#{state}", :count => of.summary[state])) }
+
+    states.empty? ? '' : raw(span(t('messages.of_them')) + ' ' + raw(states.join(",\u00a0")) + '.')
   end
 end

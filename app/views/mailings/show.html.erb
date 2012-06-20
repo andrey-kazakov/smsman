@@ -22,14 +22,18 @@
       <div class="wrapper">
         <div>
           <h3><%= total_by_prefixes(@mailing) %></h3>
-          <hr />
           <% if @mailing.draft? %>
+            <hr />
             <div class="actions">
               <button type="submit" name="commit" value="send"<%= raw(@mailing.sender.present? ? '' : ' disabled') %>>Отправить</button>
               <span class="draft">
                 или <a href="#" onclick="$(this).parents('form').submit(); return false" class="pseudolink"><u>сохранить в черновик</u></a>
               </span>
             </div>
+          <% else %>
+            <p class="info">
+              <%= states_summary @mailing %>
+            </p>
           <% end %>
         </div>
       </div>

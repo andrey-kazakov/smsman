@@ -5,6 +5,7 @@ ru:
     prefixes:
       "7": по России
       "38": по Украине
+    of_them: из них
     count:
       delivered: доставлено
       pending: отправлено
