@@ -10,6 +10,9 @@ class RecipientsList
   field :list, type: Array, default: []
   validates_presence_of :list
 
+  index 'list.n'
+  index 'list.i'
+
   field :summary, type: Summary
   attr_protected :summary
   after_initialize :calc_summary
@@ -36,7 +39,27 @@ class RecipientsList
 
   # { :recipients_list_id => recipients_list._id, :recipient_index => index }
   def self.state_callback message_id, state, reference = nil
-    object = find(message_id[:recipients_list_id])
+    object = if message_id
+               find(message_id[:recipients_list_id])
+             else
+               # find message by reference
+               object = where('list.i' => reference).first
+               warn [reference, object]
+
+               recipient_index = -1
+               object.list.each_with_index do |recipient, index|
+                 if recipient['i'] == reference.to_i
+                   recipient_index = index
+                   break
+                 end
+               end
+
+               message_id = {
+                 recipients_list_id: object._id,
+                 recipient_index: recipient_index
+               }
+             end
+
     list = object.list
 
     list[message_id[:recipient_index]]['s'] = state

@@ -1,3 +1,15 @@
+# DIRTY HACK to avoid encodig exception
+class Smpp::Pdu::Base
+  def initialize(command_id, command_status, seq, body='')    
+    length = 16 + body.length
+    @command_id = command_id
+    @command_status = command_status
+    @body = body
+    @sequence_number = seq
+    @data = fixed_int(length) + fixed_int(command_id) + fixed_int(command_status) + fixed_int(seq) + body.force_encoding("ascii-8bit") # <- it's here
+  end      
+end
+
 Smpp::Base.logger = Rails.logger
 
 class SmsGateway
@@ -45,7 +57,7 @@ class SmsGateway
 
   def delivery_report_received(transceiver, pdu)
     logger.info "Delegate: delivery_report_received: ref #{pdu.msg_reference} stat #{pdu.stat}"
-    RecipientsList.state_callback(mt_message_id, :delivered, pdu.msg_reference)
+    RecipientsList.state_callback(nil, :delivered, pdu.msg_reference)
   end
 
   def message_accepted(transceiver, mt_message_id, pdu)
@@ -71,11 +83,13 @@ end
 
 # Start the Gateway
 Thread.new do
+  sleep_time = 1
   loop do
     begin   
       SmsGateway.new.start
     rescue Exception => ex
       puts "Exception in SMS Gateway: #{ex} at #{ex.backtrace.join("\n")}"
     end
+    sleep(sleep_time = sleep_time.next)
   end
 end
