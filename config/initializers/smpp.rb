@@ -76,20 +76,20 @@ class SmsGateway
 
   def unbound(transceiver)  
     logger.info "Delegate: transceiver unbound"
-    EventMachine.stop_event_loop
+    #EventMachine.stop_event_loop
   end
   
 end
 
 # Start the Gateway
-Thread.new do
-  sleep_time = 1
-  loop do
+EventMachine.next_tick do
+#  sleep_time = 1
+#  loop do
     begin   
       SmsGateway.new.start
     rescue Exception => ex
       puts "Exception in SMS Gateway: #{ex} at #{ex.backtrace.join("\n")}"
     end
-    sleep(sleep_time = sleep_time.next)
-  end
+#    sleep(sleep_time = sleep_time.next)
+#  end
 end
