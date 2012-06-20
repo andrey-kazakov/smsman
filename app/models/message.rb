@@ -40,8 +40,7 @@ class Message
   end
 
   def enqueue!
-    raise InvalidStateException unless mailing
-    raise InvalidStateException if mailing.draft?
+    raise Smpp::InvalidStateException if mailing.draft?
 
     sender = mailing.sender.to_s
     body = unicode? ? text.encode("ucs-2be").force_encoding("ascii-8bit") : text.encode("ascii-8bit")
@@ -56,7 +55,7 @@ class Message
           begin
             SmsGateway.tx.send(method, message_id, sender, "+#{recipient['n'].to_s}", body, options)
             break
-          rescue InvalidStateException
+          rescue Smpp::InvalidStateException
             sleep 1
           rescue
             RecipientsList.state_callback(message_id, :failed)
