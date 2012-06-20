@@ -35,7 +35,7 @@ class SmsGateway
       :destination_npi => 1,
       :source_address_range => '',
       :destination_address_range => '',
-      :enquire_link_delay_secs => 10
+      :enquire_link_delay_secs => 60
     }
     EventMachine::run do             
       @@tx = EventMachine::connect(
