@@ -37,7 +37,7 @@ class SmsGateway
       :destination_address_range => '',
       :enquire_link_delay_secs => 60
     }
-    EventMachine::run do             
+    #EventMachine::run do             
       @@tx = EventMachine::connect(
         @config[:host], 
         @config[:port], 
@@ -45,7 +45,7 @@ class SmsGateway
         @config,
         self    # delegate that will receive callbacks on MOs and DRs and other events
       )     
-    end
+    #end
   end
   
   # ruby-smpp delegate methods 
@@ -77,6 +77,7 @@ class SmsGateway
   def unbound(transceiver)  
     logger.info "Delegate: transceiver unbound"
     #EventMachine.stop_event_loop
+    EventMachine.next_tick{ SmsGateway.new.start }
   end
   
 end

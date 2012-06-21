@@ -9,7 +9,7 @@ gem 'thin'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 
-gem 'ruby-smpp', require: 'smpp'
+gem 'ruby-smpp', require: 'smpp', git: 'git://github.com/kuroineko/ruby-smpp.git'
 
 gem 'russian'
 

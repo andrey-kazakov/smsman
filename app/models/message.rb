@@ -47,10 +47,10 @@ class Message
     options = { source_addr_ton: 0, source_addr_npi: 5, data_coding: unicode? ? 8 : 1 }
     method = multipart? ? :send_concat_mt : :send_mt
 
-    recipients_list.each_with_index do |recipient, index|
-      message_id = { :recipients_list_id => recipients_list._id, :recipient_index => index }
+    EventMachine.next_tick do
+      recipients_list.each_with_index do |recipient, index|
+        message_id = { :recipients_list_id => recipients_list._id, :recipient_index => index }
 
-      Thread.new do
         loop do
           begin
             SmsGateway.tx.send(method, message_id, sender, "+#{recipient['n'].to_s}", body, options)
@@ -58,6 +58,7 @@ class Message
           rescue Smpp::InvalidStateException
             sleep 1
           rescue
+            Smpp::Base.logger.warn $!
             RecipientsList.state_callback(message_id, :failed)
             break
           end

@@ -44,6 +44,7 @@ class RecipientsList
              else
                # find message by reference
                object = where('list.i' => reference.to_i).first
+               return unless object # handle just one of messages if it`s multipart one
 
                recipient_index = -1
                object.list.each_with_index do |recipient, index|
@@ -78,8 +79,5 @@ protected
     end
 
     write_attribute :summary, summary.serialize(summary)
-
-    warn [list, user]
-    warn errors.full_messages
   end
 end
