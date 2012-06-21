@@ -179,6 +179,8 @@
       var article = $(this) //.parents('article');
       if (wasRemoval) article.find('h1.number').text(i);
 
+      //if (article.attr('data-pending')) return;
+
       if (parseInt(article.attr('data-parts-amount'))) return;
 
       if (article.find('div.recipients > input:not([placeholder])').length) return;
@@ -428,6 +430,14 @@
     var div = $(this);
     div.find('input.new').focus();
   })
+
+  $('article.message > div.recipients:not(.readonly) > span.new > input[type="file"]').live('click', function(event)
+  {
+    var input = $(this);
+    
+    var article = input.parent('article');
+    atricle.trigger('pending')
+  });
 
   $('article.message > div.recipients:not(.readonly) > input').live('keydown keyup input propertychange', function(event)
   {
