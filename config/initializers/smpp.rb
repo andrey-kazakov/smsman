@@ -1,15 +1,3 @@
-# DIRTY HACK to avoid encodig exception
-class Smpp::Pdu::Base
-  def initialize(command_id, command_status, seq, body='')    
-    length = 16 + body.length
-    @command_id = command_id
-    @command_status = command_status
-    @body = body
-    @sequence_number = seq
-    @data = fixed_int(length) + fixed_int(command_id) + fixed_int(command_status) + fixed_int(seq) + body.force_encoding("ascii-8bit") # <- it's here
-  end      
-end
-
 Smpp::Base.logger = Rails.logger
 
 class SmsGateway
@@ -76,8 +64,7 @@ class SmsGateway
 
   def unbound(transceiver)  
     logger.info "Delegate: transceiver unbound"
-    #EventMachine.stop_event_loop
-    EventMachine.next_tick{ SmsGateway.new.start }
+    EventMachine.add_timer(1){ SmsGateway.new.start }
   end
   
 end
