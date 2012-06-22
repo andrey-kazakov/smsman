@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'eventmachine', '1.0.0.beta.4'
 gem 'rails', '3.2.3'
 
-gem 'thin'
+#gem 'thin'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
