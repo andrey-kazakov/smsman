@@ -1545,7 +1545,7 @@ article {
     
     .bubble, input[type=text],
     input[type=text].new  + span.new,
-    span.list {
+    div.file {
       padding: 0 0.8em;
       display: block;
       float: left;
@@ -1559,7 +1559,7 @@ article {
 
     input[type=text].new,
     input[type=text].new,
-    span.list {
+    div.file {
       border: 0;
       padding: 0.1em 0;
       background: transparent;
@@ -1572,7 +1572,8 @@ article {
         }
       }
     
-      & + span.new {
+      & + span.new,
+      span.actions {
         .fix-spaces > .child;
         white-space: nowrap;
         position: absolute;
@@ -1591,7 +1592,8 @@ article {
         > input[type=file] {
           visibility: hidden;
           width: 1px;
-          height: 1px
+          height: 1px;
+          position: absolute;
         }
       }
     }
@@ -1603,10 +1605,82 @@ article {
       }
     }
     
-    span.list {
+    div.file {
       .fix-spaces > .child;
       width: 100%;
       line-height: 1.6em;
+      #total;
+      padding: 0.2em;
+      .button > .shadow;
+      margin:  0;
+      left:   -0.2em;
+      background: @color-gray;
+      
+      &.loading {
+        text-align: center;
+        
+        p {
+          .italic;
+          display: block;
+        }
+      }
+      
+      > p, > .pseudolink, span.actions, .inside p span, .inside .load {
+        display: table-cell;
+        position: static;
+      }
+      
+      > .pseudolink,
+        .actions,
+        .load {
+        padding-left:  0.4em;
+        padding-right: 0.4em;
+        .italic;
+        white-space: nowrap;
+        
+        .pseudolink, .load {
+          display: inline;
+        }
+      }
+      
+      .inside {
+        display: none;
+      }
+      
+      &.active {
+        .button > .shadow > .pressed;
+        
+        .inside {
+          display: block;
+          border-top: 1px solid darken(@color-gray, 15%);
+        //padding-top: 0.25em;
+          margin-top:  0.25em;
+          
+          p {
+            margin: 0.25em 0;
+            padding-left: 0.25em;
+            
+            &:first-child {
+              border-top: 1px solid @color-white;
+              margin-top:  0;
+              padding-top: 0.25em;
+            }
+            
+            > span {
+              width: 100%;
+            }
+          }
+        }
+      }
+      
+      > p {
+        padding: 0 0.2em;
+        margin: 0;
+        line-height: 1.8em;
+        width: 100%;
+      }
+      
+      
     }
   }
   
@@ -1927,7 +2001,7 @@ section#users {
       }
     }
     
-    .list, .add {
+    .file, .add {
       padding-top: 2.6em;
     
       span {
@@ -2024,7 +2098,7 @@ footer {
   }
 }
 
-//// Условия
+//// РЈСЃР»РѕРІРёСЏ
 
 // IE8
 
@@ -2049,7 +2123,7 @@ html#ie8 nav#top ul li a.active:hover#buy-more + .dropdown .white
   }
 }
 
-//// Главная
+//// Р“Р»Р°РІРЅР°СЏ
 
 #main {
   @padding: 92px;
@@ -2138,7 +2212,7 @@ html#ie8 nav#top ul li a.active:hover#buy-more + .dropdown .white
   }
 }
 
-// Медиа Кверис
+// РњРµРґРёР° РљРІРµСЂРёСЃ
 
 @media screen and (max-width: 960px) and (min-width: 681px) {
   

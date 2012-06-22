@@ -7,17 +7,46 @@
     <% end %>
     <% if message.draft? %>
       <% unless message.has_recipients? %>
-        <input class="new" type="text" placeholder="Введите получателей или…" />
+        <!-- <input class="new" type="text" placeholder="Введите получателей или…" />
       <% else %>
         <input class="new" type="text" />
       <% end %>
       <span class="new">
         <a href="#" onclick="$(this).next().click(); return false" class="pseudolink"><u>загрузите их файлом</u></a>
         <input type="file" accept="text/plain" name="" id="" />
-      </span>
+      </span> -->
     <% end %>
-    <!-- <span class="list"><a href=""><u>1<span class="thinsp">&nbsp;</span>055<span class="thinsp">&nbsp;</span>541 получателя</u></a>. Из них <a href=""><u>680<span class="thinsp">&nbsp;</span>024 доставлено</u></a>, 365<span class="thinsp">&nbsp;</span>153 отправлется, <a href=""><u>10<span class="thinsp">&nbsp;</span>364 не дошли до адресата</u></a>. -->
-    </span>
+    <div class="loading file">
+      <p>Файл обрабатывается…</p>
+    </div>
+    <div class="loaded file">
+      <p>Итого: по России — 1<span class="thinsp">&nbsp;</span>055<span class="thinsp">&nbsp;</span>541, по Украине — 1<span class="thinsp">&nbsp;</span>055<span class="thinsp">&nbsp;</span>54164</p>
+      <span class="actions">
+        <a href="#" onclick="$(this).next().click(); return false" class="pseudolink"><u>Загрузить ещё файл</u></a>
+        <input type="file" accept="text/plain" name="" id="" />
+        или
+        <a href="" class="clear pseudolink"><u>удалить</u></a>
+      </span>
+    </div>
+    <div class="rendered file active">
+      <p>Итого: по России — 1<span class="thinsp">&nbsp;</span>055<span class="thinsp">&nbsp;</span>541, по Украине — 1<span class="thinsp">&nbsp;</span>055<span class="thinsp">&nbsp;</span>54164</p>
+      <span class="actions">
+        <!-- <a href="" class="info pseudolink"><u>Подробности</u></a>
+        или
+        <a href="" class="load"><u>скачать файл</u></a> -->
+        <a href="" class="info pseudolink"><u>Скрыть</u></a>
+      </span>
+      <div class="inside">
+        <p><span>680 024 доставлено</span><a href="" class="load"><u>Скачать файл</u></a>
+        </p>
+        <p>
+        <span>365 153 отправлется</span><a href="" class="load"><u>Скачать файл</u></a>
+        </p>
+        <p>
+        <span>10 364 не дошли до адресата</span><a href="" class="load"><u>Cкачать файл</u></a>
+        </p>
+      </div>
+    </div>
   </div>
   <h1 class="bold amount"><%= (message.has_recipients? ? message.recipients_list.summary.total : 0).to_s + (message.parts > 1 ? "×#{message.parts}" : '') %></h1>
 </article>
