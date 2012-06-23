@@ -5,10 +5,21 @@
     <% message.has_recipients? &&  message.recipients_list.each do |recipient| %>
       <%= text_field "mailing[messages][#{ message._id }][recipients]", recipient['n'], class: "bubble phone #{recipient['s'].presence}", readonly: !message.draft? %>
     <% end %>
-    <!-- div class="loading file">
+    <% if message.draft? %>
+      <% unless message.has_recipients? %>
+        <!-- <input class="new" type="text" placeholder="Введите получателей или…" />
+      <% else %>
+        <input class="new" type="text" />
+      <% end %>
+      <span class="new">
+        <a href="#" onclick="$(this).next().click(); return false" class="pseudolink"><u>загрузите их файлом</u></a>
+        <input type="file" accept="text/plain" name="" id="" />
+      </span> -->
+    <% end %>
+    <div class="processing file">
       <p>Файл обрабатывается…</p>
     </div>
-    <div class="loaded file">
+    <div class="processed file">
       <p>Итого: по России — 1<span class="thinsp">&nbsp;</span>055<span class="thinsp">&nbsp;</span>541, по Украине — 1<span class="thinsp">&nbsp;</span>055<span class="thinsp">&nbsp;</span>54164</p>
       <span class="actions">
         <a href="#" onclick="$(this).next().click(); return false" class="pseudolink"><u>Загрузить ещё файл</u></a>
@@ -17,7 +28,7 @@
         <a href="" class="clear pseudolink"><u>удалить</u></a>
       </span>
     </div>
-    <div class="rendered file active">
+    <div class="mailed file active">
       <p>Итого: по России — 1<span class="thinsp">&nbsp;</span>055<span class="thinsp">&nbsp;</span>541, по Украине — 1<span class="thinsp">&nbsp;</span>055<span class="thinsp">&nbsp;</span>54164</p>
       <span class="actions">
         <a href="" class="info pseudolink"><u>Подробности</u></a>
@@ -38,7 +49,7 @@
     </div -->
     <% if message.draft? %>
       <% unless message.has_recipients? %>
-        <input class="new" type="text" placeholder="Введите получателей или…" />
+        <input class="new none" type="text" placeholder="Введите получателей или…" />
       <% else %>
         <input class="new" type="text" />
       <% end %>
