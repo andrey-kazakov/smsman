@@ -49,7 +49,7 @@
     </div -->
     <% if message.draft? %>
       <% unless message.has_recipients? %>
-        <input class="new none" type="text" placeholder="Введите получателей или…" />
+        <input class="new" type="text" placeholder="Введите получателей или…" />
       <% else %>
         <input class="new" type="text" />
       <% end %>
