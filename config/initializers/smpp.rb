@@ -9,30 +9,18 @@ class SmsGateway
   end
 
   def start
-    @config = 
-    {
-      :host => '93.188.44.12', # 'smpp.qtelecom.ru',
-      :port => 8056,
-      :system_id => '17896',
-      :password => '67048010',
-      :system_type => '', # default given according to SMPP 3.4 Spec
-      :interface_version => 52,
-      :source_ton  => 0,
-      :source_npi => 1,
-      :destination_ton => 1,
-      :destination_npi => 1,
-      :source_address_range => '',
-      :destination_address_range => '',
-      :enquire_link_delay_secs => 60
-    }
-    EventMachine::run do             
-      @@tx = EventMachine::connect(
-        @config[:host], 
-        @config[:port], 
-        Smpp::Transceiver, 
-        @config,
-        self    # delegate that will receive callbacks on MOs and DRs and other events
-      )     
+    @config = YAML::load(File.open(Rails.root + 'config/smpp.yml')) rescue nil
+
+    if @config
+      EventMachine::run do             
+        @@tx = EventMachine::connect(
+          @config[:host], 
+          @config[:port], 
+          Smpp::Transceiver, 
+          @config,
+          self    # delegate that will receive callbacks on MOs and DRs and other events
+        )     
+      end
     end
   end
   
