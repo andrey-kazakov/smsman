@@ -1638,12 +1638,13 @@ article {
       left:   -0.2em;
       background: @color-gray;
       
-      &.loading {
+      &.processing {
         text-align: center;
         .inset-text(hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30), hsla(hue(@color-white), saturation(@color-white), lightness(@color-white), 0.66));
+        background: url("/assets/processing.gif") 0 0;
+        background-color: darken(@color-gray, 10%);
         -webkit-background-size: 44px 44px;
         -moz-background-size: 36px 36px;
-        background-color: darken(@color-gray, 10%);
         background: -webkit-gradient(linear, 0 0, 44 44,
                         color-stop(0,    rgba(255, 255, 255, 0.17)),
                         color-stop(0.25, rgba(255, 255, 255, 0.17)),
