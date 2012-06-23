@@ -5,28 +5,8 @@
     <% message.has_recipients? &&  message.recipients_list.each do |recipient| %>
       <%= text_field "mailing[messages][#{ message._id }][recipients]", recipient['n'], class: "bubble phone #{recipient['s'].presence}", readonly: !message.draft? %>
     <% end %>
-    <% if message.draft? %>
-      <% unless message.has_recipients? %>
-        <!-- <input class="new" type="text" placeholder="Введите получателей или…" />
-      <% else %>
-        <input class="new" type="text" />
-      <% end %>
-      <span class="new">
-        <a href="#" onclick="$(this).next().click(); return false" class="pseudolink"><u>загрузите их файлом</u></a>
-        <input type="file" accept="text/plain" name="" id="" />
-      </span> -->
-    <% end %>
-    <div class="processing file">
+    <!-- <div class="processing file">
       <p>Файл обрабатывается…</p>
-    </div>
-    <div class="processed file">
-      <p>Итого: по России — 1<span class="thinsp">&nbsp;</span>055<span class="thinsp">&nbsp;</span>541, по Украине — 1<span class="thinsp">&nbsp;</span>055<span class="thinsp">&nbsp;</span>54164</p>
-      <span class="actions">
-        <a href="#" onclick="$(this).next().click(); return false" class="pseudolink"><u>Загрузить ещё файл</u></a>
-        <input type="file" accept="text/plain" name="" id="" />
-        или
-        <a href="" class="clear pseudolink"><u>удалить</u></a>
-      </span>
     </div>
     <div class="mailed file active">
       <p>Итого: по России — 1<span class="thinsp">&nbsp;</span>055<span class="thinsp">&nbsp;</span>541, по Украине — 1<span class="thinsp">&nbsp;</span>055<span class="thinsp">&nbsp;</span>54164</p>
@@ -46,16 +26,16 @@
         <span>10 364 не дошли до адресата</span><a href="" class="load"><u>Cкачать файл</u></a>
         </p>
       </div>
-    </div -->
+    </div> -->
     <% if message.draft? %>
       <% unless message.has_recipients? %>
-        <input class="new none" type="text" placeholder="Введите получателей или…" />
+        <input class="new" type="text" placeholder="Введите получателей или…" />
       <% else %>
         <input class="new" type="text" />
       <% end %>
       <span class="new">
         <a href="#" onclick="$(this).next().click(); return false" class="pseudolink"><u>загрузите их файлом</u></a>
-        <input type="file" accept="text/plain" name="" id="" data-url="<%= recipients_lists_path %>" />
+        <input type="file" accept="text/plain" name="recipients_lists[]" />
       </span>
     <% end %>
   </div>

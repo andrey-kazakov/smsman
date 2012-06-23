@@ -218,11 +218,63 @@
       }
     });
   };
+  var makeUploadable = function(what)
+  {
+    var csrfToken = $('meta[name=csrf-token]:first').attr('content');
+
+    return $(what).each(function()
+    {
+      var th = $(this);
+      var article = th.parents('article');
+
+      var cleanup = function(event)
+      {
+        event.preventDefault();
+
+        article.find('div.recipients > :not(span)').remove();
+        article.find('div.recipients').prepend('<input class="new" type="text" placeholder="Введите получателей или…" />');
+        article.trigger('done');
+      };
+
+      th.fileupload({
+        url: '/recipients_lists',
+        dataType: 'html',
+        dropZone: article,
+        sequentialUploads: true,
+        formData:
+        {
+          authenticity_token: csrfToken
+        },
+        add: function(event, data)
+        {
+          article.trigger('pending');
+
+          article.find('div.recipients > :not(span)').remove();
+
+          article.find('div.recipients').prepend('<div class="processing file"><p>Файл обрабатывается…</p></div>');
+
+          data.submit();
+        },
+        fail: cleanup,
+        success: function(html)
+        {
+          var div = article.find('div.recipients > div.file').empty().removeClass('processing').addClass('processed').html(html);
+          var actions = div.find('.actions');
+
+          actions.find('a:last').bind('click', cleanup);
+          makeUploadable(actions.find('input:file'));
+
+          article.trigger('done');
+        }
+      })
+    }
+    );
+  };
 
   $doc.ready(function()
   {
-    makeDroppable(messagesSelector);
-  });
+    makeUploadable(makeDroppable(messagesSelector).find('div.recipients > span.new > input:file'));
+  }).bind('drop dragover', function(event) { event.preventDefault() });;
 
   $('section.wrapper > article.message.new > textarea').live('focus', function(event)
   {
@@ -249,7 +301,7 @@
 
     $('<h1 class="bold number"></h1>').text(countMessages()).insertBefore(area);
 
-    makeDroppable(article);
+    makeUploadable(makeDroppable(article).find('div.recipients > span.new > input:file'));
 
     updateTopNavigation();
   })
@@ -418,7 +470,7 @@
     }
   };
 
-  $('article.message > div.recipients:not(.readonly)').live('click', function(event)
+  $(messagesSelector).find('div.recipients:not(.readonly)').live('click', function(event)
   {
     if (!event.target) return;
 
@@ -429,9 +481,7 @@
 
     var div = $(this);
     div.find('input.new').focus();
-  })
-
-  $('article.message > div.recipients:not(.readonly) > span.new > input[type="file"]').live('click', function(event)
+  }).find('span.new > input[type="file"]').live('click', function(event)
   {
     var input = $(this);
     
@@ -439,7 +489,7 @@
     article.trigger('pending')
   });
 
-  $('article.message > div.recipients:not(.readonly) > input').live('keydown keyup input propertychange', function(event)
+  $(messagesSelector).find('div.recipients:not(.readonly) > input').live('keydown keyup input propertychange', function(event)
   {
     var input = $(this);
     var value = input.val();
