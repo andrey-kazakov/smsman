@@ -436,7 +436,7 @@
     var input = $(this);
     
     var article = input.parent('article');
-    atricle.trigger('pending')
+    article.trigger('pending')
   });
 
   $('article.message > div.recipients:not(.readonly) > input').live('keydown keyup input propertychange', function(event)
