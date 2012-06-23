@@ -2,36 +2,44 @@
   <h1 class="bold number"><%= message_counter.next %></h1>
   <%= text_area "mailing[messages][#{ message._id }]", 'text', placeholder: 'Текст сообщения…', value: message.text, readonly: !message.draft? %>
   <div class="recipients<%= message.draft? ? '' : ' readonly' %>">
-    <% message.has_recipients? &&  message.recipients_list.each do |recipient| %>
-      <%= text_field "mailing[messages][#{ message._id }][recipients]", recipient['n'], class: "bubble phone #{recipient['s'].presence}", readonly: !message.draft? %>
-    <% end %>
-    <!-- <div class="processing file">
-      <p>Файл обрабатывается…</p>
-    </div>
-    <div class="mailed file active">
-      <p>Итого: по России — 1<span class="thinsp">&nbsp;</span>055<span class="thinsp">&nbsp;</span>541, по Украине — 1<span class="thinsp">&nbsp;</span>055<span class="thinsp">&nbsp;</span>54164</p>
-      <span class="actions">
-        <a href="" class="info pseudolink"><u>Подробности</u></a>
-        или
-        <a href="" class="load"><u>скачать файл</u></a> 
-        <a href="" class="info pseudolink"><u>Скрыть</u></a>
-      </span>
-      <div class="inside">
-        <p><span>680 024 доставлено</span><a href="" class="load"><u>Скачать файл</u></a>
-        </p>
-        <p>
-        <span>365 153 отправлется</span><a href="" class="load"><u>Скачать файл</u></a>
-        </p>
-        <p>
-        <span>10 364 не дошли до адресата</span><a href="" class="load"><u>Cкачать файл</u></a>
-        </p>
-      </div>
-    </div> -->
-    <% if message.draft? %>
-      <% unless message.has_recipients? %>
-        <input class="new" type="text" placeholder="Введите получателей или…" />
+    <% if message.has_recipients? %>
+      <% unless message.need_recipients_file? %>
+        <% message.recipients_list.each do |recipient| %>
+          <%= text_field "mailing[messages][#{ message._id }][recipients]", recipient['n'], class: "bubble phone #{recipient['s'].presence}", readonly: !message.draft? %>
+        <% end %>
       <% else %>
-        <input class="new" type="text" />
+        <% if message.draft? %>
+          <div class="processed file"><%= render :partial => 'recipients_lists/processed', object: message.recipients_list %></div>
+        <% else %>
+          <div class="mailed file active">
+            <p><%= total_by_prefixes(message.recipients_list) %></p>
+            <span class="actions">
+              <a href="" class="info pseudolink"><u>Подробности</u></a>
+              или
+              <a href="" class="load"><u>скачать файл</u></a> 
+              <a href="" class="info pseudolink"><u>Скрыть</u></a>
+            </span>
+            <div class="inside">
+              <p><span>680 024 доставлено</span><a href="" class="load"><u>Скачать файл</u></a>
+              </p>
+              <p>
+              <span>365 153 отправлется</span><a href="" class="load"><u>Скачать файл</u></a>
+              </p>
+              <p>
+              <span>10 364 не дошли до адресата</span><a href="" class="load"><u>Cкачать файл</u></a>
+              </p>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    <% end %>
+    <% if message.draft? %>
+      <% unless message.need_recipients_file? %>
+        <% unless message.has_recipients? %>
+          <input class="new" type="text" placeholder="Введите получателей или…" />
+        <% else %>
+          <input class="new" type="text" />
+        <% end %>
       <% end %>
       <span class="new">
         <a href="#" onclick="$(this).next().click(); return false" class="pseudolink"><u>загрузите их файлом</u></a>

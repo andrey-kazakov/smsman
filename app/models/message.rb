@@ -17,6 +17,10 @@ class Message
     recipients_list.present? and !recipients_list.list.empty?
   end
 
+  def need_recipients_file?
+    has_recipients? and recipients_list.list.count > 30
+  end
+
   def draft?
     mailing.present? ? mailing.draft? : true
   end

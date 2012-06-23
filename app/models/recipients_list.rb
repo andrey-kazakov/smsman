@@ -22,6 +22,10 @@ class RecipientsList
     list.send meth, *args, &blk
   end
 
+  def need_file?
+    list.count > 30
+  end
+
   def parse message, user, recipients
     self.class.parse message, user, recipients, self
   end
