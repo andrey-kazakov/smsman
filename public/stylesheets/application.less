@@ -1577,6 +1577,10 @@ article {
       max-width: 100%;
       width: 0;
       .fix-spaces > .child;
+      
+      ~ span.new {
+        display: none;
+      }
     }
 
     input[type=text].new,
@@ -1588,13 +1592,10 @@ article {
       
       &[placeholder] {
         width: 100%;
-        
-        & + span.new {
-          display: block;
-        }
       }
     
-      & + span.new,
+      & ~ span.new,
+      & ~ .new,
       span.actions {
         .fix-spaces > .child;
         white-space: nowrap;
@@ -1615,7 +1616,16 @@ article {
           visibility: hidden;
           width: 1px;
           height: 1px;
-          position: absolute;
+        //position: absolute;
+        //Опера ебаное говно
+          border: 0px solid transparent;
+          margin: 0;
+          padding: 0;
+          font-size: 0;
+          
+          ~ a {
+            margin-left: 0.345em;
+          }
         }
       }
     }
@@ -1779,6 +1789,13 @@ article {
     }
   }
 }
+
+@media not all and (-webkit-min-device-pixel-ratio:0) {  
+  
+  input[type=file] {  
+    position: static !important; 
+  }  
+}  
 
 section#mailings,
 section#users {
@@ -2056,7 +2073,7 @@ section#users {
       }
     }
     
-    .file, .add {
+    .list, .add {
       padding-top: 2.6em;
     
       span {
