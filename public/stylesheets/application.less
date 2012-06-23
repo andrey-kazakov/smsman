@@ -1489,6 +1489,28 @@ nav#top {
   }
 }
 
+@-webkit-keyframes animate-stripes {
+  
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: 44px 0;
+  }
+}
+
+@-moz-keyframes animate-stripes {
+  
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: 36px 0;
+  }
+}
+
 article {
   @new-color: @color-gray-light;
   margin-bottom: 1em;
@@ -1618,6 +1640,38 @@ article {
       
       &.loading {
         text-align: center;
+        .inset-text(hsla(hue(@color-black), saturation(@color-black), lightness(@color-black), 0.30), hsla(hue(@color-white), saturation(@color-white), lightness(@color-white), 0.66));
+        -webkit-background-size: 44px 44px;
+        -moz-background-size: 36px 36px;
+        background-color: darken(@color-gray, 10%);
+        background: -webkit-gradient(linear, 0 0, 44 44,
+                        color-stop(0,    rgba(255, 255, 255, 0.17)),
+                        color-stop(0.25, rgba(255, 255, 255, 0.17)),
+                        color-stop(0.26, rgba(255, 255, 255, 0)),
+                        color-stop(0.5,  rgba(255, 255, 255, 0)),
+                        color-stop(0.51, rgba(255, 255, 255, 0.17)),
+                        color-stop(0.75, rgba(255, 255, 255, 0.17)),
+                        color-stop(0.76, rgba(255, 255, 255, 0)),
+                        color-stop(1, rgba(255, 255, 255, 0))),
+                     -webkit-gradient(linear, left bottom, left top,
+                        color-stop(0, rgba(255, 255, 255, 0)),
+                        color-stop(1, rgba(255, 255, 255, 0.35))),
+                        darken(@color-gray, 10%);
+        background: -moz-repeating-linear-gradient(
+                     top left -34.3deg, rgba(255, 255, 255, 0.17),
+                                      rgba(255, 255, 255, 0.17) 15px,
+                                      rgba(255, 255, 255, 0) 15px,
+                                      rgba(255, 255, 255, 0) 30px),
+                    -moz-linear-gradient(
+                                      rgba(255, 255, 255, 0.25) 0%,
+                                      rgba(255, 255, 255, 0) 100%),
+                                      darken(@color-gray, 10%);
+        -webkit-animation: animate-stripes 2s linear infinite;
+         -khtml-animation: animate-stripes 2s linear infinite;
+           -moz-animation: animate-stripes 2s linear infinite;
+            -ms-animation: animate-stripes 2s linear infinite;
+             -o-animation: animate-stripes 2s linear infinite;
+                animation: animate-stripes 2s linear infinite;
         
         p {
           .italic;
