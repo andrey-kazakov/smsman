@@ -9,8 +9,7 @@ class MailingsController < ApplicationController
   end
 
   def drafts
-    @mailings = current_user.mailings.drafts.order(_id: :desc).all
-
+    @mailings = current_user.mailings.drafts.order(_id: :desc).all 
     index
   end
 

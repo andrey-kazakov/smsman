@@ -50,6 +50,8 @@ SmsManager::Application.routes.draw do
 
   resources :contacts, :only => [:index, :create, :destroy]
 
+  resources :recipients_lists, :only => [:create, :update, :destroy]
+
   resources :mailings, :except => [:index] do
     collection do
       get 'sent'
