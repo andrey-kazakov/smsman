@@ -6,12 +6,12 @@ module ApplicationHelper
     unless attributes.empty?
       ret << ' '
 
-      ret << attributes.map{ |attribute, value| h(attribute) + '=' + h(value) }.join(' ')
+      ret << raw(attributes.map{ |attribute, value| raw(attribute.to_s + '="' + raw(h(value)) + '"') }.join(' '))
     end
 
     ret << '>'
 
-    ret << content
+    ret << raw(content)
 
     ret << '</span>'
 
@@ -48,7 +48,7 @@ module ApplicationHelper
 
     countries = ""
     total_by_prefixes.keys.each_with_index do |prefix, index|
-      countries << span(t('messages.prefixes')[prefix] + "\u00a0— " + span(typo_number(total_by_prefixes[prefix])) + (index < (total_by_prefixes.size - 1) ? ",\u00a0" : ''))
+      countries << span(t('messages.prefixes')[prefix] + "\u00a0— " + span(typo_number(total_by_prefixes[prefix]), 'data-prefix' => prefix) + (index < (total_by_prefixes.size - 1) ? ",\u00a0" : ''))
     end
 
     raw(span(t('messages.total') + ":\u00a0") + span(countries, class: 'countries'))

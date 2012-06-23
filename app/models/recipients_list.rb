@@ -4,7 +4,7 @@ class RecipientsList
   belongs_to :message
 
   belongs_to :user
-  #validates_presence_of :user # to allow recipients upload into new mailing
+  validates_presence_of :user # to allow recipients upload into new mailing
 
   # [ { 'n' => number, 's' => state, 'i' => api_id } ]
   field :list, type: Array, default: []
@@ -15,26 +15,40 @@ class RecipientsList
 
   field :summary, type: Summary
   attr_protected :summary
-  after_initialize :calc_summary
+  #after_initialize :calc_summary
   after_validation :calc_summary
 
   def method_missing meth, *args, &blk
     list.send meth, *args, &blk
   end
 
-  def self.parse message, user, recipients
+  def parse message, user, recipients
+    self.class.parse message, user, recipients, self
+  end
+
+  def self.parse message, user, recipients, to = nil, fake_message_id = nil
+    to ||= new
+    to.message = message
+    to.user = user
+
     if recipients.kind_of? Array
-      list = recipients.map{ |n| { 'n' => n.to_i, 's' => nil, 'i' => nil } }
+      recipients.each{ |n| to.list << { 'n' => n.to_i, 's' => nil, 'i' => nil } }
+    else
+      recipients = recipients.respond_to?(:read) ? recipients.read(nil) : recipients
 
-      recipients_list = new
-      recipients_list.message = message
-      recipients_list.list = list
-      recipients_list.user = user
+      regex = /(?:tel:)?\+?(#{Summary::PREFIXES.join('|')})\s*[\(\)]?\d{3}[\)\(]?\s*\d{3}[-\s]*\d{2}[-\s]*\d{2}/
 
-      recipients_list.save
-
-      recipients_list
+      recipients.scan regex do
+        phone = $&.gsub(/^\d/, '')
+        to.list << { 'n' => phone.to_i, 's' => nil, 'i' => nil }
+      end
     end
+
+    to.save
+
+    to.message_id ||= fake_message_id
+
+    to
   end
 
   # { :recipients_list_id => recipients_list._id, :recipient_index => index }

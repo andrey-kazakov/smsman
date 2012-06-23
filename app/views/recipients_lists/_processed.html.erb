@@ -1,7 +1,8 @@
 <p><%= total_by_prefixes(processed) %></p>
 <span class="actions">
   <a href="#" onclick="$(this).next().click(); return false" class="pseudolink"><u>Загрузить ещё файл</u></a>
-  <input type="file" accept="text/plain" name="" id="" />
+  <input type="hidden" name="mailing[messages][<%= processed.message_id.to_s %>][recipients_list_id]" value="<%= processed._id.to_s %>" />
+  <input type="file" accept="text/plain" name="recipients_lists[<%= processed._id.to_s %>]" />
   или
-  <a href="" class="clear pseudolink"><u>удалить</u></a>
+  <a href="<%= recipients_list_path(processed) %>" data-remote="true" data-method="delete" class="clear pseudolink"><u>удалить</u></a>
 </span>

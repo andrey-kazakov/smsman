@@ -165,7 +165,34 @@
     article.find('h1.amount').text(text);
 
     setMailingSummary();
+  }).live('pending', function(event)
+  {
+    $(this).attr('data-pending', true)
+  }).live('done', function(event)
+  {
+    var article = $(this);
+
+    article.attr('data-recipients-amount', 0);
+    each(billingPrefixes, function(i, prefix) { article.attr('data-recipients-amount-' + prefix, 0) });
+
+    article.find('div.recipients div.file span.countries span[data-prefix]').each(function()
+    {
+      var span = $(this);
+
+      var prefix = span.attr('data-prefix');
+      var count = parseInt(span.text());
+
+      article.attr('data-recipients-amount-' + prefix, count);
+      article.attr('data-recipients-amount', parseInt(article.attr('data-recipients-amount')) + count);
+    });
+
+    article.removeAttr('data-pending').trigger('amountchange');
   });
+
+  var lookupMessageId = function(el)
+  {
+    return $(el).parents('article.message').attr('id').replace(/^message_/, '')
+  }
 
   $doc.bind('change click', function(event)
   {
@@ -179,11 +206,11 @@
       var article = $(this) //.parents('article');
       if (wasRemoval) article.find('h1.number').text(i);
 
-      //if (article.attr('data-pending')) return;
+      if (article.attr('data-pending')) return;
 
       if (parseInt(article.attr('data-parts-amount'))) return;
 
-      if (article.find('div.recipients > input:not([placeholder])').length) return;
+      if (parseInt(article.attr('data-recipients-amount'))) return;
 
       if (article.find(':focus').length) return;
 
@@ -232,7 +259,12 @@
         event.preventDefault();
 
         article.find('div.recipients > :not(span)').remove();
-        article.find('div.recipients').prepend('<input class="new" type="text" placeholder="Введите получателей или…" />');
+
+        var recipients = article.find('div.recipients');
+
+        recipients.find('span.new > input:file').fileupload('enable');
+        recipients.prepend('<input class="new" type="text" placeholder="Введите получателей или…" />');
+
         article.trigger('done');
       };
 
@@ -243,7 +275,8 @@
         sequentialUploads: true,
         formData:
         {
-          authenticity_token: csrfToken
+          authenticity_token: csrfToken,
+          fake_message_id: lookupMessageId(th),
         },
         add: function(event, data)
         {
@@ -251,7 +284,10 @@
 
           article.find('div.recipients > :not(span)').remove();
 
-          article.find('div.recipients').prepend('<div class="processing file"><p>Файл обрабатывается…</p></div>');
+          var recipients = article.find('div.recipients');
+
+          recipients.find('span.new > input:file').fileupload('disable');
+          recipients.prepend('<div class="processing file"><p>Файл обрабатывается…</p></div>');
 
           data.submit();
         },
@@ -296,7 +332,7 @@
 
     area.attr('placeholder', 'Текст сообщения…').attr('name', 'mailing[messages][' + message_id + '][text]');
 
-    $('<div class="recipients"><input class="new" type="text" placeholder="Введите получателей или…" /><span class="new"><a href="#" onclick="$(this).next().click(); return false" class="pseudolink"><u>загрузите их файлом</u></a><input type="file" accept="text/plain" name="" id="" /></span></div>').appendTo(article);
+    $('<div class="recipients"><input class="new" type="text" placeholder="Введите получателей или…" /><span class="new"><a href="#" onclick="$(this).next().click(); return false" class="pseudolink"><u>загрузите их файлом</u></a><input type="file" accept="text/plain" name="recipients_lists[]" /></span></div>').appendTo(article);
     $('<h1 class="bold amount">0</h1>').appendTo(article);
 
     $('<h1 class="bold number"></h1>').text(countMessages()).insertBefore(area);
@@ -369,11 +405,6 @@
     })
 
     article.attr('data-recipients-amount', amount).trigger('amountchange');
-  }
-
-  var lookupMessageId = function(el)
-  {
-    return $(el).parents('article.message').attr('id').replace(/^message_/, '')
   }
 
   var createInput = function(number, where)

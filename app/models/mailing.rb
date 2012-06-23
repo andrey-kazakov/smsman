@@ -8,7 +8,7 @@ class Mailing
 
   field :summary, type: Summary
   attr_protected :summary
-  after_initialize :calc_summary
+  #after_initialize :calc_summary
   after_validation :calc_summary
 
   has_many :messages, autosave: true
