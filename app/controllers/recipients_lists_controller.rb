@@ -20,4 +20,9 @@ class RecipientsListsController < ApplicationController
     list.destroy
     render :json => true
   end
+
+  def show
+    response['Content-Type'] = 'text/plain'
+    render :text => RecipientsList.find(params[:id]).list.reject{ |r| params[:filter].present? and (r['s'].to_s != params[:filter]) }.map{ |r| "+#{r['n']}" }.join("\n")
+  end
 end

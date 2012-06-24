@@ -11,25 +11,7 @@
         <% if message.draft? %>
           <div class="processed file"><%= render :partial => 'recipients_lists/processed', object: message.recipients_list %></div>
         <% else %>
-          <div class="mailed file active">
-            <p><%= total_by_prefixes(message.recipients_list) %></p>
-            <span class="actions">
-              <a href="" class="info pseudolink"><u>Подробности</u></a>
-              или
-              <a href="" class="load"><u>скачать файл</u></a> 
-              <a href="" class="info pseudolink"><u>Скрыть</u></a>
-            </span>
-            <div class="inside">
-              <p><span>680 024 доставлено</span><a href="" class="load"><u>Скачать файл</u></a>
-              </p>
-              <p>
-              <span>365 153 отправлется</span><a href="" class="load"><u>Скачать файл</u></a>
-              </p>
-              <p>
-              <span>10 364 не дошли до адресата</span><a href="" class="load"><u>Cкачать файл</u></a>
-              </p>
-            </div>
-          </div>
+          <div class="mailed file active"><%= render :partial => 'recipients_lists/mailed', object: message.recipients_list %></div>
         <% end %>
       <% end %>
     <% end %>

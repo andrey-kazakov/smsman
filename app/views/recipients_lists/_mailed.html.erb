@@ -1,0 +1,12 @@
+<p><%= total_by_prefixes(mailed) %></p>
+<span class="actions">
+  <span>
+    <a href="#" class="info pseudolink" onclick="$(this).parent().addClass('none').next().removeClass('none').parent().next().removeClass('none'); return false"><u>Подробности</u></a>
+    или
+    <a href="<%= recipients_list_path(mailed) %>" class="load"><u>скачать файл</u></a> 
+  </span>
+  <span class="none">
+    <a href="#" class="info pseudolink" onclick="$(this).parent().addClass('none').prev().removeClass('none').parent().next().addClass('none'); return false"><u>Скрыть</u></a>
+  </span>
+</span>
+<div class="inside none"><%= recipients_list_states_summary(mailed) %></div>
