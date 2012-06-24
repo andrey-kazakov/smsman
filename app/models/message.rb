@@ -22,7 +22,7 @@ class Message
   end
 
   def draft?
-    mailing.present? ? mailing.draft? : true
+    mailing.draft? rescue true
   end
 
   def unicode?

@@ -12,10 +12,10 @@ class RecipientsListsController < ApplicationController
 
   def destroy
     list = current_user.recipients_lists.where(_id: params[:id]).first
-    return render :head => :not_found unless list
+    return render :json => 404 unless list
 
-    forbid = list.message and !list.message.draft?
-    return render :head => :forbidden if forbid
+    forbid = !list.message.draft? rescue false
+    return render :json => 403 if forbid
 
     list.destroy
     render :json => true
