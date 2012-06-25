@@ -71,7 +71,7 @@ class Summary
   end
 
   def == obj
-    obj.total == total && self.class::STATES.map{ |s| self[s] == obj[s]  }.inject(:&)
+    (obj && obj.total) == total && self.class::STATES.map{ |s| self[s] == obj[s]  }.inject(:&)
   end
 
   def add obj, state = nil

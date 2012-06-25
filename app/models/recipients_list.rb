@@ -7,16 +7,16 @@ class RecipientsList
   validates_presence_of :user # to allow recipients upload into new mailing
 
   # [ { 'n' => number, 's' => state, 'i' => api_id } ]
-  field :list, type: Array, default: []
-  validates_presence_of :list
-
-  index 'list.n'
-  index 'list.i'
+  has_many :recipients, dependent: :delete, autosave: true
 
   field :summary, type: Summary
   attr_protected :summary
   after_initialize :calc_summary
-  after_validation :calc_summary
+  after_save :calc_summary
+
+  def list
+    recipients
+  end
 
   def method_missing meth, *args, &blk
     list.send meth, *args, &blk
@@ -36,7 +36,7 @@ class RecipientsList
     to.user = user
 
     if recipients.kind_of? Array
-      recipients.each{ |n| to.list << { 'n' => n.to_i, 's' => nil, 'i' => nil } }
+      recipients.each{ |n| to.list.new 'n' => n.to_i, 's' => nil, 'i' => nil }
     else
       recipients = recipients.respond_to?(:read) ? recipients.read(nil) : recipients
 
@@ -44,7 +44,7 @@ class RecipientsList
 
       recipients.scan regex do
         phone = $&.gsub(/^\d/, '')
-        to.list << { 'n' => phone.to_i, 's' => nil, 'i' => nil }
+        to.list.new 'n' => phone.to_i, 's' => nil, 'i' => nil
       end
     end
 
@@ -55,45 +55,27 @@ class RecipientsList
     to
   end
 
-  # { :recipients_list_id => recipients_list._id, :recipient_index => index }
-  def self.state_callback message_id, state, reference = nil
-    object = if message_id
-               find(message_id[:recipients_list_id])
-             else
-               # find message by reference
-               object = where('list.i' => reference.to_i).first
-               return unless object # handle just one of messages if it`s multipart one
+  def self.state_callback recipient_id, state, reference = nil
+    recipient = recipient_id.present? ? Recipient.find(recipient_id) : Recipient.where(i: reference.to_i).first
 
-               recipient_index = -1
-               object.list.each_with_index do |recipient, index|
-                 if recipient['i'] == reference.to_i
-                   recipient_index = index
-                   break
-                 end
-               end
+    recipient.set :s, state
+    recipient.set :i, reference.to_i
 
-               message_id = {
-                 recipients_list_id: object._id,
-                 recipient_index: recipient_index
-               }
-
-               object
-             end
-
-    list = object.list
-
-    list[message_id[:recipient_index]]['s'] = state
-    list[message_id[:recipient_index]]['i'] = reference.to_i
-
-    object.save
+    recipient.recipients_list.save
   end
 
 protected
   def calc_summary
     summary = Summary.new
 
-    list.each do |recipient|
-      summary.add(recipient['n'], recipient['s'])
+    Summary::STATES.each do |state|
+      summary[state] = list.where(s: state).count
+    end
+
+    Summary::PREFIXES.each do |prefix|
+      prefix_int = prefix.to_s.to_i
+
+      summary.total_by_prefixes[prefix] = list.all_of(:n.gte => prefix_int * (10 ** 10), :n.lt => prefix_int.next * (10 ** 10)).count
     end
 
     write_attribute :summary, summary.serialize(summary)

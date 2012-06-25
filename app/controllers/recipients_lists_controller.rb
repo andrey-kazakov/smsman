@@ -23,6 +23,10 @@ class RecipientsListsController < ApplicationController
 
   def show
     response['Content-Type'] = 'text/plain'
-    render :text => RecipientsList.find(params[:id]).list.reject{ |r| params[:filter].present? and (r['s'].to_s != params[:filter]) }.map{ |r| "+#{r['n']}" }.join("\n")
+    list = RecipientsList.find(params[:id]).list
+    if params[:filter].present?
+      list = list.where(s: params[:filter])
+    end
+    render :text => list.map{ |r| "+#{r['n']}" }.join("\n")
   end
 end
