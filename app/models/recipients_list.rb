@@ -12,7 +12,7 @@ class RecipientsList
   field :summary, type: Summary
   attr_protected :summary
   after_initialize :calc_summary
-  after_save :calc_summary
+  before_save :calc_summary
 
   def list
     recipients
@@ -71,14 +71,18 @@ protected
     summary = Summary.new
 
     Summary::STATES.each do |state|
-      summary[state] = list.where(s: state).count
+      summary[state] = Recipient.where(recipients_list_id: _id, s: state).count
+      warn [state, summary[state]]
     end
 
     Summary::PREFIXES.each do |prefix|
       prefix_int = prefix.to_s.to_i
 
-      summary.total_by_prefixes[prefix] = list.all_of(:n.gte => prefix_int * (10 ** 10), :n.lt => prefix_int.next * (10 ** 10)).count
+      summary.total_by_prefixes[prefix] = Recipient.all_of(:recipients_list_id => _id, :n.gte => prefix_int * (10 ** 10), :n.lt => prefix_int.next * (10 ** 10)).count
+      warn [prefix, summary.total_by_prefixes[prefix]]
     end
+
+    warn summary
 
     write_attribute :summary, summary.serialize(summary)
   end
