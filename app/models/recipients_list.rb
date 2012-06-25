@@ -48,7 +48,7 @@ class RecipientsList
       end
     end)
 
-    to.save # to update summary
+    to.save
 
     to.message_id ||= fake_message_id
 
@@ -66,23 +66,19 @@ class RecipientsList
     # don't need to update summary
   end
 
-protected
+#protected
   def calc_summary
     summary = Summary.new
 
     Summary::STATES.each do |state|
       summary[state] = Recipient.where(recipients_list_id: _id, s: state).count
-      warn [state, summary[state]]
     end
 
     Summary::PREFIXES.each do |prefix|
       prefix_int = prefix.to_s.to_i
 
       summary.total_by_prefixes[prefix] = Recipient.all_of(:recipients_list_id => _id, :n.gte => prefix_int * (10 ** 10), :n.lt => prefix_int.next * (10 ** 10)).count
-      warn [prefix, summary.total_by_prefixes[prefix]]
     end
-
-    warn summary
 
     write_attribute :summary, summary.serialize(summary)
   end
