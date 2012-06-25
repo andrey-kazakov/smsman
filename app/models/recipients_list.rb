@@ -7,7 +7,7 @@ class RecipientsList
   validates_presence_of :user # to allow recipients upload into new mailing
 
   # [ { 'n' => number, 's' => state, 'i' => api_id } ]
-  has_many :recipients, dependent: :delete, autosave: true
+  has_many :recipients, dependent: :delete #, autosave: true
 
   field :summary, type: Summary
   attr_protected :summary
@@ -35,20 +35,20 @@ class RecipientsList
     to.message = message
     to.user = user
 
-    if recipients.kind_of? Array
-      recipients.each{ |n| to.list.new 'n' => n.to_i, 's' => nil, 'i' => nil }
+    Recipient.collection.insert(if recipients.kind_of? Array
+      recipients.map{ |n| { 'n' => n.to_i, 's' => nil, 'i' => nil, 'recipients_list_id' => to._id } }
     else
       recipients = recipients.respond_to?(:read) ? recipients.read(nil) : recipients
 
-      regex = /(?:tel:)?\+?(#{Summary::PREFIXES.join('|')})\s*[\(\)]?\d{3}[\)\(]?\s*\d{3}[-\s]*\d{2}[-\s]*\d{2}/
+      regex = /(?:tel:)?\+?(?:#{Summary::PREFIXES.join('|')})\s*[\(\)]?\d{3}[\)\(]?\s*\d{3}[-\s]*\d{2}[-\s]*\d{2}/
 
-      recipients.scan regex do
-        phone = $&.gsub(/^\d/, '')
-        to.list.new 'n' => phone.to_i, 's' => nil, 'i' => nil
+      recipients.scan(regex).map do |m|
+        phone = m.gsub(/^\d/, '')
+        { 'n' => phone.to_i, 's' => nil, 'i' => nil, 'recipients_list_id' => to._id }
       end
-    end
+    end)
 
-    to.save
+    to.save # to update summary
 
     to.message_id ||= fake_message_id
 
@@ -58,10 +58,12 @@ class RecipientsList
   def self.state_callback recipient_id, state, reference = nil
     recipient = recipient_id.present? ? Recipient.find(recipient_id) : Recipient.where(i: reference.to_i).first
 
+    return unless recipient
+
     recipient.set :s, state
     recipient.set :i, reference.to_i
 
-    recipient.recipients_list.save
+    # don't need to update summary
   end
 
 protected

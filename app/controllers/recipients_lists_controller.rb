@@ -23,10 +23,18 @@ class RecipientsListsController < ApplicationController
 
   def show
     response['Content-Type'] = 'text/plain'
-    list = RecipientsList.find(params[:id]).list
+    response['Content-Disposition'] = 'inline; filename="recipients_list.txt"'
+    list = Recipient.where(recipients_list_id: params[:id])
     if params[:filter].present?
       list = list.where(s: params[:filter])
     end
-    render :text => list.map{ |r| "+#{r['n']}" }.join("\n")
+
+    lim = 10000
+
+    self.response_body = Enumerator.new do |y|
+      (list.count / lim.to_f).ceil.times do |i|
+        y << (list.skip(i * lim).limit(lim).map{ |r| "+#{r['n']}" }.join("\n") + "\n")
+      end
+    end
   end
 end
