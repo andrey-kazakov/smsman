@@ -10,6 +10,10 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
+//= require less-1.3.0.min
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui-1.8.21.custom.min
+//= require jquery.caret.1.02.min
+//= require jquery.fileupload.min
 //= require_tree .
