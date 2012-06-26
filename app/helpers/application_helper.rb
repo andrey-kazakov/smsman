@@ -38,9 +38,13 @@ module ApplicationHelper
 
     ret << %<href="#{h(page)}">
 
-    ret << "><u>#{h(text)}</u></a>"
+    ret << "><u>#{h(text)}</u></a></li>"
 
     raw ret
+  end
+
+  def nav_links hash
+    raw hash.map{ |t,p| nav_link(t,p) }.join
   end
 
   def total_by_prefixes of

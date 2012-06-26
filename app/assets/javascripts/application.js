@@ -16,4 +16,5 @@
 //= require jquery-ui-1.8.21.custom.min
 //= require jquery.caret.1.02.min
 //= require jquery.fileupload.min
-//= require_tree .
+//= require tools
+//= require scroll

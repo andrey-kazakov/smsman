@@ -12,12 +12,7 @@
   <div class="wrapper clearfix">
     <% if user_signed_in? %>
       <div class="topline clearfix">
-        <ul class="float-left">
-          <%= nav_link 'Новая рассылка', root_path %>
-          <%= nav_link 'Рассылки', sent_mailings_path %>
-          <%= nav_link 'Черновики', drafts_mailings_path %>
-          <li><a id="toggleContacts" class="pseudolink" href="#"><u>Контакты</u></a>
-        </ul>
+        <ul class="float-left"><%= nav_links('Новая рассылка' => root_path, 'Рассылки' => sent_mailings_path, 'Черновики' => drafts_mailings_path) %><li><a id="toggleContacts" class="pseudolink" href="#"><u>Контакты</u></a></li></ul>
         <ul class="float-right">
           <li><%= I18n.t('good')[Time.now.hour / 6] %>
           <li>

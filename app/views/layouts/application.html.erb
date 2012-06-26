@@ -13,6 +13,12 @@
     translitLocale = <%= raw({ 'lower' => Russian::Transliteration::LOWER, 'upper' => Russian::Transliteration::UPPER, 'multi_keys' => Russian::Transliteration::MULTI_KEYS }.to_json) %>;
   </script>
   <%= javascript_include_tag "application" %>
+
+  <% if user_signed_in? %>
+    <%= javascript_include_tag 'contacts' %>
+    <%= javascript_include_tag 'messages' %>
+  <% end %>
+
   <%= csrf_meta_tags %>
   <!--[if lt IE 9]>
   <script>
@@ -31,13 +37,9 @@
   <%= yield %>
   <footer class="wrapper">
     <div>
-      <ul>
-        <li><a href="<%= welcome_pages_path %>"><u>Что это?</u></a></li>
-        <li><a href="<%= welcome_pages_path %>#how_much_is_it"><u>Сколько стоит?</u></a></li>
-        <li><a href="<%= welcome_pages_path %>#is_there_any_questions"><u>Все остальные вопросы</u></a></li>
-      </ul>
+      <ul><%= nav_links('Что это?' => welcome_pages_path + '#what_is_it', 'Сколько это стоит?' => welcome_pages_path + '#how_much_is_it', 'Все остальные вопросы' => welcome_pages_path + '#is_there_any_questions') %></ul>
       <p class="copyright float-right">
-        © 2012-<%= Time.now.year %> <a href="http://myhotspot.ru/"><u>Hot Spot</u></a>
+        © 2011-<%= Time.now.year %> <a href="http://myhotspot.ru/"><u>Hot Spot</u></a>
       </p>
     </div>
   </footer>

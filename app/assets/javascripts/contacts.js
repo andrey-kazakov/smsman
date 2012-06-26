@@ -18,96 +18,9 @@
 
       return cmp(s1.toLowerCase(), s2.toLowerCase());
     }
-  , each = function(array, callback, context)
-    {
-      for (var i = 0; i < array.length; i++)
-      {
-        if (callback.apply(context || array, [i, array[i]]) === false) break;
-      }
+  , each = tools.each, delay = tools.delay; // FIXME
 
-      return i
-    }
-  , delay = function(meth)
-    {
-      var th = this;
-
-      return function()
-      {
-        var args = arguments;
-
-        setTimeout(function()
-        {
-          meth.apply(th, args);
-        }, 1);
-      }
-    };
-
-  tools  =
-  {
-      phoneRegex: /(?:tel:)?\+(7|38)\s*[\(\)]?\d{3}[\)\(]?\s*\d{3}[-\s]*\d{2}[-\s]*\d{2}/g
-    , wannaBeAPhoneRegex: /^\+?(7|38)/
-
-    , ltrim: function(text)
-      {
-        return(text = text.replace(/^\s+/, ''))
-      }
-    , wannaBeAPhone: function(text)
-      {
-        return tools.wannaBeAPhoneRegex.test(text)
-      }
-    , sanitizeNumber: function(text)
-      {
-        return text ? (text.replace(/[^\d]/g, '')) : ''
-      }
-    , decorateNumber: function(number)
-      {
-        var parts = number.match(/^\+?(7|38)(\d{1,3})?(\d{1,3})?(\d{1,2})?(\d{1,2})?$/)
-        if (!parts || !parts[1]) return number;
-
-        var ret = ('+' + parts[1] + ' (');
-
-        if (parts[2]) ret += parts[2];
-        if (parts[2] && parts[2].length == 3) ret += ') ';
-
-        if (parts[3]) ret += parts[3];
-        if (parts[3] && parts[3].length == 3) ret += '-';
-
-        if (parts[4]) ret += parts[4];
-        if (parts[4] && parts[4].length == 2) ret += '-';
-
-        if (parts[5]) ret += parts[5];
-
-        return ret
-      }
-    , decorateValue: function(value)
-      {
-        value = tools.ltrim(value);
-        if (tools.wannaBeAPhone(value))
-          value = tools.decorateNumber(tools.sanitizeNumber(value));
-        return value;
-      }
-    , consumeNumbers: function(value, callback)
-      {
-        var matches = value.match(tools.phoneRegex);
-
-        if (matches)
-        {
-          var lastMatch = matches[matches.length - 1];
-          value = value.substr(value.lastIndexOf(lastMatch) + lastMatch.length);
-
-          each(matches, function(i, match)
-          {
-            callback(tools.sanitizeNumber(matches[i]));
-          });
-        }
-
-        return value
-      }
-    , each: each
-    , delay: delay
-
-  }
-  // FIXME: ябудучитатьдокументациюпреждечемюзатьдефолтныеметоды
+  // FIXME
   tools.phoneRegex.test = function(s) { return !!s.match(this) }
 
   // we must have ready DOM to actually work with contacts
@@ -123,7 +36,7 @@
   {
     // necessary UI locations
 
-    var aside = $('aside#contacts');
+    var aside = $('aside#contacts').draggable();
     var scroll = aside.find('div.scroll');
 
     var searchField = aside.find('input[type="search"]');
@@ -135,15 +48,14 @@
       names: [],
 
       // synchrony stuff
-      // it doesn't fucking synchronize... waaai?!
       mute: false,
       wait: function()
       {
-        while (this.mute);
+        if (this.mute) throw 'async';
       },
       sync: function(callback, args, context)
       {
-        this.wait();
+        try { this.wait(); } catch (e) { delay('sync').apply(this, args) }
         this.mute = true;
 
         try
@@ -216,7 +128,7 @@
       },
       _dragstart: function(event, ui)
       {
-        $(this).find('input:first:not([value=""])').blur(); // UNLIMITED CRUTCH WORKS!!!
+        $(this).find('input:first:not([value=""])').blur(); // FIXME
 
         ui.helper.addClass('dragging');
 
