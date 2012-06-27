@@ -113,3 +113,9 @@ scrollTo = function(el, callback, what)
 
   $(what || 'html,body').animate({ scrollTop: (el.position().top + pinnerHeight - halfHeight) }, 200, callback);
 }
+
+// don't let 2 active dropdowns to appear
+$('a.drop').live('mouseup', function()
+{
+  $('a.drop').not(this).removeClass('active')
+})
