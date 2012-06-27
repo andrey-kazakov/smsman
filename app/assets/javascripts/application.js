@@ -11,11 +11,13 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require less-1.3.0.min
-//= require jquery
+//= require jquery.min
+//= require webshims/minified/extras/modernizr-custom
+//= require webshims/minified/polyfiller
+//= require tools
 //= require jquery_ujs
 //= require jquery-ui-1.8.21.custom.min
 //= require jquery.caret.1.02.min
 //= require jquery.fileupload.min
-//= require tools
 //= require scroll
 //= require flash

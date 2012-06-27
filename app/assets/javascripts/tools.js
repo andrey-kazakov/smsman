@@ -1,3 +1,5 @@
+$.webshims.polyfill('forms forms-ext');
+
 $doc = $(document)
 $win = $(window)
 

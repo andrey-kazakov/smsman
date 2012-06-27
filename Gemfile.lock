@@ -117,6 +117,8 @@ GEM
     tzinfo (0.3.33)
     warden (1.2.1)
       rack (>= 1.0)
+    webshims-rails (0.2)
+      rails (> 3.1.0)
 
 PLATFORMS
   ruby
@@ -134,3 +136,4 @@ DEPENDENCIES
   rails (= 3.2.3)
   ruby-smpp!
   russian
+  webshims-rails

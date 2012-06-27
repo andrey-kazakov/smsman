@@ -4,13 +4,13 @@
       <span><input type="radio" name="prefix" id="buy-more-russia" value="7" checked></input><label for="buy-more-russia"><u>Россия</u></label></span>
       <span><input type="radio" name="prefix" id="buy-more-ukraine" value="38"></input><label for="buy-more-ukraine"><u>Украина</u></label></span>
     </p>
-    <input type="number" name="" id="" placeholder="Количество…" min="30" required />
+    <input type="number" name="count" id="" placeholder="Количество…" min="30" required />
     <p class="text-center">Цена за смс: 0.03 $</p>
     <div class="total">
-      <p class="text-center">Итого: <span class="nobr">1<span class="thinsp">&nbsp;</span>002&nbsp;$</span></p>
+      <p class="text-center">Итого: <span class="nobr"><%= typo_number(1002) %>&nbsp;$</span></p>
       <hr />
       <button>Купить</button>
     </div>
-    <p class="footer text-center small">или <a href=""><u>заключить договор</u></a></p>
+    <p class="footer text-center small">или <a href="http://myhotspot.ru/"><u>заключить договор</u></a></p>
   </div>
 </form>
