@@ -26,7 +26,7 @@
       }
       else
       {
-        var form = $('a#' + kind).nextAll('form:first');
+        var form = $('a.drop#' + kind).addClass('active').nextAll('form:first');
 
         for (var selector in what)
         {
@@ -38,7 +38,7 @@
           {
             var text = what[selector][type];
 
-            append(report, type, text)
+            append(report, type, text);
           }
         }
       }
