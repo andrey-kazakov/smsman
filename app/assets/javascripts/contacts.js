@@ -55,7 +55,7 @@
       },
       sync: function(callback, args, context)
       {
-        try { this.wait(); } catch (e) { delay('sync').apply(this, args) }
+        try { this.wait(); } catch (e) { return delay('sync').apply(this, args) }
         this.mute = true;
 
         try

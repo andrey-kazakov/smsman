@@ -8,10 +8,10 @@
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta charset="UTF-8">
   <link rel="stylesheet/less" type="text/css" href="/stylesheets/application.less" media="all" />
-  <script type="text/javascript">
-    messagesLocale = <%= raw t('messages').to_json %>;
-    translitLocale = <%= raw({ 'lower' => Russian::Transliteration::LOWER, 'upper' => Russian::Transliteration::UPPER, 'multi_keys' => Russian::Transliteration::MULTI_KEYS }.to_json) %>;
-  </script>
+  <%= javascript_tag %<
+    messagesLocale = #{t('messages').to_json};
+    translitLocale = #{{ 'lower' => Russian::Transliteration::LOWER, 'upper' => Russian::Transliteration::UPPER, 'multi_keys' => Russian::Transliteration::MULTI_KEYS }.to_json};
+    > %>
   <%= javascript_include_tag "application" %>
 
   <% if user_signed_in? %>

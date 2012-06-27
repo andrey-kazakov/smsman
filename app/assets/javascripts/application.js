@@ -18,3 +18,4 @@
 //= require jquery.fileupload.min
 //= require tools
 //= require scroll
+//= require flash

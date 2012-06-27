@@ -1,5 +1,7 @@
 <nav id="top">
   <div class="report" id="flash"></div>
+  <% flash.now[:profile] = { user: { email: { error: 'Этот адрес электронной почты уже используется.' } } } %>
+  <% flash.now[:error] = 'Хуй.' %>
   <%= javascript_tag %<
   (function(flashes)
   {

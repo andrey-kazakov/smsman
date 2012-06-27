@@ -83,8 +83,8 @@ $(document).bind('ready scroll load', function()
 
   var scrollTop = $(document).scrollTop();
   //if ( report.size >= 1 ) {
-    navtop.addClass('fixed').css('padding-bottom', pinner.outerHeight()).css('padding-top', report.outerHeight());
-    pinner.css('top', report.outerHeight()).css('padding-top', navtop.height());
+//    navtop.addClass('fixed').css('padding-bottom', pinner.outerHeight()).css('padding-top', report.outerHeight());
+//    pinner.css('top', report.outerHeight()).css('padding-top', navtop.height());
   //}
 //else
 //{
