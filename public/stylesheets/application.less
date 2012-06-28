@@ -556,7 +556,7 @@ label {
     color: @color-white;
     .transition(all, 0.225s, ease-in-out);
 
-    &.error {
+    &.error, &.alert {
       background: darken(@color-red, 5%);
       
       &:hover {
@@ -614,7 +614,7 @@ nav#top {
   
   .report {
     
-    .notice, .error {
+    .notice, .error, .alert {
       padding: 0.4em 6em; 
     }
   }
@@ -928,7 +928,7 @@ nav#top {
                     margin-left: -6px;
                     .rounded(0);
                     
-                    &.error {
+                    &.error, &.alert {
                       background: darken(@color-red, 5%);
                       
                       &:hover {

@@ -13,7 +13,7 @@
         <%= f.password_field :password, placeholder: 'Обязательное поле', required: 'required' %>
       </label>
     </p>
-    <p class="forgot text-center small"><a class="pseudolink" href=""><u>напомнить пароль</u></a></p>
+    <!-- p class="forgot text-center small"><%= link_to raw('<u>напомнить пароль</u>'), new_user_password_path, class: 'pseudolink', remote: true %></p -->
     <p class="total">
       <button>Войти</button>
     </p>
