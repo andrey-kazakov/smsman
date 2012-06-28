@@ -56,7 +56,7 @@ tools  =
         var lastMatch = matches[matches.length - 1];
         value = value.substr(value.lastIndexOf(lastMatch) + lastMatch.length);
 
-        each(matches, function(i, match)
+        tools.each(matches, function(i, match)
         {
           callback(tools.sanitizeNumber(matches[i]));
         });

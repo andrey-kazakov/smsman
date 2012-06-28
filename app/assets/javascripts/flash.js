@@ -30,7 +30,8 @@
 
         for (var selector in what)
         {
-          var paragraph = form.find('input#' + selector).parents('p');
+          var input = form.find('input#' + selector);
+          var paragraph = input.parents('p');
 
           var report = $('<div/>').addClass('report').insertAfter(paragraph);
 
@@ -38,7 +39,7 @@
           {
             var text = what[selector][type];
 
-            append(report, type, text);
+            type == 'value' ? input.val(text) : append(report, type, text);
           }
         }
       }

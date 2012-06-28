@@ -43,6 +43,8 @@ class MailingsController < ApplicationController
 
       if User.where(email: email).count > 0
 
+        flash[:register] = { user_email: { value: email, error: "Такой E-mail уже занят" } }
+
         redirect_to welcome_pages_path
 
       else
@@ -51,9 +53,10 @@ class MailingsController < ApplicationController
         user = User.create!(:email => email, 
                             :password => generated_password)
 
-        #RegistrationMailer.welcome(user, generated_password).deliver
-
         sign_in(:user, user)
+
+        flash[:notice] = "Мы сгенерировали Вам вот такой пароль: #{generated_password}. Пожалуйста, поменяйте его на свой!"
+        flash[:profile] = { user_password: { notice: "Введите сюда новый\u00a0пароль" }, user_current_password: { value: generated_password } } 
 
         redirect_to root_path
       end
