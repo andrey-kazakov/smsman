@@ -15,6 +15,10 @@ class User
   field :reset_password_token,   :type => String
   field :reset_password_sent_at, :type => Time
 
+  # filtering method: /^\+#{filter}\d{10}$/
+  field :object_amounts, type: Hash, default: {} # "filter" => count
+  attr_protected :object_amounts
+
   ## Rememberable
   field :remember_created_at, :type => Time
 
@@ -24,6 +28,21 @@ class User
   field :last_sign_in_at,    :type => Time
   field :current_sign_in_ip, :type => String
   field :last_sign_in_ip,    :type => String
+
+  def amount_for number, increment = 0
+    # перебираем пары, отсортировав по убыванию длины ключа
+    object_amounts.sort{ |a,b| -(a[0].length <=> b[0].length) }.each do |filter,v|
+      next unless number.index("+#{filter}") == 0 or number.index("#{filter}") == 0
+        
+      if increment != 0
+        inc "object_amounts.#{filter}", increment
+      end
+
+      return v
+    end
+
+    0
+  end
 
   ## Encryptable
   # field :password_salt, :type => String
