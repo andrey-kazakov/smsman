@@ -47,6 +47,12 @@ SmsManager::Application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+  
+  resources :invoices do
+    collection do
+      post 'buy'
+    end
+  end
 
   resources :contacts, :only => [:index, :create, :destroy]
 
