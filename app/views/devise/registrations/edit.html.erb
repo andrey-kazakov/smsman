@@ -1,6 +1,6 @@
 <% resource = current_user; resource_name = :user %>
+<% flash[:profile] = resource.errors.to_hash.map{ |k,msg| { "user_#{k}" => { error: msg.join("\n") } } }.inject(:merge) %>
 <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { method: :put, class: 'dropdown' }) do |f| %>
-  <!-- %= devise_error_messages! % -->
   <div class="white">
     <p>
       <label>

@@ -1,11 +1,5 @@
 <nav id="top">
   <div class="report" id="flash"></div>
-  <%= javascript_tag %<
-  (function(flashes)
-  {
-    for (var kind in flashes) flash(kind, flashes[kind])
-  })(#{flash.to_hash.to_json})
-  > %>
   <div class="wrapper clearfix">
     <% if user_signed_in? %>
       <div class="topline clearfix">

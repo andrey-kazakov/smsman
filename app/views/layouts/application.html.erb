@@ -60,5 +60,6 @@
       </div>
     </aside>
   <% end %>
+  <%= javascript_tag %<(function(flashes){for (var kind in flashes) flash(kind, flashes[kind])})(#{flash.to_hash.to_json})> %>
 </body>
 </html>
