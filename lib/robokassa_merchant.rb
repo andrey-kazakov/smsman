@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'digest/md5'
 require 'uri'
 
@@ -59,7 +60,7 @@ class RobokassaMerchant
         query['shpInvoiceId'] = invoice_id
         query['SignatureValue'] = Digest::MD5.hexdigest("#{query['MrchLogin']}:#{query['OutSum']}:#{query['InvId']}:#{@settings['MerchantPass1']}:shpInvoiceId=#{invoice_id}") 
 
-        query['InvDesc'] = "#{params['object_amount']} messages for user #{user.full_name}"
+        query['InvDesc'] = "#{params['object_amount']} смс #{I18n.t("messages.prefixes.#{invoice[:objects_filter]}")} для #{user.email}"
 
         query = self.class.query(query)
         
