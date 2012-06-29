@@ -747,3 +747,12 @@
     }
   });
 })()
+
+// message payment
+$('#objects_amount').live('keyup input propertychange', function(event)
+{
+  var input = $(this);
+  var value = parseInt(input.val()) || 0;
+
+  typoNumber(value * 7, '#objects_cost');
+})
