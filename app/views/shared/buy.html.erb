@@ -1,13 +1,13 @@
-<form class="dropdown">
+<form class="dropdown" action="/invoices/buy" method="get">
   <div class="white">
     <p class="radioholder">
-      <span><input type="radio" name="prefix" id="buy-more-russia" value="7" checked></input><label for="buy-more-russia"><u>Россия</u></label></span>
-      <span><input type="radio" name="prefix" id="buy-more-ukraine" value="38"></input><label for="buy-more-ukraine"><u>Украина</u></label></span>
+      <span><input type="radio" name="objects_filter" id="buy-more-russia" value="7" checked></input><label for="buy-more-russia"><u>Россия</u></label></span>
+      <span><input type="radio" name="objects_filter" id="buy-more-ukraine" value="38"></input><label for="buy-more-ukraine"><u>Украина</u></label></span>
     </p>
-    <input type="number" name="count" id="" placeholder="Количество…" min="30" required />
-    <p class="text-center">Цена за смс: 0.03 $</p>
+    <input type="number" name="objects_amount" id="objects_amount" placeholder="Количество…" min="30" value="30" required />
+    <p class="text-center">Цена за смс: 7&nbsp;&#8399;</p>
     <div class="total">
-      <p class="text-center">Итого: <span class="nobr"><%= typo_number(1002) %>&nbsp;$</span></p>
+      <p class="text-center">Итого: <span class="nobr"><%= typo_number(210) %>&nbsp;&#8399;</span></p>
       <hr />
       <button>Купить</button>
     </div>

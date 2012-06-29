@@ -50,7 +50,7 @@ SmsManager::Application.routes.draw do
   
   resources :invoices do
     collection do
-      post 'buy'
+      get 'buy'
     end
   end
 
