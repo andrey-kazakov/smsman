@@ -9,7 +9,7 @@ class SmsGateway
   end
 
   def start
-    @config = YAML::load(File.open(Rails.root + 'config/smpp.yml')) rescue nil
+    @config = YAML::load(File.open(Rails.root + 'config/smpp.yml')) rescue warn 'smpp.yml not found'
 
     if @config
       EventMachine::run do             
