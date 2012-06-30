@@ -1,3 +1,4 @@
+  $.webshims.setOptions('basePath', '/assets/webshims/minified/shims/');
 $.webshims.polyfill('forms forms-ext');
 
 $doc = $(document)
