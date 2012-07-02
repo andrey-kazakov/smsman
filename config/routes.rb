@@ -1,5 +1,11 @@
 SmsManager::Application.routes.draw do
+  devise_for :managers
+
   devise_for :users
+
+  resources :management, only: [:index]
+  get 'management/become_user/:id' => 'management#become_user', as: 'become_user_management'
+  get 'management/quit' => 'management#quit', as: 'quit_management'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

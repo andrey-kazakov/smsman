@@ -1,0 +1,7 @@
+<a href="<%= become_user_management_path(user) %>">
+  <p class="name set"><%= user.email %>&nbsp;</p>
+  <div class="total">
+    <h3><%= total_by_prefixes(Summary.new(total_by_prefixes: user.object_amounts)) %></h3>
+  </div>
+  <!-- div class="date"></div -->
+</a>

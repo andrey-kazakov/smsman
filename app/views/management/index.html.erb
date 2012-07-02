@@ -1,0 +1,8 @@
+<section id="users" class="wrapper">
+  <% if @users.empty? %>
+    <h1>Никто пока не зарегистрировался!</h1>
+    <p><small>И, тем не менее, это можно <a href="/"><u>сделать</u></a> прямиком с главной страницы :)</small></p>
+  <% else %>
+    <%= render partial: 'user', collection: @users %>
+  <% end %>
+</section>

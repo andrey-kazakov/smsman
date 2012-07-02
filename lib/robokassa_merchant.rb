@@ -116,14 +116,14 @@ class RobokassaMerchant
           invoice.set :robokassa_invoice_id, inv_id.to_i
         end
 
-        flash[:notice] = 'Invoice has been paid successfully!'
+        flash[:notice] = 'Оплата произведена!'
 
         return [301, { 'Location' => "/users/#{invoice.user_id.to_s}" }, []]
 
       when /fail$/ then
         invoice_id = params['shpInvoiceId']
 
-        flash[:error] = 'Your payment failed.'
+        flash[:error] = 'Платёж не удался.'
 
         return [301, { 'Location' => "/users/#{invoice.user_id.to_s}" }, []]
 

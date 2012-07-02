@@ -48,7 +48,9 @@ module ApplicationHelper
   end
 
   def total_by_prefixes of
-    total_by_prefixes = of.summary.total_by_prefixes.reject{ |k,v| v < 1 }
+    summary = of.kind_of?(Summary) ? of : of.summary
+
+    total_by_prefixes = summary.total_by_prefixes.reject{ |k,v| v < 1 }
 
     countries = ""
     total_by_prefixes.keys.each_with_index do |prefix, index|

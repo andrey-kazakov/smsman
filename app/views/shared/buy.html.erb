@@ -4,13 +4,21 @@
       <span><input type="radio" name="objects_filter" id="buy-more-russia" value="7" checked></input><label for="buy-more-russia"><u>Россия</u></label></span>
       <span><input type="radio" name="objects_filter" id="buy-more-ukraine" value="38"></input><label for="buy-more-ukraine"><u>Украина</u></label></span>
     </p>
+    <input type="text" name="document_identifier" placeholder="Номер договора…" required />
+    <input type="text" name="money_amount" placeholder="Сумма договора…" required />
     <input type="number" name="objects_amount" id="objects_amount" placeholder="Количество…" min="30" value="30" required />
-    <p class="text-center">Цена за смс: 7&nbsp;&#8399;</p>
-    <div class="total">
-      <p class="text-center">Итого: <span class="nobr"><span id="objects_cost"><%= typo_number(210) %></span>&nbsp;&#8399;</span></p>
-      <hr />
-      <button>Купить</button>
-    </div>
-    <p class="footer text-center small">или <a href="http://myhotspot.ru/"><u>заключить договор</u></a></p>
+    <% if manager_signed_in? %>
+      <div class="total">
+        <button>Начислить</button>
+      </div>
+    <% else %>
+      <p class="text-center">Цена за смс: 7&nbsp;&#8399;</p>
+      <div class="total">
+        <p class="text-center">Итого: <span class="nobr"><span id="objects_cost"><%= typo_number(210) %></span>&nbsp;&#8399;</span></p>
+        <hr />
+        <button>Купить</button>
+      </div>
+      <p class="footer text-center small">или <a href="http://myhotspot.ru/"><u>заключить договор</u></a></p>
+    <% end %>
   </div>
 </form>

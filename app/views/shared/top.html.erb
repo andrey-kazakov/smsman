@@ -5,7 +5,10 @@
       <div class="topline clearfix">
         <ul class="float-left"><%= nav_links('Новая рассылка' => root_path, 'Рассылки' => sent_mailings_path, 'Черновики' => drafts_mailings_path) %><li><a id="toggleContacts" class="pseudolink" href="#"><u>Контакты</u></a></li></ul>
         <ul class="float-right">
-          <li><%= I18n.t('good')[Time.now.hour / 6] %>
+          <li><%= I18n.t('good')[Time.now.hour / 6] + (manager_signed_in? ? ', менеджер' : '') %>
+          <% if manager_signed_in? %>
+            <%= nav_link 'Управление', management_index_path %>
+          <% end %>
           <li>
             <div class="buttongroup">
               <a id="profile" class="pseudolink drop" href="#" onclick="$(this).toggleClass('active'); return false"><u><%= current_user.email %></u></a><%= link_to "\u00a0", destroy_user_session_path, method: :delete, id: "delogin", class: "pseudolink drop" %>
@@ -23,7 +26,7 @@
           <% if user_signed_in? %>
             <li><span id="amount_7" class="russia country"><%= current_user.object_amounts['7'].present? ? typo_number(current_user.object_amounts['7']) : '0' %></span> и <span id="amount_38" class="ukraine country"><%= current_user.object_amounts['38'].present? ? typo_number(current_user.object_amounts['38']) : '0' %></span> смс</li>
             <li>
-              <a id="buy-more" class="pseudolink drop" href="#" onclick="$(this).toggleClass('active'); return false"><u>Купить ещё</u></a>
+              <%= link_to(manager_signed_in? ? raw('<u>Начислить ещё</u>') : raw('<u>Купить ещё</u>'), '#', id: 'buy-more', class: "pseudolink drop", onclick: "$(this).toggleClass('active'); return false") %>
               <%= render template: 'shared/buy' %>
           <% else %>
             <li>

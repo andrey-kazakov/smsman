@@ -1,4 +1,4 @@
-<% resource = User.new; resource_name = :user %>
+<% resource = current_page?(new_manager_session_path) ? Manager.new : User.new; resource_name = resource.class.name.downcase.to_sym %>
 <%= form_for(resource, :as => resource_name, :url => new_mailing_path, :html => { class: 'dropdown', method: :get }) do |f| %>
   <!-- %= devise_error_messages! % -->
   <div class="white">

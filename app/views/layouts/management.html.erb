@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<!--[if IE 8]><html id="ie8" lang="ru"><![endif]-->
+<!--[if !IE]><!--><html lang="ru"><!--<![endif]-->
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="UTF-8">
+  <title></title>
+  <link rel="stylesheet/less" type="text/css" href="/stylesheets/management.less" media="all" />
+  <%= javascript_tag %<
+    messagesLocale = #{t('messages').to_json};
+    translitLocale = #{{ 'lower' => Russian::Transliteration::LOWER, 'upper' => Russian::Transliteration::UPPER, 'multi_keys' => Russian::Transliteration::MULTI_KEYS }.to_json};
+    > %>
+  <%= javascript_include_tag "application" %>  <script type="text/javascript" src="/assets/application.js"></script>
+  <!--[if lt IE 9]>
+  <script>
+    document.createElement('header');
+    document.createElement('nav');
+    document.createElement('section');
+    document.createElement('article');
+    document.createElement('aside');
+    document.createElement('footer');
+    document.createElement('hgroup');
+  </script>
+  <![endif]-->
+</head>
+<body>
+  <% if manager_signed_in? %>
+    <nav id="top">
+      <div class="wrapper clearfix">
+        <div class="pinner">
+          <ul class="float-right">
+            <li>Доброй ночи, менеджер
+            <li>
+              <div class="buttongroup">
+                <a id="profile" class="pseudolink drop" href="/management/quit" onclick="return confirm('Выйти?')"><u><%= current_manager.email %></u></a>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+  <% end %>
+  <a href="" id="logotype">
+    <h1><span>smsman</span></h1>
+  </a>
+  <%= yield %>
+  <footer class="wrapper">
+    <div>
+      <p class="copyright float-right">
+        © 2011-<%= Time.now.year %> <a href="http://myhotspot.ru/"><u>iN3731337</u></a>
+      </p>
+    </div>
+  </footer>
+  <%= javascript_tag %<(function(flashes){for (var kind in flashes) flash(kind, flashes[kind])})(#{flash.to_hash.to_json})> %>
+</body>
+</html>
